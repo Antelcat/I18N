@@ -1,0 +1,3 @@
+[submodule "extrern/CodeAnalysis.Extensions"]
+	path = extrern/CodeAnalysis.Extensions
+	url = https://github.com/feast107/CodeAnalysis.Extensions.git
