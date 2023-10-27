@@ -1,14 +1,16 @@
 # Antelcat.Wpf.I18N
 
-Reactive language support for WPF applications.
+🇬🇧 [English](./README.en.md)
 
-## Example
+给WPF应用程序提供响应式的多语言支持。
+
+## 示例
 
 ---
 
-### Static using
-When using `.resx` language file in your project, you can 
-automatically generate resource keys by using `Antelcat.Wpf.I18N.Attributes.ResourceKeysOfAttribute`:
+### 静态使用
+
+当你在项目中使用`.resx`文件作为语言文件时，你可以使用`Antelcat.Wpf.I18N.Attributes.ResourceKeysOfAttribute`来自动生成资源键：
 
 ```csharp
 using Antelcat.Wpf.I18N.Attributes;
@@ -22,69 +24,75 @@ public partial class LangKeys
 }
 ```
 
-Then in your `.xaml` file you can use `x:Static` to provide resource key to your control
+然后在你的`.xaml`文件中使用`x:Static`来为你的控件提供资源键
 
-if you already have 
+如果你已经在你的`.resx`文件中有
+
 ```xml
 <data name="Language" xml:space="preserve">
-    <value>Language</value>
+    <value>语言</value>
 </data>
 ```
-in your `.resx` file, you can use it like this:
+你可以像这样使用：
+
 ```xaml
 <TextBolck Text="{x:Static myProject:LangKeys.Language}"/>
 ```
 
-Then you can use the key to bind the language source using `I18N`
+然后你可以使用这个键来绑定语言源
 
 ```xaml
 <TextBlock Text="{I18N Source={x:Static myProject:LangKeys.Language}}"/>
 ```
 
-When you want to change the language, just call
+当你想要改变语言时，只需要调用
 
 ```csharp
 using System.Windows;
 
 I18NExtension.Culture = new CultureInfo("language code");
 ```
-You can see the text is changing among the languages.
+你可以看到文本在语言之间变化。
 
 ---
 
-### Dynamic using
+### 动态使用
 
-Sometimes your source text is not defined in your application but received from other source like network, you can use `I18N` to bind the text directly.
+有时你的源文本并不是在你的应用程序中定义的，而是从其他来源（如网络）接收到的，你可以使用`I18N`直接绑定文本。
 
-If you receive a json like this:
+如果你收到了一个像这样的json：
+
 ```json
 {
     "message": "This is a message"
 }
 ```
-and you have translated it into another language in `.resx` like
+
+并且你已经在`.resx`中将他翻译成了另一种语言
+
 ```xml
 <data name="This is a message" xml:space="preserve">
     <value>这是一条消息</value>
 </data>
 ```
 
-then you put the json into a `Message` property in your view model, you can bind it like this:
+你肯定会设计一个`ViewModel`并且将他设置到属性`Message`中，你可以像这样绑定：
 
 ```xaml
-<!--whose DataContext is your view model-->
+<!--他的DataContext就是你的ViewModel-->
 <TextBlock Text="{I18N Key={Binding Message}}"/> 
 ```
 
-Each time when the `Message` property is changed or the language source is changed, the text will be updated automatically.
+每当`Message`属性被改变或者语言源被改变时，文本都会自动更新。
 
 ---
 
-### Combination and StringFormat
+### 多个文本组合和格式化
 
-Somebody may want to combine several language sources into one text, you can also use `I18N` and `LanguageBinding` to do this
+有些情况下，你需要将多个文本组合起来，或者对文本进行格式化，你可以使用`I18N`和`LanguageBinding`来实现。
 
-If you have source text in `.resx` file like this:
+如果你已经有了如下翻译的`.resx`文件：
+
 ```xml
 <data name="Current_is" xml:space="preserve">
     <value>当前的 {0} 是 {1}</value>
@@ -97,7 +105,7 @@ If you have source text in `.resx` file like this:
 </data>
 ```
 
-and in `.xaml` 
+并且在`.xaml`中
 
 ```xaml
 <TextBlock>
@@ -110,4 +118,4 @@ and in `.xaml`
 </TextBlock>
 ```
 
-`I18N.Key` is the `string` template, content accepts `LanguageBinding` and `Binding` to provide the args.
+此时 `I18N.Key` 是字符串的模板，其中的 `LanguageBinding` 和 `Binding` 会提供模板的参数，他们会被按顺序格式化成最终的文本。同时保持整体的响应性。

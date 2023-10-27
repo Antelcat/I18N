@@ -15,6 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-44B4-8872-61FC02A4AE9F}"
 	ProjectSection(SolutionItems) = preProject
+		README.en.md = README.en.md
 		README.md = README.md
 	EndProjectSection
 EndProject
