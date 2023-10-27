@@ -143,7 +143,7 @@ public class I18NExtension : MarkupExtension , IAddChild
 		return ret;
 	}
 
-	public override object? ProvideValue(IServiceProvider serviceProvider)
+	public override object ProvideValue(IServiceProvider serviceProvider)
 	{
 		if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget) return this;
 		if (provideValueTarget.TargetObject.GetType().FullName == "System.Windows.SharedDp") return this;
@@ -188,13 +188,13 @@ public class I18NExtension : MarkupExtension , IAddChild
 			case FrameworkElement element:
 			{
 				element.DataContextChanged -= LangExtension_DataContextChanged;
-				ResetBinding(element, e.NewValue);
+				ResetBinding(element);
 				break;
 			}
 			case FrameworkContentElement element:
 			{
 				element.DataContextChanged -= LangExtension_DataContextChanged;
-				ResetBinding(element, e.NewValue);
+				ResetBinding(element);
 				break;
 			}
 		}
@@ -222,8 +222,7 @@ public class I18NExtension : MarkupExtension , IAddChild
 
 
 	private void ResetBinding(
-		DependencyObject element,
-		object dataContext)
+		DependencyObject element)
 	{
 		if (Key is string
 		    && (keys is null || keys.All(x => x is LanguageBinding))) return;
@@ -231,58 +230,6 @@ public class I18NExtension : MarkupExtension , IAddChild
 		SetTargetProperty(element, null!);
 		var binding = CreateBinding();
 		BindingOperations.SetBinding(element, targetProperty, binding);
-	}
-
-	
-	private BindingBase? SetLangBinding(
-		DependencyObject targetObject,
-		DependencyProperty? targetProperty,
-		PropertyPath path,
-		object dataContext)
-	{
-		if (targetProperty == null) return null;
-
-		BindingOperations.SetBinding(targetObject,
-			targetProperty,
-			new Binding
-			{
-				Path   = path,
-				Source = dataContext,
-				Mode   = BindingMode.OneWay,
-			});
-
-		var key = targetObject.GetValue(targetProperty) as string;
-		if (string.IsNullOrEmpty(key)) return null;
-
-		var binding = CreateBinding();
-		return binding;
-	}
-
-	private BindingBase CreateKeyBinding(string key)
-	{
-		var ret = new Binding(key)
-		{
-			Source = GetSource(key),
-			Mode   = BindingMode.OneWay
-		};
-		
-		if (Key is not Binding)
-		{
-			ret.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
-			ret.Converter           = Converter;
-			ret.ConverterParameter  = ConverterParameter;
-			return ret;
-		}
-
-		var multi = new MultiBinding
-		{
-			Mode                = BindingMode.OneWay,
-			UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
-			ConverterParameter  = ConverterParameter,
-		};
-		multi.Bindings.Add(ret);
-		multi.Bindings.Add(Key as Binding);
-		return multi;
 	}
 
 	internal static object GetSource(string key) => TryFind(Target, key);
