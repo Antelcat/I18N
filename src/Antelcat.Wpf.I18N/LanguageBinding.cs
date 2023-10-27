@@ -8,11 +8,6 @@ namespace System.Windows;
 /// </summary>
 public class LanguageBinding : Binding
 {
-    public LanguageBinding()
-    {
-        Source = I18NExtension.Target;
-    }
-    
     [DefaultValue("")]
     public string? Key
     {
@@ -20,8 +15,7 @@ public class LanguageBinding : Binding
         set
         {
             if (string.IsNullOrEmpty(value)) return;
-            key    = value;
-            Source = I18NExtension.GetSource(value!);
+            key = value;
         }
     }
 
