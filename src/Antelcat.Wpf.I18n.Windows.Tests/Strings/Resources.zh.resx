@@ -27,4 +27,7 @@
     <data name="Chinese" xml:space="preserve">
         <value>中文</value>
     </data>
+    <data name="Current language is" xml:space="preserve">
+        <value>当前的{0}是 {1}</value>
+    </data>
 </root>

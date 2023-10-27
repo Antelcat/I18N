@@ -8,7 +8,18 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <StackPanel>
-            <TextBlock Text="{I18N Key={x:Static tests:LangKeys.English}}"/>
+            <TextBlock Text="{I18N Key={x:Static tests:LangKeys.Chinese}}">
+            </TextBlock>
+            <TextBlock Text="{I18N Key={Binding Language}}">
+            </TextBlock>
+            <TextBlock>
+                <TextBlock.Text>
+                    <I18N Key="{x:Static tests:LangKeys.Current_language_is}">
+                        <LanguageBinding Key="{x:Static tests:LangKeys.Language}"/>
+                        <Binding Path="Language"/>
+                    </I18N>
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
     </Grid>
 </Window>

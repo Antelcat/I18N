@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using System.Windows.Data;
 
 namespace Antelcat.Wpf.I18N.Windows.Tests
 {
@@ -17,20 +19,31 @@ namespace Antelcat.Wpf.I18N.Windows.Tests
             InitializeComponent();
             DataContext = vm;
             
-            var timer = new Timer
+            var viewModelTimer = new Timer
             {
                 Interval = 2000,
                 AutoReset = true
             };
+            var languageTimer = new Timer
+            {
+                Interval  = 2000,
+                AutoReset = true
+            };
             var culture = new CultureInfo("zh");
-            timer.Elapsed += (_, _) =>
+            viewModelTimer.Elapsed += (_, _) =>
             {
                 vm.Language = vm.Language == "Chinese" ? "English" : "Chinese";
-                /*culture = culture.EnglishName == "Chinese" ? new CultureInfo("en") : new CultureInfo("zh");
-                LangExtension.Culture = culture;*/
+            };
+            languageTimer.Elapsed += (_, _) =>
+            {
+                culture = culture.EnglishName == "Chinese" ? new CultureInfo("en") : new CultureInfo("zh");
+                I18NExtension.Culture = culture;
             };
             
-            timer.Start();
+            viewModelTimer.Start();
+
+            
+            Task.Delay(1000).ContinueWith(_ => { languageTimer.Start(); });
         }
 
         protected override void OnInitialized(EventArgs e)

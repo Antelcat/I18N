@@ -55,6 +55,7 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                          if (Equals({{targetFullName}}.Culture?.EnglishName, value.EnglishName)) return;
                                          {{targetFullName}}.Culture = value;
                                          UpdateSource();
+                                         OnChangeCompleted();
                                      }
                                  }
                                  

@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -15,7 +18,7 @@ namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -35,7 +38,7 @@ namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Antelcat.Wpf.I18n.Windows.Tests.Strings.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Antelcat.Wpf.I18N.Windows.Tests.Strings.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,6 +65,15 @@ namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
         internal static string Chinese {
             get {
                 return ResourceManager.GetString("Chinese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current {0} is {1}.
+        /// </summary>
+        internal static string Current_language_is {
+            get {
+                return ResourceManager.GetString("Current language is", resourceCulture);
             }
         }
         
