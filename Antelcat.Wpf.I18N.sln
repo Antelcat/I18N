@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N", "src\An
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.SourceGenerators", "src\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj", "{51D7777A-1F56-4F09-8581-7F546B2F1817}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.Windows.Tests", "src\Antelcat.Wpf.I18N.Windows.Tests\Antelcat.Wpf.I18N.Windows.Tests.csproj", "{7F3763B9-97B3-4FB6-89B5-B54600693577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.Demo", "src\Antelcat.Wpf.I18N.Demo\Antelcat.Wpf.I18N.Demo.csproj", "{7F3763B9-97B3-4FB6-89B5-B54600693577}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extern", "Extern", "{2835EE7C-9F76-45A2-9754-E86902623A81}"
 EndProject

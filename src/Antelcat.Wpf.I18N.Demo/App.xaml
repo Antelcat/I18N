@@ -1,11 +1,13 @@
-﻿<Application x:Class="Antelcat.Wpf.I18N.Windows.Tests.App"
+﻿<Application x:Class="Antelcat.Wpf.I18N.Demo.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml">
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             StartupUri="/Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Strings/Converters.xaml" />
+                <ui:ThemesDictionary Theme="Dark" />
+                <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

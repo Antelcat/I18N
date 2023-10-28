@@ -14,7 +14,8 @@ using Antelcat.Wpf.I18N.Abstractions;
 namespace System.Windows;
 
 [MarkupExtensionReturnType(typeof(string))]
-[ContentProperty("Keys")]
+[ContentProperty(nameof(Keys))]
+[Localizability(LocalizationCategory.None, Modifiability = Modifiability.Unmodifiable, Readability = Readability.Unreadable)]
 public class I18NExtension : MarkupExtension, IAddChild
 {
     private static readonly IDictionary<string, object?> Target;
@@ -77,7 +78,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         get => proxy.GetValue(KeyProperty);
         set => proxy.SetValue(KeyProperty, value);
     }
-
+    
     /// <summary>
     /// The args of <see cref="string.Format(string,object[])"/>, accepts <see cref="LanguageBinding"/> or <see cref="Binding"/>
     /// </summary>
@@ -182,13 +183,14 @@ public class I18NExtension : MarkupExtension, IAddChild
         return bindingBase.ProvideValue(serviceProvider);
     }
 
+    #region Target
+
     private static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached(
         nameof(Key),
         typeof(object),
         typeof(I18NExtension),
         new PropertyMetadata(default));
 
-    #region Target
 
     private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached(
         "TargetProperty",
@@ -296,6 +298,8 @@ public class I18NExtension : MarkupExtension, IAddChild
             var template = isBindingList[0]
                 ? GetValue(values[0], (values[1] as string)!)
                 : values[1] as string;
+            
+            if (values.Length <= 2) return template!;
 
             for (var i = 1; i < isBindingList.Length; i++)
             {

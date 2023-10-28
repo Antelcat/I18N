@@ -1,5 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="clr-namespace:Antelcat.Wpf.I18N.Windows.Tests.Converters">
-    <converters:StringFormatConverter x:Key="StringFormatConverter"/>
-</ResourceDictionary>

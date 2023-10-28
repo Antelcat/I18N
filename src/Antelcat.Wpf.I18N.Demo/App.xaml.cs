@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Antelcat.Wpf.I18N.Windows.Tests
+namespace Antelcat.Wpf.I18N.Demo
 {
     /// <summary>
     /// Interaction logic for App.xaml

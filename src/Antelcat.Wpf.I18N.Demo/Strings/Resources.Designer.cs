@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
+namespace Antelcat.Wpf.I18N.Demo.Strings {
     using System;
     
     
@@ -38,7 +38,7 @@ namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Antelcat.Wpf.I18N.Windows.Tests.Strings.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Antelcat.Wpf.I18N.Demo.Strings.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -56,6 +56,15 @@ namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available languages.
+        /// </summary>
+        internal static string Available_languages {
+            get {
+                return ResourceManager.GetString("Available languages", resourceCulture);
             }
         }
         
@@ -92,6 +101,24 @@ namespace Antelcat.Wpf.I18N.Windows.Tests.Strings {
         internal static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select your text to translate.
+        /// </summary>
+        internal static string Select_your_text_to_translate {
+            get {
+                return ResourceManager.GetString("Select your text to translate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translated text.
+        /// </summary>
+        internal static string Translated_text {
+            get {
+                return ResourceManager.GetString("Translated text", resourceCulture);
             }
         }
     }

@@ -30,4 +30,13 @@
     <data name="Current language is" xml:space="preserve">
         <value>Current {0} is {1}</value>
     </data>
+    <data name="Select your text to translate" xml:space="preserve">
+        <value>Select your text to translate</value>
+    </data>
+    <data name="Translated text" xml:space="preserve">
+        <value>Translated text</value>
+    </data>
+    <data name="Available languages" xml:space="preserve">
+        <value>Available languages</value>
+    </data>
 </root>

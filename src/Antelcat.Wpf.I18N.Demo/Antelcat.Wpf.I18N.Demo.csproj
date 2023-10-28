@@ -5,7 +5,6 @@
         <TargetFramework>net7.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <RootNamespace>Antelcat.Wpf.I18N.Windows.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +14,7 @@
 
     <ItemGroup>
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+      <PackageReference Include="WPF-UI" Version="2.0.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -35,6 +35,20 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Wpf.Ui">
+        <HintPath>C:\Users\13532\.nuget\packages\wpf-ui\3.0.0-preview.8\lib\net7.0-windows7.0\Wpf.Ui.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Windows\MainWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
     </ItemGroup>
 
 </Project>
