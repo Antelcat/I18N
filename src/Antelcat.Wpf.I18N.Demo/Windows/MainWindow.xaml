@@ -11,18 +11,14 @@
     mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ViewModel}"
     WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
-    Title="Antelcat.Wpf.I18N.Demo" Height="540" Width="900">
+    Title="Antelcat.Wpf.I18N.Demo" Height="550" Width="900">
     <Border>
         <ui:Card
             Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Border,AncestorLevel=1},Path=ActualHeight}"
             Padding="12">
-            <Grid
+            <ScrollViewer
                 Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ui:Card,AncestorLevel=1},Path=ActualHeight}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <StackPanel  Orientation="Horizontal">
+                <StackPanel>
                     <Menu Margin="0" Padding="0" Background="Transparent">
                         <MenuItem Margin="0" Padding="0">
                             <MenuItem.Header>
@@ -37,89 +33,88 @@
                             </MenuItem.Header>
                             <ui:CodeBlock>
                                 &lt;TextBlock&gt;\n
-                                    \t&lt;TextBlock.Text&gt;\n
-                                        \t\t&lt;I18N Key="{x:Static m:LangKeys.Current_language_is}"&gt;\n
-                                            \t\t\t&lt;LanguageBinding Key="{x:Static m:LangKeys.Language}" /&gt;\n
-                                            \t\t\t&lt;Binding Path="Culture.EnglishName" /&gt;\n
-                                        \t\t&lt;/I18N&gt;\n
-                                    \t&lt;TextBlock.Text&gt;\n
+                                \t&lt;TextBlock.Text&gt;\n
+                                \t\t&lt;I18N Key="{x:Static m:LangKeys.Current_language_is}"&gt;\n
+                                \t\t\t&lt;LanguageBinding Key="{x:Static m:LangKeys.Language}" /&gt;\n
+                                \t\t\t&lt;Binding Path="Culture.EnglishName" /&gt;\n
+                                \t\t&lt;/I18N&gt;\n
+                                \t&lt;TextBlock.Text&gt;\n
                                 &lt;TextBlock&gt;
                             </ui:CodeBlock>
                         </MenuItem>
                     </Menu>
-
-                </StackPanel>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="200" />
-                    </Grid.ColumnDefinitions>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
-                        </Grid.RowDefinitions>
-                        <ui:Card Margin="0,0,10,0" Padding="0">
-                            <StackPanel>
-                                <Menu Background="Transparent">
-                                    <MenuItem >
-                                        <MenuItem.Header>
-                                            <TextBlock Text="{I18N Key={x:Static m:LangKeys.Select_your_text_to_translate}}"/>
-                                        </MenuItem.Header>
-                                        <ui:CodeBlock>
-                                            &lt;TextBlock Text="{I18N Key={x:Static m:LangKeys.Select_your_text_to_translate}}"/&gt;
-                                        </ui:CodeBlock>
-                                    </MenuItem>
-                                </Menu>
-                                <ComboBox
-                                    Margin="12,0"
-                                    SelectedItem="{Binding SelectedKey}"
-                                    ItemsSource="{Binding AvailableKeys}" />
-                                <Menu Background="Transparent">
-                                    <MenuItem >
-                                        <MenuItem.Header>
-                                            <TextBlock Text="{I18N Key={x:Static m:LangKeys.Translated_text}}"/>
-                                        </MenuItem.Header>
-                                        <ui:CodeBlock>
-                                            &lt;TextBlock Text="{I18N Key={x:Static m:LangKeys.Translated_text}}"/&gt;
-                                        </ui:CodeBlock>
-                                    </MenuItem>
-                                </Menu>
-
-                                <TextBox Margin="12,0" Text="{I18N Key={Binding SelectedKey}}"></TextBox>
-                                <ui:CodeBlock Margin="12">
-                                    &lt;TextBlock Text="{I18N Key={Binding SelectedKey}}"/&gt;
-                                </ui:CodeBlock>
-                            </StackPanel>
-                        </ui:Card>
-                        <ui:Card Grid.Row="1" Margin="0,0,10,0">
-                            <StackPanel>
-                                <TextBlock Text="{I18N Key={x:Static m:LangKeys.Input_your_text_to_translate}}"></TextBlock>
-                                <TextBox Margin="0,10" Text="{Binding InputText,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                <TextBlock Text="{I18N Key={x:Static m:LangKeys.Translated_text}}"></TextBlock>
-                                <TextBlock Margin="0,10" Text="{I18N Key={Binding InputText}}"></TextBlock>
-                                <ui:CodeBlock>
-                                    &lt;TextBlock Text="{I18N Key={Binding InputText}}"/&gt;
-                                </ui:CodeBlock>
-                            </StackPanel>
-                        </ui:Card>
-                    </Grid>
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
                         <StackPanel>
-                            <TextBlock Text="{I18N Key={x:Static m:LangKeys.Available_languages}}"></TextBlock>
-                            <ListBox Margin="0,10"
-                                     ItemsSource="{Binding AvailableCultures}"
-                                     SelectedItem="{Binding Culture}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{I18N Key={Binding EnglishName}}"></TextBlock>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <ui:Card Margin="0,0,10,0" Padding="0">
+                                <StackPanel>
+                                    <Menu Background="Transparent">
+                                        <MenuItem>
+                                            <MenuItem.Header>
+                                                <TextBlock
+                                                    Text="{I18N Key={x:Static m:LangKeys.Select_your_text_to_translate}}" />
+                                            </MenuItem.Header>
+                                            <ui:CodeBlock>
+                                                &lt;TextBlock Text="{I18N Key={x:Static m:LangKeys.Select_your_text_to_translate}}"/&gt;
+                                            </ui:CodeBlock>
+                                        </MenuItem>
+                                    </Menu>
+                                    <ComboBox
+                                        Margin="12,0"
+                                        SelectedItem="{Binding SelectedKey}"
+                                        ItemsSource="{Binding AvailableKeys}" />
+                                    <Menu Background="Transparent">
+                                        <MenuItem>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="{I18N Key={x:Static m:LangKeys.Translated_text}}" />
+                                            </MenuItem.Header>
+                                            <ui:CodeBlock>
+                                                &lt;TextBlock Text="{I18N Key={x:Static m:LangKeys.Translated_text}}"/&gt;
+                                            </ui:CodeBlock>
+                                        </MenuItem>
+                                    </Menu>
+
+                                    <TextBox Margin="12,0" Text="{I18N Key={Binding SelectedKey}}"></TextBox>
+                                    <ui:CodeBlock Margin="12">
+                                        &lt;TextBlock Text="{I18N Key={Binding SelectedKey}}"/&gt;
+                                    </ui:CodeBlock>
+                                </StackPanel>
+                            </ui:Card>
+                            <ui:Card Grid.Row="1" Margin="0,12,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="{I18N Key={x:Static m:LangKeys.Input_your_text_to_translate}}"></TextBlock>
+                                    <TextBox Margin="0,10"
+                                             Text="{Binding InputText,UpdateSourceTrigger=PropertyChanged}">
+                                    </TextBox>
+                                    <TextBlock Text="{I18N Key={x:Static m:LangKeys.Translated_text}}"></TextBlock>
+                                    <TextBlock Margin="0,10" Text="{I18N Key={Binding InputText}}"></TextBlock>
+                                    <ui:CodeBlock>
+                                        &lt;TextBlock Text="{I18N Key={Binding InputText}}"/&gt;
+                                    </ui:CodeBlock>
+                                </StackPanel>
+                            </ui:Card>
                         </StackPanel>
+                        <Grid Grid.Column="1">
+                            <StackPanel>
+                                <TextBlock Text="{I18N Key={x:Static m:LangKeys.Available_languages}}"></TextBlock>
+                                <ListBox Margin="0,10"
+                                         ItemsSource="{Binding AvailableCultures}"
+                                         SelectedItem="{Binding Culture}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{I18N Key={Binding EnglishName}}"></TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Grid>
+                </StackPanel>
+
+            </ScrollViewer>
         </ui:Card>
     </Border>
 
