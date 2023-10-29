@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-
 	ProjectSection(SolutionItems) = preProject
 		README.en.md = README.en.md
 		README.md = README.md
+		Icon.png = Icon.png
+		LICENSE = LICENSE
 	EndProjectSection
 EndProject
 Global

@@ -7,6 +7,12 @@ Reactive language support for WPF applications.
 
 ## Example
 
+<div float="right">
+    <img src="./docs/demo.zh.png" width="45%"/>
+    <img src="./docs/demo.en.png" width="45%"/> 
+</div>
+
+
 ---
 
 ### Static using

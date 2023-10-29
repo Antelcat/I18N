@@ -1,11 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net4.0;net4.5;net4.5.1;net4.5.2;net4.6;net4.6.1;net4.6.2;net4.7;net4.7.1;net4.7.2;net4.8;net4.8.1;
-            netcoreapp3.0-windows;netcoreapp3.1-windows;net5.0-windows;net6.0-windows;net7.0-windows</TargetFrameworks>
+        <TargetFrameworks>
+            net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;net481;
+            netcoreapp3.0-windows;netcoreapp3.1-windows;
+            net5.0-windows;net6.0-windows;net7.0-windows
+        </TargetFrameworks>
+        
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <IsPackable>false</IsPackable>
+        <IsPackable>true</IsPackable>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
 
@@ -14,6 +18,16 @@
 
         <RootNamespace>Antelcat.Wpf.I18N</RootNamespace>
         <PackageId>Antelcat.Wpf.I18N</PackageId>
+        <Title>Antelcat.Wpf.I18N</Title>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>Reactive language support for WPF applications when using .resx translate file.</Description>
+        <Copyright>Antelcat</Copyright>
+        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N</PackageProjectUrl>
+        <PackageIcon>Icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N.git</RepositoryUrl>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,4 +43,15 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="..\..\Icon.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+        <Link>Icon.png</Link>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup Label="Package">
+        <None Include="..\Antelcat.Wpf.I18N.SourceGenerators\bin\$(Configuration)\netstandard2.0\Antelcat.Wpf.I18N.SourceGenerators.dll" PackagePath="analyzers\dotnet\cs" Pack="true" Visible="false" />
+    </ItemGroup>
 </Project>

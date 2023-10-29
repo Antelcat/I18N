@@ -40,45 +40,46 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
 
                          #nullable enable
 
-                         namespace {{nameSpace.Replace("global::", "")}};
+                         namespace {{nameSpace.Replace("global::", "")}}{
 
-                         partial class {{generateCtx.TargetSymbol.Name}}
-                         {
-                             private class {{className}} : {{ResourceProviderBase}}
+                             partial class {{generateCtx.TargetSymbol.Name}}
                              {
-                                 public override {{CultureInfo}}? Culture
+                                 private class {{className}} : {{ResourceProviderBase}}
                                  {
-                                     get => {{targetFullName}}.Culture;
-                                     set
+                                     public override {{CultureInfo}}? Culture
                                      {
-                                         if (value == null) return;
-                                         if (Equals({{targetFullName}}.Culture?.EnglishName, value.EnglishName)) return;
-                                         {{targetFullName}}.Culture = value;
-                                         UpdateSource();
-                                         OnChangeCompleted();
+                                         get => {{targetFullName}}.Culture;
+                                         set
+                                         {
+                                             if (value == null) return;
+                                             if (Equals({{targetFullName}}.Culture?.EnglishName, value.EnglishName)) return;
+                                             {{targetFullName}}.Culture = value;
+                                             UpdateSource();
+                                             OnChangeCompleted();
+                                         }
                                      }
-                                 }
                                  
-                                 private void UpdateSource()
-                                 {
+                                     private void UpdateSource()
+                                     {
                          {{string.Concat(names.Select(x =>
-                             $"\t\t\tOnPropertyChanged(nameof({x}));\n"
+                             $"\t\t\t\tOnPropertyChanged(nameof({x}));\n"
                          ))}}
-                                 }
+                                     }
                                  
-                         {{string.Concat(names.Select(x => $"\t\tpublic string {x} => {targetFullName}.{x};\n\n"))}}
-                             }
+                         {{string.Concat(names.Select(x => $"\t\t\tpublic string {x} => {targetFullName}.{x};\n\n"))}}
+                                 }
                          
                          {{string.Concat(names.Select(x => $"""
                                                             
-                                                                /// <summary>
-                                                                /// {x}
-                                                                /// </summary>
-                                                                public static string {x} = nameof({x});
+                                                                    /// <summary>
+                                                                    /// {x}
+                                                                    /// </summary>
+                                                                    public static string {x} = nameof({x});
                                                                                                             
                                                             """))
                          }}
 
+                             }
                          }
                          """;
             context.AddSource($"{generateCtx.TargetSymbol.GetFullyQualifiedName().Replace("global::", "")}.g.cs", text);

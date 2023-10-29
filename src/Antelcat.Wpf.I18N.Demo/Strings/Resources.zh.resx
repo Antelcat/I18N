@@ -39,4 +39,7 @@
     <data name="Available languages" xml:space="preserve">
         <value>可用的语言</value>
     </data>
+    <data name="Input your text to translate" xml:space="preserve">
+        <value>输入你需要翻译的文本</value>
+    </data>
 </root>

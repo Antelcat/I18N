@@ -39,4 +39,7 @@
     <data name="Available languages" xml:space="preserve">
         <value>Available languages</value>
     </data>
+    <data name="Input your text to translate" xml:space="preserve">
+        <value>Input your text to translate</value>
+    </data>
 </root>

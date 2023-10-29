@@ -105,8 +105,9 @@ public class I18NExtension : MarkupExtension, IAddChild
         {
             keyBinding = new Binding(key)
             {
-                Source = GetSource(key),
+                Source = Target,
                 Mode   = BindingMode.OneWay,
+                FallbackValue = key,
             };
             if (keys is not { Count: > 0 })
             {
@@ -138,11 +139,12 @@ public class I18NExtension : MarkupExtension, IAddChild
             switch (bindingBase)
             {
                 case LanguageBinding languageBinding:
+                    if (languageBinding.Key is null) throw new ArgumentNullException($"Language key should be specified");
                     ret.Bindings.Add(new Binding(languageBinding.Key)
                     {
-                        Source = GetSource(languageBinding.Key ??
-                                           throw new ArgumentNullException($"Language Key should be specified")),
-                        Mode = BindingMode.OneWay,
+                        Source        = Target,
+                        Mode          = BindingMode.OneWay,
+                        FallbackValue = languageBinding.Key
                     });
                     break;
                 case Binding propBinding:
@@ -254,17 +256,6 @@ public class I18NExtension : MarkupExtension, IAddChild
         BindingOperations.SetBinding(element, targetProperty, binding);
     }
     
-    private static object GetSource(string key) => TryFind(Target, key);
-
-    private static object TryFind(IDictionary<string, object?> target, string key)
-    {
-        if (!target.ContainsKey(key))
-        {
-            target[key] = key;
-        }
-
-        return target;
-    }
 
     #endregion
 
@@ -293,19 +284,25 @@ public class I18NExtension : MarkupExtension, IAddChild
             this.isBindingList = isBindingList;
         }
 
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object?[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var template = isBindingList[0]
-                ? GetValue(values[0], (values[1] as string)!)
+                ? GetValue(values[0]!, values[1] as string)
                 : values[1] as string;
-            
+            if (string.IsNullOrEmpty(template))
+                return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
             if (values.Length <= 2) return template!;
 
             for (var i = 1; i < isBindingList.Length; i++)
             {
+                if (values[i] == null)
+                {
+                    values[i] = string.Empty;
+                    continue;
+                }
                 if (isBindingList[i])
                 {
-                    values[i + 1] = GetValue(values[0], (values[i + 1] as string)!);
+                    values[i + 1] = GetValue(values[0]!, (values[i + 1] as string)!);
                 }
             }
 
@@ -313,11 +310,13 @@ public class I18NExtension : MarkupExtension, IAddChild
             return Converter?.Convert(val, targetType, ConverterParameter, culture) ?? val;
         }
 
-        private static string GetValue(object source, string key)
+        private static string GetValue(object source, string? key)
         {
-            return ((IDictionary<string, object?>)source).TryGetValue(key, out var value)
-                ? value as string ?? key
-                : key;
+            return key == null
+                ? string.Empty
+                : ((IDictionary<string, object?>)source).TryGetValue(key, out var value)
+                    ? value as string ?? key
+                    : key;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

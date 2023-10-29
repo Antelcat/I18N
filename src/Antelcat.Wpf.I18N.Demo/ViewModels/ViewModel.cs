@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Media;
 using Antelcat.Wpf.I18N.Demo.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -36,9 +37,27 @@ public partial class ViewModel : ObservableObject
 
     public IList<string> AvailableKeys { get; } =
         typeof(LangKeys)
-            .GetFields(BindingFlags.Static|BindingFlags.Public)
+            .GetFields(BindingFlags.Static | BindingFlags.Public)
             .Select(x => x.Name)
             .ToList();
     
     [ObservableProperty] private string? selectedKey;
+    
+    [ObservableProperty] private string? inputText;
+}
+
+
+partial class ViewModel
+{
+    public CodeFragmentViewModel TitleCode { get; } = new()
+    {
+        Codes =
+        {
+            ("<", Brushes.CornflowerBlue),
+            ("Text", Brushes.White),
+            ("=", Brushes.CornflowerBlue),
+            ("\"Antelcat.Wpf.I18N.Demo\"", Brushes.White),
+            (">", Brushes.CornflowerBlue),
+        }
+    };
 }
