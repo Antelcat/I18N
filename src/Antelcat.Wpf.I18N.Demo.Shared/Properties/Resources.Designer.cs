@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Antelcat.Wpf.I18N.Demo.Strings {
+namespace Antelcat.Wpf.I18N.Demo.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Antelcat.Wpf.I18N.Demo.Strings {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Antelcat.Wpf.I18N.Demo.Strings.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Antelcat.Wpf.I18N.Demo.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

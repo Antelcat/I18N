@@ -15,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference OutputItemType="Analyzer" Include="..\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj" />
+      <ProjectReference Include="..\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj" OutputItemType="Analyzer" />
       <ProjectReference Include="..\Antelcat.Wpf.I18N\Antelcat.Wpf.I18N.csproj" />
     </ItemGroup>
 
@@ -25,37 +25,34 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Strings\Resources.zh.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <DependentUpon>Resources.resx</DependentUpon>
-        <LastGenOutput>Resources.zh.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Strings\Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Strings\Resources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
       <Reference Include="Wpf.Ui">
         <HintPath>C:\Users\13532\.nuget\packages\wpf-ui\3.0.0-preview.8\lib\net7.0-windows7.0\Wpf.Ui.dll</HintPath>
       </Reference>
     </ItemGroup>
 
+
     <ItemGroup>
-      <Page Update="Windows\MainWindow.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
+      
     </ItemGroup>
+
+
+    <ItemGroup>
+        <EmbeddedResource Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Properties\Resources.Designer.cs</LastGenOutput>
+            <Link>Properties\Resources.resx</Link>
+        </EmbeddedResource>
+        <EmbeddedResource Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.zh.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <DependentUpon>Resources.resx</DependentUpon>
+            <Link>Properties\Resources.zh.resx</Link>
+        </EmbeddedResource>
+        <Compile Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.Designer.cs">
+            <Link>Properties\Resources.zh.resx</Link>
+        </Compile>
+    </ItemGroup>
+
+
+    <Import Project="..\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems" Label="Shared" />
 
 </Project>

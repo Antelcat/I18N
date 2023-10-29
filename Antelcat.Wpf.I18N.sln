@@ -15,11 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-44B4-8872-61FC02A4AE9F}"
 	ProjectSection(SolutionItems) = preProject
-		README.en.md = README.en.md
-		README.md = README.md
 		Icon.png = Icon.png
 		LICENSE = LICENSE
+		README.en.md = README.en.md
+		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antelcat.Wpf.I18N.Demo.Framework", "src\Antelcat.Wpf.I18N.Demo.Framework\Antelcat.Wpf.I18N.Demo.Framework.csproj", "{8AA78369-29DE-4AC9-B498-242F1F7A837C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Wpf.I18N.Demo.Shared", "src\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.shproj", "{50BA267B-188A-46D3-B957-878790AF1E76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +47,10 @@ Global
 		{B2D6AEE3-D9E3-40E5-A80B-B3E3F3DD64B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2D6AEE3-D9E3-40E5-A80B-B3E3F3DD64B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2D6AEE3-D9E3-40E5-A80B-B3E3F3DD64B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AA78369-29DE-4AC9-B498-242F1F7A837C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AA78369-29DE-4AC9-B498-242F1F7A837C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AA78369-29DE-4AC9-B498-242F1F7A837C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AA78369-29DE-4AC9-B498-242F1F7A837C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,8 +58,14 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B2D6AEE3-D9E3-40E5-A80B-B3E3F3DD64B2} = {2835EE7C-9F76-45A2-9754-E86902623A81}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}
+	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{50ba267b-188a-46d3-b957-878790af1e76}*SharedItemsImports = 13
 		src\WpfToolkit.Mvvm.SourceGenerators\WpfToolkit.Mvvm.SourceGenerators.projitems*{51d7777a-1f56-4f09-8581-7f546b2f1817}*SharedItemsImports = 5
+		src\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{7f3763b9-97b3-4fb6-89b5-b54600693577}*SharedItemsImports = 5
+		src\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{8aa78369-29de-4ac9-b498-242f1f7a837c}*SharedItemsImports = 4
 		extrern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.projitems*{b2d6aee3-d9e3-40e5-a80b-b3e3f3dd64b2}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

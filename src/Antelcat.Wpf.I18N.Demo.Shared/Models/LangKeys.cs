@@ -1,5 +1,5 @@
 ﻿using Antelcat.Wpf.I18N.Attributes;
-using Antelcat.Wpf.I18N.Demo.Strings;
+using Antelcat.Wpf.I18N.Demo.Properties;
 
 namespace Antelcat.Wpf.I18N.Demo.Models;
 
