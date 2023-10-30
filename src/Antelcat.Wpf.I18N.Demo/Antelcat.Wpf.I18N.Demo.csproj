@@ -48,7 +48,7 @@
             <Link>Properties\Resources.zh.resx</Link>
         </EmbeddedResource>
         <Compile Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.Designer.cs">
-            <Link>Properties\Resources.zh.resx</Link>
+            <Link>Properties\Resources.Designer.cs</Link>
         </Compile>
     </ItemGroup>
 
