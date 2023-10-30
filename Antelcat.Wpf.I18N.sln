@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extern", "Extern", "{2835EE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions.SourceGenerators", "extrern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.SourceGenerators\Feast.CodeAnalysis.Extensions.SourceGenerators.csproj", "{B2D6AEE3-D9E3-40E5-A80B-B3E3F3DD64B2}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Wpf.I18N.Demo.Shared", "src\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.shproj", "{50BA267B-188A-46D3-B957-878790AF1E76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antelcat.Wpf.I18N.Demo.Framework", "src\Antelcat.Wpf.I18N.Demo.Framework\Antelcat.Wpf.I18N.Demo.Framework.csproj", "{A175A416-9532-4102-90B4-02F807EE1F94}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-44B4-8872-61FC02A4AE9F}"
 	ProjectSection(SolutionItems) = preProject
 		Icon.png = Icon.png
@@ -20,10 +24,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-
 		README.en.md = README.en.md
 		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Wpf.I18N.Demo.Shared", "src\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.shproj", "{50BA267B-188A-46D3-B957-878790AF1E76}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antelcat.Wpf.I18N.Demo.Framework", "src\Antelcat.Wpf.I18N.Demo.Framework\Antelcat.Wpf.I18N.Demo.Framework.csproj", "{A175A416-9532-4102-90B4-02F807EE1F94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

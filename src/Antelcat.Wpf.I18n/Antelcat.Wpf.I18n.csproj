@@ -2,9 +2,9 @@
 
     <PropertyGroup>
         <TargetFrameworks>
-            net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;net481;
-            netcoreapp3.0-windows;netcoreapp3.1-windows;
-            net5.0-windows;net6.0-windows;net7.0-windows
+            net40;net45;
+            netcoreapp3.0-windows;
+            net5.0-windows;
         </TargetFrameworks>
         
         <Nullable>enable</Nullable>
@@ -33,19 +33,6 @@
         <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
         <PackageTags>dotnet;wpf;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Reference Include="System.Runtime.CompilerServices.Unsafe" Condition="'$(TargetFramework)' == 'net40' OR '$(TargetFramework)' == 'net451' OR '$(TargetFramework)' == 'net46' OR '$(TargetFramework)' == 'net462' OR '$(TargetFramework)' == 'net471' OR '$(TargetFramework)' == 'net48' OR '$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'net452' OR '$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net47' OR '$(TargetFramework)' == 'net472' OR '$(TargetFramework)' == 'net481'">
-        <HintPath>C:\Users\13532\.nuget\packages\system.runtime.compilerservices.unsafe\6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-      <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net451" Version="1.0.3">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-    </ItemGroup>
 
     <ItemGroup>
       <None Include="..\..\Icon.png">
