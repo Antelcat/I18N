@@ -7,8 +7,8 @@
 ## 示例
 
 <div float="right">
-    <img src="./docs/demo.zh.png" width="45%"/>
-    <img src="./docs/demo.en.png" width="45%"/> 
+    <img src="docs/demo.zh.png" width="45%"/>
+    <img src="docs/demo.en.png" width="45%"/> 
 </div>
 
 ---
