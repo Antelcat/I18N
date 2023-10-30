@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using Antelcat.Wpf.I18N.Demo.Models;
 using Antelcat.Wpf.I18N.Demo.Windows;
 
-namespace Antelcat.Wpf.I18N.Demo.Framework
+namespace Antelcat.Wpf.I18N.Demo
 {
     /// <summary>
-    /// App.xaml 的交互逻辑
+    /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             new MainWindow().Show();
         }
     }
+
 }

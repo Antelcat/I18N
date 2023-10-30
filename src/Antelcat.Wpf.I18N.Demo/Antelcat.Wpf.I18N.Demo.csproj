@@ -9,38 +9,39 @@
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <LangVersion>preview</LangVersion>
         <FileVersion>1.0.0</FileVersion>
-        <ApplicationIcon>./Icon.ico</ApplicationIcon>
+        <ApplicationIcon>../Icon.ico</ApplicationIcon>
         <Company>Antelcat</Company>
         <Product>Antelcat.Wpf.I18N.Demo-1.0.0</Product>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj" OutputItemType="Analyzer" />
-      <ProjectReference Include="..\Antelcat.Wpf.I18N\Antelcat.Wpf.I18N.csproj" />
+        <ProjectReference Include="..\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj" OutputItemType="Analyzer"/>
+        <ProjectReference Include="..\Antelcat.Wpf.I18N\Antelcat.Wpf.I18N.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-      <PackageReference Include="WPF-UI" Version="2.0.3" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="WPF-UI" Version="2.0.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.Designer.cs">
+            <Link>Resources.Designer.cs</Link>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Properties\Resources.Designer.cs</LastGenOutput>
             <Link>Properties\Resources.resx</Link>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
         <EmbeddedResource Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.zh.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <DependentUpon>Resources.resx</DependentUpon>
             <Link>Properties\Resources.zh.resx</Link>
+            <DependentUpon>Resources.resx</DependentUpon>
         </EmbeddedResource>
-        <Compile Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.Designer.cs">
-            <Link>Properties\Resources.Designer.cs</Link>
-        </Compile>
     </ItemGroup>
 
 
-    <Import Project="..\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems" Label="Shared" />
+    <Import Project="..\Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems" Label="Shared"/>
 
 </Project>

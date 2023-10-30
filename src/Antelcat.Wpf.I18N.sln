@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N", "Antelcat.Wpf.I18N\Antelcat.Wpf.I18N.csproj", "{87AE0560-B337-4958-97B4-7928C6C6962C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.SourceGenerators", "Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj", "{51D7777A-1F56-4F09-8581-7F546B2F1817}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.Demo", "Antelcat.Wpf.I18N.Demo\Antelcat.Wpf.I18N.Demo.csproj", "{7F3763B9-97B3-4FB6-89B5-B54600693577}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extern", "Extern", "{2835EE7C-9F76-45A2-9754-E86902623A81}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Wpf.I18N.Demo.Shared", "Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.shproj", "{50BA267B-188A-46D3-B957-878790AF1E76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-44B4-8872-61FC02A4AE9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions.SourceGenerators", "..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.SourceGenerators\Feast.CodeAnalysis.Extensions.SourceGenerators.csproj", "{190293FC-3F2C-4FEE-8090-62A09713DD8D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.Demo.Framework", "Antelcat.Wpf.I18N.Demo.Framework\Antelcat.Wpf.I18N.Demo.Framework.csproj", "{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87AE0560-B337-4958-97B4-7928C6C6962C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87AE0560-B337-4958-97B4-7928C6C6962C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87AE0560-B337-4958-97B4-7928C6C6962C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87AE0560-B337-4958-97B4-7928C6C6962C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{190293FC-3F2C-4FEE-8090-62A09713DD8D} = {2835EE7C-9F76-45A2-9754-E86902623A81}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.projitems*{190293fc-3f2c-4fee-8090-62a09713dd8d}*SharedItemsImports = 5
+		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{3b6e4d9a-09d3-4567-b89f-4b02eb6d3f55}*SharedItemsImports = 5
+		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{50ba267b-188a-46d3-b957-878790af1e76}*SharedItemsImports = 13
+		WpfToolkit.Mvvm.SourceGenerators\WpfToolkit.Mvvm.SourceGenerators.projitems*{51d7777a-1f56-4f09-8581-7f546b2f1817}*SharedItemsImports = 5
+		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{7f3763b9-97b3-4fb6-89b5-b54600693577}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal
