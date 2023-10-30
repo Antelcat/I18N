@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions.SourceGenerators", "Feast.CodeAnalysis.Extensions.SourceGenerators\Feast.CodeAnalysis.Extensions.SourceGenerators.csproj", "{DF6B52B6-2C70-4B5D-B4A1-4356B7DEE5EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions", "Feast.CodeAnalysis.Extensions\Feast.CodeAnalysis.Extensions.csproj", "{8287ACF9-8349-4A86-8221-EECEDDF27D84}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions.Tests", "Feast.CodeAnalysis.Extensions.Tests\Feast.CodeAnalysis.Extensions.Tests.csproj", "{AD061A24-29A1-4C70-94AE-C882EC0AA205}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions.TestGenerator", "Feast.CodeAnalysis.Extensions.TestGenerator\Feast.CodeAnalysis.Extensions.TestGenerator\Feast.CodeAnalysis.Extensions.TestGenerator.csproj", "{56D98C16-A763-4CF8-B9EF-39FDD176C5B6}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Feast.CodeAnalysis.Extensions.Shared", "Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.shproj", "{BBB1A609-763C-4529-9FB9-365A9D3B383A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF6B52B6-2C70-4B5D-B4A1-4356B7DEE5EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF6B52B6-2C70-4B5D-B4A1-4356B7DEE5EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF6B52B6-2C70-4B5D-B4A1-4356B7DEE5EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF6B52B6-2C70-4B5D-B4A1-4356B7DEE5EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8287ACF9-8349-4A86-8221-EECEDDF27D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8287ACF9-8349-4A86-8221-EECEDDF27D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8287ACF9-8349-4A86-8221-EECEDDF27D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8287ACF9-8349-4A86-8221-EECEDDF27D84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD061A24-29A1-4C70-94AE-C882EC0AA205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD061A24-29A1-4C70-94AE-C882EC0AA205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD061A24-29A1-4C70-94AE-C882EC0AA205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD061A24-29A1-4C70-94AE-C882EC0AA205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D98C16-A763-4CF8-B9EF-39FDD176C5B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D98C16-A763-4CF8-B9EF-39FDD176C5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D98C16-A763-4CF8-B9EF-39FDD176C5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D98C16-A763-4CF8-B9EF-39FDD176C5B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.projitems*{bbb1a609-763c-4529-9fb9-365a9d3b383a}*SharedItemsImports = 13
+		Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.projitems*{df6b52b6-2c70-4b5d-b4a1-4356b7dee5ee}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal

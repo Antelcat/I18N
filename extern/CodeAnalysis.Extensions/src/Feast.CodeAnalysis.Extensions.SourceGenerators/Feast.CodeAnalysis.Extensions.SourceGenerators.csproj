@@ -1,0 +1,93 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+
+        <RootNamespace>Feast.CodeAnalysis.Extensions</RootNamespace>
+        <PackageId>Feast.CodeAnalysis.Extensions</PackageId>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\Feast.CodeAnalysis.Extensions.Shared\ISymbolExtensions.g.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ISymbolExtensions.g.tt</DependentUpon>
+        </Compile>
+        <Compile Include="..\Feast.CodeAnalysis.Extensions.Shared\SyntaxExtensions.g.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>SyntaxExtensions.g.tt</DependentUpon>
+        </Compile>
+        <Compile Update="..\Feast.CodeAnalysis.Extensions.Shared\SyntaxValueProviderExtensions.g.cs">
+            <DependentUpon>SyntaxValueProviderExtensions.g.tt</DependentUpon>
+        </Compile>
+        <Compile Update="..\Feast.CodeAnalysis.Extensions.Shared\ITypeSymbolExtensions.g.cs">
+          <DependentUpon>ITypeSymbolExtensions.g.tt</DependentUpon>
+        </Compile>
+        <Compile Update="..\Feast.CodeAnalysis.Extensions.Shared\ImmutableArrayBuilder.g.cs">
+          <DependentUpon>ImmutableArrayBuilder.g.tt</DependentUpon>
+        </Compile>
+        <Compile Update="..\Feast.CodeAnalysis.Extensions.Shared\GeneratorAttributeSyntaxContext.g.cs">
+          <DependentUpon>GeneratorAttributeSyntaxContext.g.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1"/>
+        <PackageReference Include="PolySharp" Version="1.13.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}"/>
+    </ItemGroup>
+
+    <Import Project="..\Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.projitems" Label="Shared"/>
+
+    <ItemGroup>
+        <Content Update="..\Feast.CodeAnalysis.Extensions.Shared\SyntaxExtensions.g.tt">
+            <LastGenOutput>SyntaxExtensions.g.cs</LastGenOutput>
+            <Generator>TextTemplatingFileGenerator</Generator>
+        </Content>
+        <Content Update="..\Feast.CodeAnalysis.Extensions.Shared\ISymbolExtensions.g.tt">
+            <LastGenOutput>ISymbolExtensions.g.cs</LastGenOutput>
+            <Generator>TextTemplatingFileGenerator</Generator>
+        </Content>
+        <Content Update="..\Feast.CodeAnalysis.Extensions.Shared\ISymbolExtensions.g.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>ISymbolExtensions.g.cs</LastGenOutput>
+        </Content>
+        <Content Update="..\Feast.CodeAnalysis.Extensions.Shared\ITypeSymbolExtensions.g.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>ITypeSymbolExtensions.g.cs</LastGenOutput>
+        </Content>
+        <Content Update="..\Feast.CodeAnalysis.Extensions.Shared\SyntaxValueProviderExtensions.g.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>SyntaxValueProviderExtensions.g.cs</LastGenOutput>
+        </Content>
+        <Content Update="..\Feast.CodeAnalysis.Extensions.Shared\ImmutableArrayBuilder.g.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>ImmutableArrayBuilder.g.cs</LastGenOutput>
+        </Content>
+        <Content Update="..\Feast.CodeAnalysis.Extensions.Shared\GeneratorAttributeSyntaxContext.g.tt">
+          <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>GeneratorAttributeSyntaxContext.g.cs</LastGenOutput>
+        </Content>
+    </ItemGroup>
+
+
+</Project>

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.Build.NoTargets/2.0.1" DefaultTargets="Pack">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+        
+        <Title>Feast.CodeAnalysis.Extensions</Title>
+        <Description>Auto generate extensions for Microsoft.CodeAnalysis</Description>
+        <Copyright>(c) Feast. All rights reserved.</Copyright>
+        <PackageProjectUrl>https://github.com/feast107/CodeAnalysis.Extensions</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/feast107/CodeAnalysis.Extensions.git</RepositoryUrl>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+    
+    <ItemGroup Label="Package">
+        <None Include="..\Feast.CodeAnalysis.Extensions.SourceGenerators\bin\$(Configuration)\netstandard2.0\Feast.CodeAnalysis.Extensions.SourceGenerators.dll" PackagePath="analyzers\dotnet\cs" Pack="true"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Feast.CodeAnalysis.Extensions.SourceGenerators\Feast.CodeAnalysis.Extensions.SourceGenerators.csproj" ReferenceOutputAssembly="false"/>
+    </ItemGroup>
+</Project>

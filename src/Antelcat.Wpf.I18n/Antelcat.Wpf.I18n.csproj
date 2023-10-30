@@ -19,19 +19,20 @@
         <PackageId>Antelcat.Wpf.I18N</PackageId>
         <Title>Antelcat.Wpf.I18N</Title>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Description>Reactive language support for WPF applications when using .resx translate file.</Description>
+        <Description>Reactive language support for WPF applications when using .resx file.</Description>
         <Copyright>Copyright Antelcat. All rights reserved</Copyright>
         <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N</PackageProjectUrl>
         <PackageIcon>Icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N.git</RepositoryUrl>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
+        <FileVersion>1.0.1</FileVersion>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Authors>Antelcat</Authors>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryType>git</RepositoryType>
-        <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+        <PackageReleaseNotes>Light build and code formatted.</PackageReleaseNotes>
         <PackageTags>dotnet;wpf;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
+        <Version>1.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -47,6 +48,7 @@
     </ItemGroup>
 
     <ItemGroup Label="Package">
-        <None Include="..\Antelcat.Wpf.I18N.SourceGenerators\bin\$(Configuration)\netstandard2.0\Antelcat.Wpf.I18N.SourceGenerators.dll" PackagePath="analyzers\dotnet\cs" Pack="true" Visible="false" />
+        <None Include="..\Antelcat.Wpf.I18N.SourceGenerators\bin\$(Configuration)\netstandard2.0\Antelcat.Wpf.I18N.SourceGenerators.dll" 
+              PackagePath="analyzers\dotnet\cs" Pack="true" Visible="false" />
     </ItemGroup>
 </Project>

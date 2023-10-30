@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>05163AF8-B27A-4D3C-8EF6-B554DF36094F</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Feast.CodeAnalysis.Extensions.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)GeneratorAttributeSyntaxContext.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneratorAttributeSyntaxContext.g.tt</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ImmutableArrayBuilder.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ImmutableArrayBuilder.g.tt</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ISymbolExtensions.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ISymbolExtensions.g.tt</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxExtensions.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SyntaxExtensions.g.tt</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxValueProviderExtensions.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SyntaxValueProviderExtensions.g.tt</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ITypeSymbolExtensions.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ITypeSymbolExtensions.g.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)GeneratorAttributeSyntaxContext.g.tt" >
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)ImmutableArrayBuilder.g.tt" >
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)ISymbolExtensions.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)SyntaxExtensions.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)SyntaxValueProviderExtensions.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)ITypeSymbolExtensions.g.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </Content>
+  </ItemGroup>
+</Project>
