@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Antelcat.Wpf.I18N.Demo.Models;
 using Antelcat.Wpf.I18N.Demo.Windows;
 
 namespace Antelcat.Wpf.I18N.Demo.Framework
