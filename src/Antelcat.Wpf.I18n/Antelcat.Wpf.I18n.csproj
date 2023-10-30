@@ -15,19 +15,23 @@
 
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <IsRoslynComponent>true</IsRoslynComponent>
-
         <RootNamespace>Antelcat.Wpf.I18N</RootNamespace>
         <PackageId>Antelcat.Wpf.I18N</PackageId>
         <Title>Antelcat.Wpf.I18N</Title>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>Reactive language support for WPF applications when using .resx translate file.</Description>
-        <Copyright>Antelcat</Copyright>
+        <Copyright>Copyright Antelcat. All rights reserved</Copyright>
         <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N</PackageProjectUrl>
         <PackageIcon>Icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N.git</RepositoryUrl>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Authors>Antelcat</Authors>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryType>git</RepositoryType>
+        <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+        <PackageTags>dotnet;wpf;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
@@ -48,6 +52,10 @@
         <Pack>True</Pack>
         <PackagePath></PackagePath>
         <Link>Icon.png</Link>
+      </None>
+      <None Include="..\..\README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
       </None>
     </ItemGroup>
 
