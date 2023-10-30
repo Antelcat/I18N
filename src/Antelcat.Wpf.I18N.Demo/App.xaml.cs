@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Navigation;
 using Antelcat.Wpf.I18N.Demo.Windows;
 
 namespace Antelcat.Wpf.I18N.Demo

@@ -47,7 +47,7 @@ in your `.resx` file, you can use it like this:
 Then you can use the key to bind the language source using `I18N`
 
 ```xaml
-<TextBlock Text="{I18N Source={x:Static myProject:LangKeys.Language}}"/>
+<TextBlock Text="{I18N {x:Static myProject:LangKeys.Language}}"/>
 ```
 
 When you want to change the language, just call
@@ -82,7 +82,7 @@ then you put the json into a `Message` property in your view model, you can bind
 
 ```xaml
 <!--whose DataContext is your view model-->
-<TextBlock Text="{I18N Key={Binding Message}}"/> 
+<TextBlock Text="{I18N {Binding Message}}"/> 
 ```
 
 Each time when the `Message` property is changed or the language source is changed, the text will be updated automatically.

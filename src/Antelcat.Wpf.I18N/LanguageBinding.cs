@@ -8,6 +8,13 @@ namespace System.Windows;
 /// </summary>
 public class LanguageBinding : Binding
 {
+    public LanguageBinding() { }
+
+    public LanguageBinding(string key)
+    {
+        Key = key;
+    }
+    
     [DefaultValue("")]
     public string? Key
     {

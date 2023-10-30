@@ -47,7 +47,7 @@ public partial class LangKeys
 然后你可以使用这个键来绑定语言源
 
 ```xaml
-<TextBlock Text="{I18N Source={x:Static myProject:LangKeys.Language}}"/>
+<TextBlock Text="{I18N {x:Static myProject:LangKeys.Language}}"/>
 ```
 
 当你想要改变语言时，只需要调用
@@ -85,7 +85,7 @@ I18NExtension.Culture = new CultureInfo("language code");
 
 ```xaml
 <!--他的DataContext就是你的ViewModel-->
-<TextBlock Text="{I18N Key={Binding Message}}"/> 
+<TextBlock Text="{I18N {Binding Message}}"/> 
 ```
 
 每当`Message`属性被改变或者语言源被改变时，文本都会自动更新。

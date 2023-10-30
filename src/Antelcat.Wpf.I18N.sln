@@ -14,6 +14,12 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Wpf.I18N.Demo.Shared", "Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.shproj", "{50BA267B-188A-46D3-B957-878790AF1E76}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-44B4-8872-61FC02A4AE9F}"
+	ProjectSection(SolutionItems) = preProject
+		..\Icon.png = ..\Icon.png
+		..\LICENSE = ..\LICENSE
+		..\README.en.md = ..\README.en.md
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions.SourceGenerators", "..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.SourceGenerators\Feast.CodeAnalysis.Extensions.SourceGenerators.csproj", "{190293FC-3F2C-4FEE-8090-62A09713DD8D}"
 EndProject

@@ -12,6 +12,9 @@
         <RootNamespace>Antelcat.Wpf.I18N.SourceGenerators</RootNamespace>
         <PackageId>Antelcat.Wpf.I18N.SourceGenerators</PackageId>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>

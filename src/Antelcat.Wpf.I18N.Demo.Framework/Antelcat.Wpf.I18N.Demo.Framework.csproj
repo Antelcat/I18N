@@ -19,11 +19,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Antelcat.Wpf.I18N" Version="1.0.1"/>
+    
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
         <PackageReference Include="WPF-UI" Version="2.1.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj" OutputItemType="Analyzer"/>
+        <ProjectReference Include="..\Antelcat.Wpf.I18N\Antelcat.Wpf.I18N.csproj"/>
+    </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.resx">

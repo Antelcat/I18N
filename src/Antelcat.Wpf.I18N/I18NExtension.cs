@@ -44,6 +44,36 @@ public class I18NExtension : MarkupExtension, IAddChild
         }
     }
 
+    #region Target
+
+    private static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached(
+        nameof(Key),
+        typeof(object),
+        typeof(I18NExtension),
+        new PropertyMetadata(default));
+
+
+    private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached(
+        "TargetProperty",
+        typeof(DependencyProperty),
+        typeof(I18NExtension),
+        new PropertyMetadata(default(DependencyProperty)));
+
+    private static void SetTargetProperty(DependencyObject element, DependencyProperty value)
+        => element.SetValue(TargetPropertyProperty, value);
+
+    private static DependencyProperty GetTargetProperty(DependencyObject element)
+        => (DependencyProperty)element.GetValue(TargetPropertyProperty);
+    
+    #endregion
+    
+    public static string? Translate(string key, string? fallbackValue = null)
+    {
+        return Target.TryGetValue(key, out var value)
+            ? value as string ?? fallbackValue
+            : fallbackValue;
+    }
+
     private static void RegisterLanguageSource(ResourceProviderBase? provider)
     {
         if (provider is null) return;
@@ -65,6 +95,10 @@ public class I18NExtension : MarkupExtension, IAddChild
             if (val != null) Target[propertyName] = val;
         }
     }
+    
+    public I18NExtension() { }
+    public I18NExtension(string key) => Key = key;
+    public I18NExtension(Binding binding) => Key = binding;
     
     private readonly DependencyObject proxy = new();
 
@@ -97,7 +131,7 @@ public class I18NExtension : MarkupExtension, IAddChild
     /// Same as <see cref="Binding"/>.<see cref="Binding.ConverterParameter"/>
     /// </summary>
     [DefaultValue(null)] public object? ConverterParameter { get; set; }
-
+    
     private BindingBase CreateBinding()
     {
         Binding? keyBinding = null;
@@ -174,7 +208,13 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
 
-        if (Key is null) throw new ArgumentNullException($"{nameof(Key)} cannot be null");
+        if (Key is null && (keys is null || keys.Count == 0) ) 
+            throw new ArgumentNullException($"{nameof(Key)} or {nameof(Keys)} cannot both be null");
+        if (Key is null && Keys is { Count: 1 })
+        {
+            Key  = Keys[0];
+            keys = null;
+        }
         var bindingBase = CreateBinding();
         BindingOperations.SetBinding(targetObject, targetProperty, bindingBase);
         if (bindingBase is MultiBinding)
@@ -184,27 +224,6 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         return bindingBase.ProvideValue(serviceProvider);
     }
-
-    #region Target
-
-    private static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached(
-        nameof(Key),
-        typeof(object),
-        typeof(I18NExtension),
-        new PropertyMetadata(default));
-
-
-    private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached(
-        "TargetProperty",
-        typeof(DependencyProperty),
-        typeof(I18NExtension),
-        new PropertyMetadata(default(DependencyProperty)));
-
-    private static void SetTargetProperty(DependencyObject element, DependencyProperty value)
-        => element.SetValue(TargetPropertyProperty, value);
-
-    private static DependencyProperty GetTargetProperty(DependencyObject element)
-        => (DependencyProperty)element.GetValue(TargetPropertyProperty);
 
     private void LangExtension_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
@@ -225,9 +244,6 @@ public class I18NExtension : MarkupExtension, IAddChild
         }
     }
 
-    #endregion
-
-
     private void SetTarget(object targetObject, DependencyProperty targetProperty)
     {
         switch (targetObject)
@@ -243,8 +259,6 @@ public class I18NExtension : MarkupExtension, IAddChild
         }
     }
 
-    #region Binding
-
     private void ResetBinding(
         DependencyObject element)
     {
@@ -255,9 +269,6 @@ public class I18NExtension : MarkupExtension, IAddChild
         var binding = CreateBinding();
         BindingOperations.SetBinding(element, targetProperty, binding);
     }
-    
-
-    #endregion
 
     public void AddChild(object value)
     {
@@ -267,7 +278,9 @@ public class I18NExtension : MarkupExtension, IAddChild
 
     public void AddText(string key)
     {
+        Keys.Add(new LanguageBinding(key));
     }
+
 
     /// <summary>
     /// use <see cref="string.Format(string,object[])"/> to generate final text
