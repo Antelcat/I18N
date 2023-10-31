@@ -61,8 +61,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         typeof(I18NExtension),
         new PropertyMetadata(default(DependencyProperty)));
 
-    private static void SetTargetProperty(DependencyObject element, DependencyProperty value)
-        => element.SetValue(TargetPropertyProperty, value);
+    private static void SetTargetProperty(DependencyObject element, DependencyProperty value) => element.SetValue(TargetPropertyProperty, value);
 
     private static DependencyProperty GetTargetProperty(DependencyObject element)
         => (DependencyProperty)element.GetValue(TargetPropertyProperty);
@@ -212,7 +211,7 @@ public class I18NExtension : MarkupExtension, IAddChild
     {
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
             return this;
-        if (provideValueTarget.TargetObject.GetType().FullName == "System.Windows.SharedDp") return this;
+        if (provideValueTarget.TargetObject.GetType().FullName == $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
         if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
 
@@ -268,11 +267,9 @@ public class I18NExtension : MarkupExtension, IAddChild
         }
     }
 
-    private void ResetBinding(
-        DependencyObject element)
+    private void ResetBinding(DependencyObject element)
     {
-        if (Key is string
-            && (keys is null || keys.All(x => x is LanguageBinding))) return;
+        if (Key is string && (keys is null || keys.All(x => x is LanguageBinding))) return;
         var targetProperty = GetTargetProperty(element);
         SetTargetProperty(element, null!);
         var binding = CreateBinding();
