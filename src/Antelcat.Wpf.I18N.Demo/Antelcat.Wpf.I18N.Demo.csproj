@@ -15,7 +15,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj" OutputItemType="Analyzer"/>
+        <ProjectReference Include="..\Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj" 
+                          OutputItemType="Analyzer" 
+                          ReferenceOutputAssembly="false"/>
         <ProjectReference Include="..\Antelcat.Wpf.I18N\Antelcat.Wpf.I18N.csproj"/>
     </ItemGroup>
 

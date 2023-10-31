@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 using Antelcat.Wpf.I18N.Abstractions;
@@ -15,7 +16,8 @@ namespace System.Windows;
 
 [MarkupExtensionReturnType(typeof(string))]
 [ContentProperty(nameof(Keys))]
-[Localizability(LocalizationCategory.None, Modifiability = Modifiability.Unmodifiable, Readability = Readability.Unreadable)]
+[Localizability(LocalizationCategory.None, Modifiability = Modifiability.Unmodifiable,
+    Readability = Readability.Unreadable)]
 public class I18NExtension : MarkupExtension, IAddChild
 {
     private static readonly IDictionary<string, object?> Target;
@@ -64,9 +66,9 @@ public class I18NExtension : MarkupExtension, IAddChild
 
     private static DependencyProperty GetTargetProperty(DependencyObject element)
         => (DependencyProperty)element.GetValue(TargetPropertyProperty);
-    
+
     #endregion
-    
+
     public static string? Translate(string key, string? fallbackValue = null)
     {
         return Target.TryGetValue(key, out var value)
@@ -95,11 +97,14 @@ public class I18NExtension : MarkupExtension, IAddChild
             if (val != null) Target[propertyName] = val;
         }
     }
-    
-    public I18NExtension() { }
+
+    public I18NExtension()
+    {
+    }
+
     public I18NExtension(string key) => Key = key;
     public I18NExtension(Binding binding) => Key = binding;
-    
+
     private readonly DependencyObject proxy = new();
 
     /// <summary>
@@ -112,7 +117,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         get => proxy.GetValue(KeyProperty);
         set => proxy.SetValue(KeyProperty, value);
     }
-    
+
     /// <summary>
     /// The args of <see cref="string.Format(string,object[])"/>, accepts <see cref="LanguageBinding"/> or <see cref="Binding"/>
     /// </summary>
@@ -121,17 +126,19 @@ public class I18NExtension : MarkupExtension, IAddChild
     public MicrosoftPleaseFixBindingCollection Keys => keys ??= new MicrosoftPleaseFixBindingCollection();
 
     private MicrosoftPleaseFixBindingCollection? keys;
-    
+
     /// <summary>
     /// Same as <see cref="Binding"/>.<see cref="Binding.Converter"/>
     /// </summary>
-    [DefaultValue(null)] public IValueConverter? Converter { get; set; }
+    [DefaultValue(null)]
+    public IValueConverter? Converter { get; set; }
 
     /// <summary>
     /// Same as <see cref="Binding"/>.<see cref="Binding.ConverterParameter"/>
     /// </summary>
-    [DefaultValue(null)] public object? ConverterParameter { get; set; }
-    
+    [DefaultValue(null)]
+    public object? ConverterParameter { get; set; }
+
     private BindingBase CreateBinding()
     {
         Binding? keyBinding = null;
@@ -139,8 +146,8 @@ public class I18NExtension : MarkupExtension, IAddChild
         {
             keyBinding = new Binding(key)
             {
-                Source = Target,
-                Mode   = BindingMode.OneWay,
+                Source        = Target,
+                Mode          = BindingMode.OneWay,
                 FallbackValue = key,
             };
             if (keys is not { Count: > 0 })
@@ -173,7 +180,8 @@ public class I18NExtension : MarkupExtension, IAddChild
             switch (bindingBase)
             {
                 case LanguageBinding languageBinding:
-                    if (languageBinding.Key is null) throw new ArgumentNullException($"Language key should be specified");
+                    if (languageBinding.Key is null)
+                        throw new ArgumentNullException($"Language key should be specified");
                     ret.Bindings.Add(new Binding(languageBinding.Key)
                     {
                         Source        = Target,
@@ -208,13 +216,14 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
 
-        if (Key is null && (keys is null || keys.Count == 0) ) 
+        if (Key is null && (keys is null || keys.Count == 0))
             throw new ArgumentNullException($"{nameof(Key)} or {nameof(Keys)} cannot both be null");
         if (Key is null && Keys is { Count: 1 })
         {
             Key  = Keys[0];
             keys = null;
         }
+
         var bindingBase = CreateBinding();
         BindingOperations.SetBinding(targetObject, targetProperty, bindingBase);
         if (bindingBase is MultiBinding)
@@ -313,6 +322,7 @@ public class I18NExtension : MarkupExtension, IAddChild
                     values[i] = string.Empty;
                     continue;
                 }
+
                 if (isBindingList[i])
                 {
                     values[i + 1] = GetValue(values[0]!, (values[i + 1] as string)!);

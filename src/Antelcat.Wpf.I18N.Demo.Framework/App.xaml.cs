@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using Antelcat.Wpf.I18N.Demo.Windows;
 
 namespace Antelcat.Wpf.I18N.Demo
