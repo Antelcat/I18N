@@ -1,8 +1,19 @@
+<div align="center">
+
 # Antelcat.Wpf.I18N
 
-🇬🇧 [English](./README.en.md)
-
 给WPF应用程序提供响应式的多语言支持。
+</div>
+
+<p align="center">
+    <img alt="dotnet-version" src="https://img.shields.io/badge/.NET-%3E%3D4.0-AE42F8.svg"/>
+    <img alt="csharp-version" src="https://img.shields.io/badge/C%23-latest-3BA93F.svg"/>
+    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.1.0-blue.svg"/>
+</p>
+
+---
+
+🇬🇧 [English](./README.en.md)
 
 ## 示例
 
@@ -34,10 +45,12 @@ public partial class LangKeys
 如果你已经在你的`.resx`文件中有
 
 ```xml
+
 <data name="Language" xml:space="preserve">
     <value>语言</value>
 </data>
 ```
+
 你可以像这样使用：
 
 ```xaml
@@ -57,6 +70,7 @@ using System.Windows;
 
 I18NExtension.Culture = new CultureInfo("language code");
 ```
+
 你可以看到文本在语言之间变化。
 
 ---
@@ -69,13 +83,14 @@ I18NExtension.Culture = new CultureInfo("language code");
 
 ```json
 {
-    "message": "This is a message"
+  "message": "This is a message"
 }
 ```
 
 并且你已经在`.resx`中将他翻译成了另一种语言
 
 ```xml
+
 <data name="This is a message" xml:space="preserve">
     <value>这是一条消息</value>
 </data>
@@ -99,6 +114,7 @@ I18NExtension.Culture = new CultureInfo("language code");
 如果你已经有了如下翻译的`.resx`文件：
 
 ```xml
+
 <data name="Current_is" xml:space="preserve">
     <value>当前的 {0} 是 {1}</value>
 </data>

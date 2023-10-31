@@ -1,19 +1,28 @@
-# Antelcat.Wpf.I18N
+<div align="center">
 
-🇨🇳 [中文版](./README.md)
+# Antelcat.Wpf.I18N
 
 Reactive language support for WPF applications.
 
-
-## Example
-
-<div float="right">
-    <img src="./docs/demo.zh.png" width="45%"/>
-    <img src="./docs/demo.en.png" width="45%"/> 
 </div>
 
+<p align="center">
+    <img alt="dotnet-version" src="https://img.shields.io/badge/.NET-%3E%3D4.0-AE42F8.svg"/>
+    <img alt="csharp-version" src="https://img.shields.io/badge/C%23-latest-3BA93F.svg"/>
+    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.1.0-blue.svg"/>
+</p>
 
 ---
+
+🇨🇳 [中文版](./README.md)
+
+## Sample
+
+<div float="right">
+    <img src="docs/demo.zh.png" width="45%"/>
+    <img src="docs/demo.en.png" width="45%"/> 
+</div>
+
 
 ### Static using
 When using `.resx` language file in your project, you can 
