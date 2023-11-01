@@ -1,8 +1,12 @@
 <div align="center">
 
-# Antelcat.Wpf.I18N
+<h1>
 
-## `{I18N}`
+Antelcat.Wpf.I18N
+
+`{I18N}`
+
+</h1>
 
 Reactive language support for WPF applications.
 

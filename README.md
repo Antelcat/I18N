@@ -1,10 +1,15 @@
 <div align="center">
 
-# Antelcat.Wpf.I18N
+<h1>
 
-## `{I18N}`
+Antelcat.Wpf.I18N
+
+`{I18N}`
+
+</h1>
 
 给WPF应用程序提供响应式的多语言支持。
+
 </div>
 
 <p align="center">
