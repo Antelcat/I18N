@@ -2,9 +2,7 @@
 
 <h1>
 
-Antelcat.Wpf.I18N
-
-`{I18N}`
+Antelcat.Wpf.`{I18N}`
 
 </h1>
 
