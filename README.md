@@ -2,6 +2,8 @@
 
 # Antelcat.Wpf.I18N
 
+## `{I18N}`
+
 给WPF应用程序提供响应式的多语言支持。
 </div>
 

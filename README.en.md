@@ -2,6 +2,8 @@
 
 # Antelcat.Wpf.I18N
 
+## `{I18N}`
+
 Reactive language support for WPF applications.
 
 </div>
