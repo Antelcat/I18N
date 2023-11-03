@@ -10,7 +10,6 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <IsPackable>true</IsPackable>
-        <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
 
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
@@ -33,6 +32,8 @@
         <PackageReleaseNotes>Reduce xaml declaration length; Support cs code translate.</PackageReleaseNotes>
         <PackageTags>dotnet;wpf;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
         <Version>1.1.0</Version>
+
+        <DefineConstants>WPF</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
