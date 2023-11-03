@@ -10,6 +10,8 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace Antelcat.
 #if WPF
     Wpf
+#elif AVALONIA
+    Avalonia
 #endif
     .I18N.SourceGenerators.Generators;
 
