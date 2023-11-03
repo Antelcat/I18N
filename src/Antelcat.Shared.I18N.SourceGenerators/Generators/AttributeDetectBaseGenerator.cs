@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis.Internal;
 namespace Antelcat.
 #if WPF
     Wpf
+#elif AVALONIA
+    Avalonia
 #endif
     .I18N.SourceGenerators.Generators;
 
