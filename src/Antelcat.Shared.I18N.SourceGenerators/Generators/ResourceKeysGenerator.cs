@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -9,13 +7,17 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Internal;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Antelcat.Wpf.I18N.SourceGenerators.Generators;
+namespace Antelcat.
+#if WPF
+    Wpf
+#endif
+    .I18N.SourceGenerators.Generators;
 
 [Generator(LanguageNames.CSharp)]
 internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
 {
     private const string Attribute            = $"{Global.Namespace}.Attributes.ResourceKeysOfAttribute";
-    private const string CultureInfo          = "global::System.Globalization.CultureInfo";
+    private const string CultureInfo          = $"global::{nameof(System)}.{nameof(System.Globalization)}.{nameof(CultureInfo)}";
     private const string ResourceProviderBase = $"global::{Global.Namespace}.Abstractions.ResourceProviderBase";
 
     private static readonly string[] Exceptions =

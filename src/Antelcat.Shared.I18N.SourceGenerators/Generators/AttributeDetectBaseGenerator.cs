@@ -5,7 +5,11 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Internal;
 
-namespace Antelcat.Wpf.I18N.SourceGenerators.Generators;
+namespace Antelcat.
+#if WPF
+    Wpf
+#endif
+    .I18N.SourceGenerators.Generators;
 
 internal abstract class AttributeDetectBaseGenerator : IIncrementalGenerator
 {

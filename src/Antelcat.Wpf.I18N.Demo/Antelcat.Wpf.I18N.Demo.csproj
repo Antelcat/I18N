@@ -28,7 +28,7 @@
 
     <ItemGroup>
         <Compile Include="..\Antelcat.Wpf.I18N.Demo.Shared\Properties\Resources.Designer.cs">
-            <Link>Resources.Designer.cs</Link>
+            <Link>Properties\Resources.Designer.cs</Link>
         </Compile>
     </ItemGroup>
 

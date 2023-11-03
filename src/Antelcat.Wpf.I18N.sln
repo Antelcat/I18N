@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.Demo.Framework", "Antelcat.Wpf.I18N.Demo.Framework\Antelcat.Wpf.I18N.Demo.Framework.csproj", "{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Shared.I18N", "Antelcat.Shared.I18N\Antelcat.Shared.I18N.shproj", "{28F904C6-3B6D-4140-90FF-62A6BD87B0C6}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Shared.I18N.SourceGenerators", "Antelcat.Shared.I18N.SourceGenerators\Antelcat.Shared.I18N.SourceGenerators.shproj", "{15D71DC2-F53D-42EC-85E4-4982F6E351A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,10 +66,13 @@ Global
 		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Antelcat.Shared.I18N.SourceGenerators\Antelcat.Shared.I18N.SourceGenerators.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
 		..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.projitems*{190293fc-3f2c-4fee-8090-62a09713dd8d}*SharedItemsImports = 5
+		Antelcat.Shared.I18N\Antelcat.Shared.I18N.projitems*{28f904c6-3b6d-4140-90ff-62a6bd87b0c6}*SharedItemsImports = 13
 		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{3b6e4d9a-09d3-4567-b89f-4b02eb6d3f55}*SharedItemsImports = 5
 		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{50ba267b-188a-46d3-b957-878790af1e76}*SharedItemsImports = 13
-		WpfToolkit.Mvvm.SourceGenerators\WpfToolkit.Mvvm.SourceGenerators.projitems*{51d7777a-1f56-4f09-8581-7f546b2f1817}*SharedItemsImports = 5
+		Antelcat.Shared.I18N.SourceGenerators\Antelcat.Shared.I18N.SourceGenerators.projitems*{51d7777a-1f56-4f09-8581-7f546b2f1817}*SharedItemsImports = 5
 		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{7f3763b9-97b3-4fb6-89b5-b54600693577}*SharedItemsImports = 5
+		Antelcat.Shared.I18N\Antelcat.Shared.I18N.projitems*{87ae0560-b337-4958-97b4-7928c6c6962c}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
