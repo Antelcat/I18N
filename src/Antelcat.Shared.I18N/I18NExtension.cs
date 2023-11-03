@@ -252,7 +252,9 @@ public class I18NExtension : MarkupExtension, IAddChild
     {
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
             return this;
+#if WPF
         if (provideValueTarget.TargetObject.GetType().FullName == $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
+#endif
         if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
         
@@ -273,7 +275,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 #endif
             (targetObject, targetProperty, bindingBase
 #if AVALONIA
-                    .Initiate(targetObject, targetProperty)!, serviceProvider
+                    .Initiate(targetObject, targetProperty)!, null
 #endif
             );
         if (bindingBase is MultiBinding)
@@ -324,7 +326,17 @@ public class I18NExtension : MarkupExtension, IAddChild
         var targetProperty = GetTargetProperty(element);
         SetTargetProperty(element, null!);
         var binding = CreateBinding();
-        BindingOperations.SetBinding(element, targetProperty, binding);
+        BindingOperations.
+#if WPF
+            SetBinding
+#elif AVALONIA
+            Apply
+#endif
+        (element, targetProperty, binding
+#if AVALONIA
+            .Initiate(element, targetProperty)!, null
+#endif
+                );
     }
 
     public void AddChild(object value)
@@ -342,17 +354,10 @@ public class I18NExtension : MarkupExtension, IAddChild
     /// <summary>
     /// use <see cref="string.Format(string,object[])"/> to generate final text
     /// </summary>
-    private class MultiValueLangConverter : IMultiValueConverter
+    private class MultiValueLangConverter(IReadOnlyList<bool> isBindingList) : IMultiValueConverter
     {
         public IValueConverter? Converter          { get; set; }
         public object?          ConverterParameter { get; set; }
-
-        private readonly bool[] isBindingList;
-
-        public MultiValueLangConverter(bool[] isBindingList)
-        {
-            this.isBindingList = isBindingList;
-        }
 
         public object? Convert(
 #if WPF
@@ -375,7 +380,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 #endif
                 <= 2) return template!;
 
-            for (var i = 1; i < isBindingList.Length; i++)
+            for (var i = 1; i < isBindingList.Count; i++)
             {
                 if (values[i] == null)
                 {
