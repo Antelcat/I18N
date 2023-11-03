@@ -1,5 +1,9 @@
 using System.ComponentModel;
+#if WPF
 using System.Windows.Data;
+#elif AVALONIA
+using Avalonia.Data;
+#endif
 
 namespace System.Windows;
 

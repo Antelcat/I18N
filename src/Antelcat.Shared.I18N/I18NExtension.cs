@@ -6,18 +6,30 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+#if WPF
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+#elif AVALONIA
+using Avalonia;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
+using Avalonia.Markup.Xaml;
+using Avalonia.Metadata;
+using DependencyObject = Avalonia.AvaloniaObject;
+using DependencyProperty = Avalonia.AvaloniaProperty;
+#endif
 using Antelcat.Wpf.I18N.Abstractions;
 
 // ReSharper disable once CheckNamespace
 namespace System.Windows;
 
+#if WPF
 [MarkupExtensionReturnType(typeof(string))]
 [ContentProperty(nameof(Keys))]
 [Localizability(LocalizationCategory.None, Modifiability = Modifiability.Unmodifiable,
     Readability = Readability.Unreadable)]
+#endif
 public class I18NExtension : MarkupExtension, IAddChild
 {
     private static readonly IDictionary<string, object?> Target;
@@ -48,24 +60,40 @@ public class I18NExtension : MarkupExtension, IAddChild
 
     #region Target
 
-    private static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached(
-        nameof(Key),
+    private static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached
+#if AVALONIA
+        <I18NExtension, DependencyObject, object>
+#endif
+    (
+        nameof(Key)
+#if WPF
+        ,
         typeof(object),
         typeof(I18NExtension),
-        new PropertyMetadata(default));
+        new PropertyMetadata(default)
+#endif
+    );
 
 
-    private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached(
-        "TargetProperty",
+    private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached
+#if AVALONIA
+        <I18NExtension, DependencyObject, DependencyProperty>
+#endif
+        (
+            "TargetProperty"
+#if WPF
+        ,
         typeof(DependencyProperty),
         typeof(I18NExtension),
-        new PropertyMetadata(default(DependencyProperty)));
+        new PropertyMetadata(default(DependencyProperty))
+#endif
+        );
 
-    private static void SetTargetProperty(DependencyObject element, DependencyProperty value) => element.SetValue(TargetPropertyProperty, value);
+    private static void SetTargetProperty(DependencyObject element, DependencyProperty value) 
+        => element.SetValue(TargetPropertyProperty, value);
 
     private static DependencyProperty GetTargetProperty(DependencyObject element)
-        => (DependencyProperty)element.GetValue(TargetPropertyProperty);
-
+        => (DependencyProperty)element.GetValue(TargetPropertyProperty)!;
     #endregion
 
     public static string? Translate(string key, string? fallbackValue = null)
@@ -122,6 +150,9 @@ public class I18NExtension : MarkupExtension, IAddChild
     /// </summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     [DefaultValue(null)]
+#if AVALONIA
+    [Content]
+#endif
     public MicrosoftPleaseFixBindingCollection Keys => keys ??= new MicrosoftPleaseFixBindingCollection();
 
     private MicrosoftPleaseFixBindingCollection? keys;
@@ -138,7 +169,13 @@ public class I18NExtension : MarkupExtension, IAddChild
     [DefaultValue(null)]
     public object? ConverterParameter { get; set; }
 
-    private BindingBase CreateBinding()
+    private
+#if WPF
+        BindingBase 
+#elif AVALONIA
+        IBinding
+#endif
+        CreateBinding()
     {
         Binding? keyBinding = null;
         if (Key is string key)
@@ -151,7 +188,9 @@ public class I18NExtension : MarkupExtension, IAddChild
             };
             if (keys is not { Count: > 0 })
             {
+#if WPF
                 keyBinding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
+#endif
                 keyBinding.Converter           = Converter;
                 keyBinding.ConverterParameter  = ConverterParameter;
                 return keyBinding;
@@ -161,7 +200,9 @@ public class I18NExtension : MarkupExtension, IAddChild
         var ret = new MultiBinding
         {
             Mode                = BindingMode.OneWay,
+#if WPF
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
+#endif
             ConverterParameter  = ConverterParameter,
         };
 
@@ -172,7 +213,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         };
         var isBindingList = new List<bool>();
         ret.Bindings.Add(source);
-        ret.Bindings.Add(keyBinding ?? Key as Binding);
+        ret.Bindings.Add(keyBinding ?? (Key as Binding)!);
         isBindingList.Add(keyBinding == null);
         foreach (var bindingBase in Keys)
         {
@@ -214,7 +255,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (provideValueTarget.TargetObject.GetType().FullName == $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
         if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
-
+        
         if (Key is null && (keys is null || keys.Count == 0))
             throw new ArgumentNullException($"{nameof(Key)} or {nameof(Keys)} cannot both be null");
         if (Key is null && Keys is { Count: 1 })
@@ -224,7 +265,17 @@ public class I18NExtension : MarkupExtension, IAddChild
         }
 
         var bindingBase = CreateBinding();
-        BindingOperations.SetBinding(targetObject, targetProperty, bindingBase);
+        BindingOperations.
+#if WPF
+            SetBinding
+#elif AVALONIA
+            Apply
+#endif
+            (targetObject, targetProperty, bindingBase
+#if AVALONIA
+                    .Initiate(targetObject, targetProperty)!, serviceProvider
+#endif
+            );
         if (bindingBase is MultiBinding)
         {
             SetTarget(provideValueTarget.TargetObject, targetProperty);
@@ -303,14 +354,26 @@ public class I18NExtension : MarkupExtension, IAddChild
             this.isBindingList = isBindingList;
         }
 
-        public object? Convert(object?[] values, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(
+#if WPF
+            object?[]
+#elif AVALONIA
+            IList<object?>
+#endif
+                values, Type targetType, object? parameter, CultureInfo culture)
         {
             var template = isBindingList[0]
                 ? GetValue(values[0]!, values[1] as string)
                 : values[1] as string;
             if (string.IsNullOrEmpty(template))
                 return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
-            if (values.Length <= 2) return template!;
+            if (values.
+#if WPF
+                    Length
+#elif AVALONIA
+                    Count
+#endif
+                <= 2) return template!;
 
             for (var i = 1; i < isBindingList.Length; i++)
             {
@@ -343,6 +406,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         {
             throw new NotSupportedException();
         }
+        
     }
 
     /// <summary>
