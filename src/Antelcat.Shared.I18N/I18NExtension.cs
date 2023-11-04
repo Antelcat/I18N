@@ -90,6 +90,7 @@ public class I18NExtension : MarkupExtension, IAddChild
             {
                 action();
             }
+            Notifier.ForceUpdate();
         });
 #endif
     }
@@ -520,5 +521,9 @@ public class I18NExtension : MarkupExtension, IAddChild
         }
 
         private ResourceProviderBase? lastRegister;
+
+#if AVALONIA
+        public void ForceUpdate() => OnPropertyChanged(nameof(Source));
+#endif
     }
 }
