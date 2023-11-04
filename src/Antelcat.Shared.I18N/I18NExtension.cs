@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 #if WPF
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 #elif AVALONIA
@@ -79,21 +78,22 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if AVALONIA
         <I18NExtension, DependencyObject, DependencyProperty>
 #endif
-        (
-            "TargetProperty"
+    (
+        "TargetProperty"
 #if WPF
         ,
         typeof(DependencyProperty),
         typeof(I18NExtension),
         new PropertyMetadata(default(DependencyProperty))
 #endif
-        );
+    );
 
-    private static void SetTargetProperty(DependencyObject element, DependencyProperty value) 
+    private static void SetTargetProperty(DependencyObject element, DependencyProperty value)
         => element.SetValue(TargetPropertyProperty, value);
 
     private static DependencyProperty GetTargetProperty(DependencyObject element)
         => (DependencyProperty)element.GetValue(TargetPropertyProperty)!;
+
     #endregion
 
     public static string? Translate(string key, string? fallbackValue = null)
@@ -171,7 +171,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 
     private
 #if WPF
-        BindingBase 
+        BindingBase
 #elif AVALONIA
         IBinding
 #endif
@@ -191,19 +191,19 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if WPF
                 keyBinding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
 #endif
-                keyBinding.Converter           = Converter;
-                keyBinding.ConverterParameter  = ConverterParameter;
+                keyBinding.Converter          = Converter;
+                keyBinding.ConverterParameter = ConverterParameter;
                 return keyBinding;
             }
         }
 
         var ret = new MultiBinding
         {
-            Mode                = BindingMode.OneWay,
+            Mode = BindingMode.OneWay,
 #if WPF
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
 #endif
-            ConverterParameter  = ConverterParameter,
+            ConverterParameter = ConverterParameter,
         };
 
         var source = new Binding(nameof(Notifier.Source))
@@ -253,11 +253,12 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
             return this;
 #if WPF
-        if (provideValueTarget.TargetObject.GetType().FullName == $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
+        if (provideValueTarget.TargetObject.GetType().FullName ==
+            $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
 #endif
         if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
-        
+
         if (Key is null && (keys is null || keys.Count == 0))
             throw new ArgumentNullException($"{nameof(Key)} or {nameof(Keys)} cannot both be null");
         if (Key is null && Keys is { Count: 1 })
@@ -332,11 +333,11 @@ public class I18NExtension : MarkupExtension, IAddChild
 #elif AVALONIA
             Apply
 #endif
-        (element, targetProperty, binding
+            (element, targetProperty, binding
 #if AVALONIA
             .Initiate(element, targetProperty)!, null
 #endif
-                );
+            );
     }
 
     public void AddChild(object value)
@@ -354,7 +355,13 @@ public class I18NExtension : MarkupExtension, IAddChild
     /// <summary>
     /// use <see cref="string.Format(string,object[])"/> to generate final text
     /// </summary>
-    private class MultiValueLangConverter(IReadOnlyList<bool> isBindingList) : IMultiValueConverter
+    private class MultiValueLangConverter(
+#if !NET40
+        IReadOnlyList<bool>
+#else
+        IList<bool>
+#endif
+            isBindingList) : IMultiValueConverter
     {
         public IValueConverter? Converter          { get; set; }
         public object?          ConverterParameter { get; set; }
@@ -411,7 +418,6 @@ public class I18NExtension : MarkupExtension, IAddChild
         {
             throw new NotSupportedException();
         }
-        
     }
 
     /// <summary>
