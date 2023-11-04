@@ -1,6 +1,12 @@
 ﻿using System;
 
-namespace Antelcat.Wpf.I18N.Attributes;
+namespace Antelcat.
+#if WPF
+    Wpf
+#elif AVALONIA
+    Avalonia
+#endif
+    .I18N.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class ResourceKeysOfAttribute : Attribute

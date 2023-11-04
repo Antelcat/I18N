@@ -5,7 +5,11 @@ using System.Windows.Data;
 using Avalonia.Data;
 #endif
 
+#if WPF
 namespace System.Windows;
+#elif AVALONIA
+namespace Avalonia.Markup.Xaml.MarkupExtensions;
+#endif
 
 /// <summary>
 /// It's not a binding, Just a key to get the value from the dictionary.
@@ -14,7 +18,7 @@ public class LanguageBinding :
 #if WPF
     Binding
 #elif AVALONIA
-    BindingBase
+    Binding
 #endif
 {
     public LanguageBinding() { }
@@ -36,4 +40,12 @@ public class LanguageBinding :
     }
 
     private string? key;
+    
+#if AVALONIA
+    void CreateExpressionObserver(AvaloniaObject avaloniaObject, 
+        AvaloniaProperty? avaloniaProperty, object? a, bool b)
+    {
+        throw new NotImplementedException();
+    }
+#endif
 }

@@ -2,8 +2,13 @@
 using System.Data;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-
-namespace Antelcat.Wpf.I18N.Abstractions;
+namespace Antelcat.
+#if WPF
+    Wpf
+#elif AVALONIA
+    Avalonia
+#endif
+    .I18N.Abstractions;
 
 public abstract class ResourceProviderBase : INotifyPropertyChanged
 {

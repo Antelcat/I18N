@@ -1,27 +1,39 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 #if WPF
+using MicrosoftPleaseFixBindingCollection = System.Collections.ObjectModel.Collection<BindingBase>;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Markup;
 #elif AVALONIA
-using Avalonia;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Avalonia.Markup.Xaml;
+using Avalonia.Data.Core.Plugins;
 using Avalonia.Metadata;
 using DependencyObject = Avalonia.AvaloniaObject;
 using DependencyProperty = Avalonia.AvaloniaProperty;
+using DependencyPropertyChangedEventArgs = System.EventArgs;
 #endif
-using Antelcat.Wpf.I18N.Abstractions;
+
+using Antelcat.
+#if WPF
+    Wpf
+#elif AVALONIA
+    Avalonia
+#endif
+    .I18N.Abstractions;
 
 // ReSharper disable once CheckNamespace
+#if WPF
 namespace System.Windows;
+#elif AVALONIA
+namespace Avalonia.Markup.Xaml.MarkupExtensions;
+#endif
 
 #if WPF
 [MarkupExtensionReturnType(typeof(string))]
@@ -63,30 +75,30 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if AVALONIA
         <I18NExtension, DependencyObject, object>
 #endif
-    (
-        nameof(Key)
+        (
+            nameof(Key)
 #if WPF
         ,
         typeof(object),
         typeof(I18NExtension),
         new PropertyMetadata(default)
 #endif
-    );
+        );
 
 
     private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached
 #if AVALONIA
         <I18NExtension, DependencyObject, DependencyProperty>
 #endif
-    (
-        "TargetProperty"
+        (
+            "TargetProperty"
 #if WPF
         ,
         typeof(DependencyProperty),
         typeof(I18NExtension),
         new PropertyMetadata(default(DependencyProperty))
 #endif
-    );
+        );
 
     private static void SetTargetProperty(DependencyObject element, DependencyProperty value)
         => element.SetValue(TargetPropertyProperty, value);
@@ -130,8 +142,8 @@ public class I18NExtension : MarkupExtension, IAddChild
     }
 
     public I18NExtension(string key) => Key = key;
-    public I18NExtension(Binding binding) => Key = binding;
-
+    public I18NExtension(BindingBase binding) => Key = binding;
+    
     private readonly DependencyObject proxy = new();
 
     /// <summary>
@@ -153,9 +165,13 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if AVALONIA
     [Content]
 #endif
-    public MicrosoftPleaseFixBindingCollection Keys => keys ??= new MicrosoftPleaseFixBindingCollection();
-
-    private MicrosoftPleaseFixBindingCollection? keys;
+    public
+#if WPF
+        MicrosoftPleaseFixBindingCollection
+#elif AVALONIA
+        Collection<object>
+#endif
+        Keys { get; } = new();
 
     /// <summary>
     /// Same as <see cref="Binding"/>.<see cref="Binding.Converter"/>
@@ -185,8 +201,11 @@ public class I18NExtension : MarkupExtension, IAddChild
                 Source        = Target,
                 Mode          = BindingMode.OneWay,
                 FallbackValue = key,
+#if AVALONIA
+                Priority        = BindingPriority.LocalValue
+#endif
             };
-            if (keys is not { Count: > 0 })
+            if (Keys is not { Count: > 0 })
             {
 #if WPF
                 keyBinding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
@@ -199,11 +218,14 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         var ret = new MultiBinding
         {
-            Mode = BindingMode.OneWay,
+            Mode               = BindingMode.OneWay,
+            ConverterParameter = ConverterParameter,
 #if WPF
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
+#elif AVALONIA
+            Priority        = BindingPriority.LocalValue,
+            TargetNullValue = string.Empty
 #endif
-            ConverterParameter = ConverterParameter,
         };
 
         var source = new Binding(nameof(Notifier.Source))
@@ -213,7 +235,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         };
         var isBindingList = new List<bool>();
         ret.Bindings.Add(source);
-        ret.Bindings.Add(keyBinding ?? (Key as Binding)!);
+        ret.Bindings.Add(keyBinding ?? (Key as BindingBase)!);
         isBindingList.Add(keyBinding == null);
         foreach (var bindingBase in Keys)
         {
@@ -229,7 +251,7 @@ public class I18NExtension : MarkupExtension, IAddChild
                         FallbackValue = languageBinding.Key
                     });
                     break;
-                case Binding propBinding:
+                case BindingBase propBinding:
                     ret.Bindings.Add(propBinding);
                     break;
                 default:
@@ -259,86 +281,92 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
 
-        if (Key is null && (keys is null || keys.Count == 0))
+        if (Key is null && Keys.Count == 0)
             throw new ArgumentNullException($"{nameof(Key)} or {nameof(Keys)} cannot both be null");
         if (Key is null && Keys is { Count: 1 })
         {
             Key  = Keys[0];
-            keys = null;
+            Keys.Clear();
         }
 
         var bindingBase = CreateBinding();
-        BindingOperations.
 #if WPF
-            SetBinding
-#elif AVALONIA
-            Apply
+        BindingOperations.SetBinding
+            (targetObject, targetProperty, bindingBase);
 #endif
-            (targetObject, targetProperty, bindingBase
-#if AVALONIA
-                    .Initiate(targetObject, targetProperty)!, null
-#endif
-            );
+
         if (bindingBase is MultiBinding)
         {
-            SetTarget(provideValueTarget.TargetObject, targetProperty);
+            SetTarget(targetObject, targetProperty);
         }
 
-        return bindingBase.ProvideValue(serviceProvider);
+        return bindingBase
+#if WPF
+            .ProvideValue(serviceProvider)
+#endif
+            ;
     }
 
-    private void LangExtension_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+
+    private void I18NExtension_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
+#if WPF
         switch (sender)
         {
             case FrameworkElement element:
             {
-                element.DataContextChanged -= LangExtension_DataContextChanged;
+                element.DataContextChanged -= I18NExtension_DataContextChanged;
                 ResetBinding(element);
                 break;
             }
             case FrameworkContentElement element:
             {
-                element.DataContextChanged -= LangExtension_DataContextChanged;
+                element.DataContextChanged -= I18NExtension_DataContextChanged;
                 ResetBinding(element);
                 break;
             }
         }
+#elif AVALONIA
+        if (sender is not StyledElement element) return;
+        element.DataContextChanged -= I18NExtension_DataContextChanged;
+        ResetBinding(element);
+#endif
     }
 
-    private void SetTarget(object targetObject, DependencyProperty targetProperty)
+    private void SetTarget(DependencyObject targetObject, DependencyProperty targetProperty)
     {
+#if WPF
         switch (targetObject)
         {
             case FrameworkContentElement element:
                 SetTargetProperty(element, targetProperty);
-                element.DataContextChanged += LangExtension_DataContextChanged;
+                element.DataContextChanged += I18NExtension_DataContextChanged;
                 return;
             case FrameworkElement element:
                 SetTargetProperty(element, targetProperty);
-                element.DataContextChanged += LangExtension_DataContextChanged;
+                element.DataContextChanged += I18NExtension_DataContextChanged;
                 return;
         }
+#elif AVALONIA
+        if (targetObject is not StyledElement element) return;
+        SetTargetProperty(element, targetProperty);
+        element.DataContextChanged += I18NExtension_DataContextChanged;
+#endif
     }
 
     private void ResetBinding(DependencyObject element)
     {
-        if (Key is string && (keys is null || keys.All(x => x is LanguageBinding))) return;
+        if (Key is string && Keys.All(x => x is LanguageBinding)) return;
         var targetProperty = GetTargetProperty(element);
         SetTargetProperty(element, null!);
         var binding = CreateBinding();
-        BindingOperations.
 #if WPF
-            SetBinding
+        BindingOperations.SetBinding(element, targetProperty, binding);
 #elif AVALONIA
-            Apply
+        element.Bind(targetProperty, binding);
 #endif
-            (element, targetProperty, binding
-#if AVALONIA
-            .Initiate(element, targetProperty)!, null
-#endif
-            );
     }
+
 
     public void AddChild(object value)
     {
@@ -426,8 +454,7 @@ public class I18NExtension : MarkupExtension, IAddChild
     public class MicrosoftPleaseFixBindingCollection : Collection<BindingBase>
     {
     }
-
-
+    
     /// <summary>
     /// <see cref="ResourceChangedNotifier"/> is singleton notifier for
     /// multibinding in case of avoid extra property notifier
@@ -460,4 +487,19 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         private ResourceProviderBase? lastRegister;
     }
+    
+#if AVALONIA
+    private class ExpandoObjectPropertyAccessorPlugin : IPropertyAccessorPlugin
+    {
+        public bool Match(object obj, string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPropertyAccessor? Start(WeakReference<object?> reference, string propertyName)
+        {
+            throw new NotImplementedException();  
+        }
+    }
+#endif
 }
