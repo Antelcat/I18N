@@ -16,6 +16,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Metadata;
+using Avalonia.Threading;
 using DependencyObject = Avalonia.AvaloniaObject;
 using DependencyProperty = Avalonia.AvaloniaProperty;
 using DependencyPropertyChangedEventArgs = System.EventArgs;
@@ -28,6 +29,7 @@ using Antelcat.
     Avalonia
 #endif
     .I18N.Abstractions;
+using Avalonia.Markup.Xaml.XamlIl.Runtime;
 
 // ReSharper disable once CheckNamespace
 #if WPF
@@ -42,6 +44,7 @@ namespace Avalonia.Markup.Xaml.MarkupExtensions;
 [Localizability(LocalizationCategory.None, Modifiability = Modifiability.Unmodifiable,
     Readability = Readability.Unreadable)]
 #endif
+[DebuggerDisplay("Key = {Key}, Keys = {Keys}")]
 public class I18NExtension : MarkupExtension, IAddChild
 {
     private static readonly IDictionary<string, object?> Target;
@@ -61,16 +64,34 @@ public class I18NExtension : MarkupExtension, IAddChild
     static I18NExtension()
     {
         var target = new ExpandoObject();
-#if AVALONIA 
-        ExpandoObjectPropertyAccessorPlugin.Register(target); //Register accessor plugin for ExpandoObject
-#endif
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
+#if AVALONIA
+        ExpandoObjectPropertyAccessorPlugin.Register(target); //Register accessor plugin for ExpandoObject
+        var updateActions = new List<Action>();
+#endif
         foreach (var type in Assembly.GetEntryAssembly()?.GetTypes() ?? Type.EmptyTypes)
         {
             if (!type.IsSubclassOf(typeof(ResourceProviderBase))) continue;
-            RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase);
+#if WPF
+            RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, false, out _);
+#elif AVALONIA
+            if (RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, true,
+                    out var redo))
+            {
+                updateActions.Add(redo!);
+            }
+#endif
         }
+#if AVALONIA
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            foreach (var action in updateActions)
+            {
+                action();
+            }
+        });
+#endif
     }
 
     #region Target
@@ -119,9 +140,12 @@ public class I18NExtension : MarkupExtension, IAddChild
             : fallbackValue;
     }
 
-    private static void RegisterLanguageSource(ResourceProviderBase? provider)
+    private static bool RegisterLanguageSource(ResourceProviderBase? provider, 
+        bool lazyInit,
+        out Action? lazyInitAction)
     {
-        if (provider is null) return;
+        lazyInitAction = null;
+        if (provider is null) return false;
 
         CultureChanged += culture => provider.Culture = culture;
 
@@ -129,9 +153,16 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         provider.PropertyChanged += (o, e) => Update(o!, e.PropertyName!);
         Notifier.RegisterProvider(provider);
-        foreach (var prop in props) Update(provider, prop.Name);
+        lazyInitAction = () =>
+        {
+            foreach (var prop in props) Update(provider, prop.Name);
+        };
+        if (!lazyInit)
+        {
+            lazyInitAction();
+        }
 
-        return;
+        return true;
 
         void Update(object source, string propertyName)
         {
@@ -173,7 +204,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if WPF
         MicrosoftPleaseFixBindingCollection
 #elif AVALONIA
-        Collection<object>
+        Collection<IBinding>
 #endif
         Keys { get; } = new();
 
@@ -282,7 +313,19 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (provideValueTarget.TargetObject.GetType().FullName ==
             $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
 #endif
-        if (provideValueTarget.TargetObject is not DependencyObject targetObject) return this;
+        if (provideValueTarget.TargetObject is not DependencyObject targetObject)
+#if WPF
+            return this;
+#elif AVALONIA
+        {
+            if (provideValueTarget.TargetObject is not I18NExtension) return this;
+            var reflect = provideValueTarget.GetType().GetField("ParentsStack");
+            if (reflect is null) return this;
+            var parentsStack = reflect.GetValue(provideValueTarget) as IList<object>;
+            if (parentsStack is null) return this;
+            targetObject = (parentsStack.Last() as DependencyObject)!;
+        } 
+#endif
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
 
         if (Key is null && Keys.Count == 0)
@@ -406,34 +449,34 @@ public class I18NExtension : MarkupExtension, IAddChild
 #endif
                 values, Type targetType, object? parameter, CultureInfo culture)
         {
+            var source = values[0]!;
+            var res    = new object?[values.Count - 2];
             var template = isBindingList[0]
-                ? GetValue(values[0]!, values[1] as string)
+                ? GetValue(source, values[1] as string)
                 : values[1] as string;
-            if (string.IsNullOrEmpty(template))
-                return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
-            if (values.
+            if (string.IsNullOrEmpty(template) ||
+                values.
 #if WPF
                     Length
 #elif AVALONIA
                     Count
 #endif
-                <= 2) return template!;
+                <= 2) return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
 
             for (var i = 1; i < isBindingList.Count; i++)
             {
-                if (values[i] == null)
+                if (values[i + 1] == null)
                 {
-                    values[i] = string.Empty;
+                    res[i - 1] = string.Empty;
                     continue;
                 }
 
-                if (isBindingList[i])
-                {
-                    values[i + 1] = GetValue(values[0]!, (values[i + 1] as string)!);
-                }
+                res[i - 1] = isBindingList[i]
+                    ? GetValue(source, values[i + 1] as string)
+                    : values[i + 1] as string;
             }
 
-            var val = string.Format(template!, values.Skip(2).ToArray());
+            var val = string.Format(template!, res);
             return Converter?.Convert(val, targetType, ConverterParameter, culture) ?? val;
         }
 
@@ -483,7 +526,7 @@ public class I18NExtension : MarkupExtension, IAddChild
     {
         public bool Match(object obj, string propertyName) => obj == target;
 
-        public IPropertyAccessor? Start(WeakReference<object?> reference, string propertyName)
+        public IPropertyAccessor Start(WeakReference<object?> reference, string propertyName)
         {
             return ExpandoAccessor.Create(propertyName);
         }
@@ -550,7 +593,7 @@ public class I18NExtension : MarkupExtension, IAddChild
             private static void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
                 if (!Accessors.TryGetValue(e.PropertyName, out var accessor)) return;
-                var val = ((IDictionary<string, object?>)Source)[e.PropertyName];
+                var val = ((IDictionary<string, object?>)Source!)[e.PropertyName];
                 foreach (var action in accessor.subscriptions)
                 {
                     action(val);
@@ -559,7 +602,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 
             public bool SetValue(object? value, BindingPriority priority)
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
             public void Subscribe(Action<object?> listener)
@@ -573,7 +616,7 @@ public class I18NExtension : MarkupExtension, IAddChild
             }
 
             public Type?   PropertyType { get; } = typeof(string);
-            public object? Value        => ((IDictionary<string, object?>)Source)[propertyName];
+            public object? Value        => ((IDictionary<string, object?>)Source!)[propertyName];
         }
     }
 #endif

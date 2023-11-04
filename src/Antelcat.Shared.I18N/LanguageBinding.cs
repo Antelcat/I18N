@@ -14,7 +14,7 @@ public sealed class LanguageBinding :
 #if WPF
     Binding
 #elif AVALONIA
-    MarkupExtension
+    Binding
 #endif
 {
     public LanguageBinding()
@@ -40,9 +40,9 @@ public sealed class LanguageBinding :
     private string? key;
     
 #if AVALONIA
-    public override object ProvideValue(IServiceProvider serviceProvider)
+    /*public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        throw new NotImplementedException();
-    }
+        return this;
+    }*/
 #endif
 }
