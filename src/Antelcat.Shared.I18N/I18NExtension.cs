@@ -447,33 +447,18 @@ public class I18NExtension : MarkupExtension, IAddChild
             throw new NotSupportedException();
         }
     }
-
-    /// <summary>
-    /// You know why, are you? <see cref="Collection{BindingBase}"/>
-    /// </summary>
-    public class MicrosoftPleaseFixBindingCollection : Collection<BindingBase>
-    {
-    }
     
     /// <summary>
     /// <see cref="ResourceChangedNotifier"/> is singleton notifier for
     /// multibinding in case of avoid extra property notifier
     /// </summary>
-    private class ResourceChangedNotifier : INotifyPropertyChanged
+    private class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
     {
-        public ExpandoObject Source { get; }
-
-        public ResourceChangedNotifier(ExpandoObject source)
-        {
-            Source = source;
-        }
+        public ExpandoObject Source => source;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public void RegisterProvider(ResourceProviderBase provider)
         {
