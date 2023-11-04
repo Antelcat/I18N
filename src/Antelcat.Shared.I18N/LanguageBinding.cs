@@ -10,7 +10,12 @@ namespace System.Windows;
 /// <summary>
 /// It's not a binding, Just a key to get the value from the dictionary.
 /// </summary>
-public class LanguageBinding : Binding
+public class LanguageBinding : 
+#if WPF
+    Binding
+#elif AVALONIA
+    BindingBase
+#endif
 {
     public LanguageBinding() { }
 
