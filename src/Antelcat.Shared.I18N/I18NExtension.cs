@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Dynamic;
 using System.Globalization;
 using System.Reflection;
@@ -73,7 +72,8 @@ public class I18NExtension : MarkupExtension, IAddChild
         {
             if (!type.IsSubclassOf(typeof(ResourceProviderBase))) continue;
 #if WPF
-            RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, false, out _);
+            RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, false,
+                out _);
 #elif AVALONIA
             if (RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, true,
                     out var redo))
@@ -99,30 +99,30 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if AVALONIA
         <I18NExtension, DependencyObject, object>
 #endif
-        (
-            nameof(Key)
+    (
+        nameof(Key)
 #if WPF
         ,
         typeof(object),
         typeof(I18NExtension),
         new PropertyMetadata(default)
 #endif
-        );
+    );
 
 
     private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached
 #if AVALONIA
         <I18NExtension, DependencyObject, DependencyProperty>
 #endif
-        (
-            "TargetProperty"
+    (
+        "TargetProperty"
 #if WPF
         ,
         typeof(DependencyProperty),
         typeof(I18NExtension),
         new PropertyMetadata(default(DependencyProperty))
 #endif
-        );
+    );
 
     private static void SetTargetProperty(DependencyObject element, DependencyProperty value)
         => element.SetValue(TargetPropertyProperty, value);
@@ -257,7 +257,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if WPF
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
 #elif AVALONIA
-            Priority        = BindingPriority.LocalValue,
+            Priority = BindingPriority.LocalValue,
             TargetNullValue = string.Empty
 #endif
         };
@@ -315,7 +315,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (provideValueTarget.TargetObject is not DependencyObject targetObject)
 #if WPF
             return this;
-#elif AVALONIA 
+#elif AVALONIA
         { 
             // Avalonia please fix TargetObject not match
             if (provideValueTarget.TargetObject is not I18NExtension) return this;
@@ -348,7 +348,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         return bindingBase
 #if WPF
-            .ProvideValue(serviceProvider)
+                .ProvideValue(serviceProvider)
 #endif
             ;
     }
@@ -449,18 +449,19 @@ public class I18NExtension : MarkupExtension, IAddChild
                 values, Type targetType, object? parameter, CultureInfo culture)
         {
             var source = values[0]!;
-            var res    = new object?[values.Count - 2];
-            var template = isBindingList[0]
-                ? GetValue(source, values[1] as string)
-                : values[1] as string;
-            if (string.IsNullOrEmpty(template) ||
-                values.
+            var count = values.
 #if WPF
                     Length
 #elif AVALONIA
-                    Count
+                    Counta
 #endif
-                <= 2) return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
+                ;
+            var res = new object?[count - 2];
+            var template = isBindingList[0]
+                ? GetValue(source, values[1] as string)
+                : values[1] as string;
+            if (string.IsNullOrEmpty(template) || count <= 2)
+                return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
 
             for (var i = 1; i < isBindingList.Count; i++)
             {
