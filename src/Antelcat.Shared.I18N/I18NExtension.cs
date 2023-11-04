@@ -454,7 +454,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if WPF
                     Length
 #elif AVALONIA
-                    Counta
+                    Count
 #endif
                 ;
             var res = new object?[count - 2];
