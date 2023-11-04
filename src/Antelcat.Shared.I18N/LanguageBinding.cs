@@ -1,13 +1,9 @@
 using System.ComponentModel;
 #if WPF
 using System.Windows.Data;
-#elif AVALONIA
-using Avalonia.Data;
-#endif
-
-#if WPF
 namespace System.Windows;
 #elif AVALONIA
+using Avalonia.Data;
 namespace Avalonia.Markup.Xaml.MarkupExtensions;
 #endif
 
