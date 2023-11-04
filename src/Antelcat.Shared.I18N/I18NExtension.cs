@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 #if WPF
 using MicrosoftPleaseFixBindingCollection = System.Collections.ObjectModel.Collection<System.Windows.Data.BindingBase>;
 using System.Collections.Generic;
@@ -60,6 +61,9 @@ public class I18NExtension : MarkupExtension, IAddChild
     static I18NExtension()
     {
         var target = new ExpandoObject();
+#if AVALONIA 
+        ExpandoObjectPropertyAccessorPlugin.Register(target); //Register accessor plugin for ExpandoObject
+#endif
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
         foreach (var type in Assembly.GetEntryAssembly()?.GetTypes() ?? Type.EmptyTypes)
@@ -143,7 +147,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 
     public I18NExtension(string key) => Key = key;
     public I18NExtension(BindingBase binding) => Key = binding;
-    
+
     private readonly DependencyObject proxy = new();
 
     /// <summary>
@@ -202,7 +206,7 @@ public class I18NExtension : MarkupExtension, IAddChild
                 Mode          = BindingMode.OneWay,
                 FallbackValue = key,
 #if AVALONIA
-                Priority        = BindingPriority.LocalValue
+                Priority = BindingPriority.LocalValue
 #endif
             };
             if (Keys is not { Count: > 0 })
@@ -285,7 +289,7 @@ public class I18NExtension : MarkupExtension, IAddChild
             throw new ArgumentNullException($"{nameof(Key)} or {nameof(Keys)} cannot both be null");
         if (Key is null && Keys is { Count: 1 })
         {
-            Key  = Keys[0];
+            Key = Keys[0];
             Keys.Clear();
         }
 
@@ -447,7 +451,7 @@ public class I18NExtension : MarkupExtension, IAddChild
             throw new NotSupportedException();
         }
     }
-    
+
     /// <summary>
     /// <see cref="ResourceChangedNotifier"/> is singleton notifier for
     /// multibinding in case of avoid extra property notifier
@@ -458,7 +462,8 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public void RegisterProvider(ResourceProviderBase provider)
         {
@@ -472,18 +477,103 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         private ResourceProviderBase? lastRegister;
     }
-    
+
 #if AVALONIA
-    private class ExpandoObjectPropertyAccessorPlugin : IPropertyAccessorPlugin
+    private class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IPropertyAccessorPlugin
     {
-        public bool Match(object obj, string propertyName)
-        {
-            throw new NotImplementedException();
-        }
+        public bool Match(object obj, string propertyName) => obj == target;
 
         public IPropertyAccessor? Start(WeakReference<object?> reference, string propertyName)
         {
-            throw new NotImplementedException();  
+            return ExpandoAccessor.Create(propertyName);
+        }
+
+        public static void Register(ExpandoObject target)
+        {
+            if (Assembly.GetAssembly(typeof(IPropertyAccessorPlugin))
+                    .GetType("Avalonia.Data.Core.ExpressionObserver")
+                    .GetField("PropertyAccessors", BindingFlags.Public | BindingFlags.Static)!
+                    .GetValue(null) is IList<IPropertyAccessorPlugin> { } plugins)
+            {
+                plugins.Add(new ExpandoObjectPropertyAccessorPlugin(target));
+                ExpandoAccessor.Source = target;
+            }
+        }
+
+        private class ExpandoAccessor : IPropertyAccessor
+        {
+            private static readonly Dictionary<string, ExpandoAccessor> Accessors = new();
+
+            public static ExpandoObject? Source
+            {
+                get => source;
+                set
+                {
+                    if (source != null)
+                    {
+                        ((INotifyPropertyChanged)source).PropertyChanged -= OnPropertyChanged;
+                    }
+
+                    if (value == null) return;
+                    source = value;
+
+                    ((INotifyPropertyChanged)source).PropertyChanged += OnPropertyChanged;
+                }
+            }
+
+            private static   ExpandoObject? source;
+            private readonly string         propertyName;
+
+            readonly List<Action<object?>> subscriptions = new();
+
+            public static ExpandoAccessor Create(string propertyName)
+            {
+                if (Accessors.TryGetValue(propertyName, out var accessor)) return accessor;
+                accessor = new ExpandoAccessor(propertyName);
+                Accessors.Add(propertyName, accessor);
+                return accessor;
+            }
+
+            private ExpandoAccessor(string propertyName)
+            {
+                this.propertyName = propertyName;
+            }
+
+            public void Dispose()
+            {
+                lock (Accessors)
+                {
+                    Accessors.Remove(propertyName);
+                }
+            }
+
+            private static void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                if (!Accessors.TryGetValue(e.PropertyName, out var accessor)) return;
+                var val = ((IDictionary<string, object?>)Source)[e.PropertyName];
+                foreach (var action in accessor.subscriptions)
+                {
+                    action(val);
+                }
+            }
+
+            public bool SetValue(object? value, BindingPriority priority)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Subscribe(Action<object?> listener)
+            {
+                subscriptions.Add(listener);
+            }
+
+            public void Unsubscribe()
+            {
+                Dispose();
+            }
+
+            public Type?   PropertyType { get; } = typeof(string);
+            public object? Value        => ((IDictionary<string, object?>)Source)[propertyName];
         }
     }
 #endif

@@ -14,10 +14,12 @@ public sealed class LanguageBinding :
 #if WPF
     Binding
 #elif AVALONIA
-    Binding
+    MarkupExtension
 #endif
 {
-    public LanguageBinding() { }
+    public LanguageBinding()
+    {
+    }
     
     public LanguageBinding(string key)
     {
@@ -38,8 +40,7 @@ public sealed class LanguageBinding :
     private string? key;
     
 #if AVALONIA
-    void CreateExpressionObserver(AvaloniaObject avaloniaObject, 
-        AvaloniaProperty? avaloniaProperty, object? a, bool b)
+    public override object ProvideValue(IServiceProvider serviceProvider)
     {
         throw new NotImplementedException();
     }
