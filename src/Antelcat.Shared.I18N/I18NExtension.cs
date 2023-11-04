@@ -14,12 +14,12 @@ using System.Windows.Markup;
 #elif AVALONIA
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Metadata;
 using Avalonia.Threading;
 using DependencyObject = Avalonia.AvaloniaObject;
 using DependencyProperty = Avalonia.AvaloniaProperty;
 using DependencyPropertyChangedEventArgs = System.EventArgs;
+using Antelcat.Avalonia.I18N.Internals;
 #endif
 
 using Antelcat.
@@ -29,7 +29,6 @@ using Antelcat.
     Avalonia
 #endif
     .I18N.Abstractions;
-using Avalonia.Markup.Xaml.XamlIl.Runtime;
 
 // ReSharper disable once CheckNamespace
 #if WPF
@@ -140,7 +139,7 @@ public class I18NExtension : MarkupExtension, IAddChild
             : fallbackValue;
     }
 
-    private static bool RegisterLanguageSource(ResourceProviderBase? provider, 
+    private static bool RegisterLanguageSource(ResourceProviderBase? provider,
         bool lazyInit,
         out Action? lazyInitAction)
     {
@@ -316,15 +315,15 @@ public class I18NExtension : MarkupExtension, IAddChild
         if (provideValueTarget.TargetObject is not DependencyObject targetObject)
 #if WPF
             return this;
-#elif AVALONIA
-        {
+#elif AVALONIA 
+        { 
+            // Avalonia please fix TargetObject not match
             if (provideValueTarget.TargetObject is not I18NExtension) return this;
             var reflect = provideValueTarget.GetType().GetField("ParentsStack");
             if (reflect is null) return this;
-            var parentsStack = reflect.GetValue(provideValueTarget) as IList<object>;
-            if (parentsStack is null) return this;
+            if (reflect.GetValue(provideValueTarget) is not IList<object> parentsStack) return this;
             targetObject = (parentsStack.Last() as DependencyObject)!;
-        } 
+        }
 #endif
         if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
 
@@ -520,104 +519,4 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         private ResourceProviderBase? lastRegister;
     }
-
-#if AVALONIA
-    private class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IPropertyAccessorPlugin
-    {
-        public bool Match(object obj, string propertyName) => obj == target;
-
-        public IPropertyAccessor Start(WeakReference<object?> reference, string propertyName)
-        {
-            return ExpandoAccessor.Create(propertyName);
-        }
-
-        public static void Register(ExpandoObject target)
-        {
-            if (Assembly.GetAssembly(typeof(IPropertyAccessorPlugin))
-                    .GetType("Avalonia.Data.Core.ExpressionObserver")
-                    .GetField("PropertyAccessors", BindingFlags.Public | BindingFlags.Static)!
-                    .GetValue(null) is IList<IPropertyAccessorPlugin> { } plugins)
-            {
-                plugins.Add(new ExpandoObjectPropertyAccessorPlugin(target));
-                ExpandoAccessor.Source = target;
-            }
-        }
-
-        private class ExpandoAccessor : IPropertyAccessor
-        {
-            private static readonly Dictionary<string, ExpandoAccessor> Accessors = new();
-
-            public static ExpandoObject? Source
-            {
-                get => source;
-                set
-                {
-                    if (source != null)
-                    {
-                        ((INotifyPropertyChanged)source).PropertyChanged -= OnPropertyChanged;
-                    }
-
-                    if (value == null) return;
-                    source = value;
-
-                    ((INotifyPropertyChanged)source).PropertyChanged += OnPropertyChanged;
-                }
-            }
-
-            private static   ExpandoObject? source;
-            private readonly string         propertyName;
-
-            readonly List<Action<object?>> subscriptions = new();
-
-            public static ExpandoAccessor Create(string propertyName)
-            {
-                if (Accessors.TryGetValue(propertyName, out var accessor)) return accessor;
-                accessor = new ExpandoAccessor(propertyName);
-                Accessors.Add(propertyName, accessor);
-                return accessor;
-            }
-
-            private ExpandoAccessor(string propertyName)
-            {
-                this.propertyName = propertyName;
-            }
-
-            public void Dispose()
-            {
-                lock (Accessors)
-                {
-                    Accessors.Remove(propertyName);
-                }
-            }
-
-            private static void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-            {
-                if (!Accessors.TryGetValue(e.PropertyName, out var accessor)) return;
-                var val = ((IDictionary<string, object?>)Source!)[e.PropertyName];
-                foreach (var action in accessor.subscriptions)
-                {
-                    action(val);
-                }
-            }
-
-            public bool SetValue(object? value, BindingPriority priority)
-            {
-                throw new NotSupportedException();
-            }
-
-            public void Subscribe(Action<object?> listener)
-            {
-                subscriptions.Add(listener);
-            }
-
-            public void Unsubscribe()
-            {
-                Dispose();
-            }
-
-            public Type?   PropertyType { get; } = typeof(string);
-            public object? Value        => ((IDictionary<string, object?>)Source!)[propertyName];
-        }
-    }
-#endif
 }
