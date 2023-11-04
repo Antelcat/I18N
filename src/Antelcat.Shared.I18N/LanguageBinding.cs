@@ -14,7 +14,7 @@ namespace Avalonia.Markup.Xaml.MarkupExtensions;
 /// <summary>
 /// It's not a binding, Just a key to get the value from the dictionary.
 /// </summary>
-public class LanguageBinding : 
+public sealed class LanguageBinding : 
 #if WPF
     Binding
 #elif AVALONIA
@@ -22,7 +22,7 @@ public class LanguageBinding :
 #endif
 {
     public LanguageBinding() { }
-
+    
     public LanguageBinding(string key)
     {
         Key = key;

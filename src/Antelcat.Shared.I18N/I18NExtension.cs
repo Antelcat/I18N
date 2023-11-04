@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 #if WPF
-using MicrosoftPleaseFixBindingCollection = System.Collections.ObjectModel.Collection<BindingBase>;
+using MicrosoftPleaseFixBindingCollection = System.Collections.ObjectModel.Collection<System.Windows.Data.BindingBase>;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Data;
