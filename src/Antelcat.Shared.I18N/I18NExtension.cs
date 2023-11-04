@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Markup;
 #elif AVALONIA
+using System.Collections.ObjectModel;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Metadata;
