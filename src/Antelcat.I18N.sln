@@ -41,6 +41,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Avalonia", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Avalonia.Demo", "Avalonia\Demo\Antelcat.I18N.Avalonia.Demo.csproj", "{4BDD0948-3E41-4432-8EC2-395C3B694A3A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package", "Package", "{F001775B-BD74-4374-AB39-550051F4536A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antelcat.I18N.SourceGenerators.Package", "SourceGenerators.Package\Antelcat.I18N.SourceGenerators.Package.msbuildproj", "{84E016F9-3F0B-4843-A022-8AF716C3A32F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,10 @@ Global
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +99,7 @@ Global
 		{420430D4-4A39-4310-97B6-F9029575454B} = {E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}
 		{C0105DD2-CC54-47AB-9122-EEA1DC73E61E} = {8122301E-0585-46DC-B4E5-3B6F12F8E237}
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A} = {8122301E-0585-46DC-B4E5-3B6F12F8E237}
+		{84E016F9-3F0B-4843-A022-8AF716C3A32F} = {F001775B-BD74-4374-AB39-550051F4536A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}

@@ -9,14 +9,13 @@
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <IsRoslynComponent>true</IsRoslynComponent>
         
-        <RootNamespace>Antelcat.Wpf.I18N.SourceGenerators</RootNamespace>
-        <PackageId>Antelcat.Wpf.I18N.SourceGenerators</PackageId>
+        <RootNamespace>Antelcat.I18N.SourceGenerators</RootNamespace>
+        <PackageId>Antelcat.I18N.SourceGenerators</PackageId>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Version>1.0.0</Version>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
         
-        <DefineConstants>WPF</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
