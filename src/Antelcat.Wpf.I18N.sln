@@ -3,15 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N", "Antelcat.Wpf.I18N\Antelcat.Wpf.I18N.csproj", "{87AE0560-B337-4958-97B4-7928C6C6962C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.SourceGenerators", "Antelcat.Wpf.I18N.SourceGenerators\Antelcat.Wpf.I18N.SourceGenerators.csproj", "{51D7777A-1F56-4F09-8581-7F546B2F1817}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.Demo", "Antelcat.Wpf.I18N.Demo\Antelcat.Wpf.I18N.Demo.csproj", "{7F3763B9-97B3-4FB6-89B5-B54600693577}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extern", "Extern", "{2835EE7C-9F76-45A2-9754-E86902623A81}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Wpf.I18N.Demo.Shared", "Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.shproj", "{50BA267B-188A-46D3-B957-878790AF1E76}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-44B4-8872-61FC02A4AE9F}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,11 +15,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.Extensions.SourceGenerators", "..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.SourceGenerators\Feast.CodeAnalysis.Extensions.SourceGenerators.csproj", "{190293FC-3F2C-4FEE-8090-62A09713DD8D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.Wpf.I18N.Demo.Framework", "Antelcat.Wpf.I18N.Demo.Framework\Antelcat.Wpf.I18N.Demo.Framework.csproj", "{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Shared", "Antelcat.I18N.Shared\Antelcat.I18N.Shared.shproj", "{28F904C6-3B6D-4140-90FF-62A6BD87B0C6}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Shared.I18N", "Antelcat.Shared.I18N\Antelcat.Shared.I18N.shproj", "{28F904C6-3B6D-4140-90FF-62A6BD87B0C6}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Shared.SourceGenerators", "Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.shproj", "{15D71DC2-F53D-42EC-85E4-4982F6E351A5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.Shared.I18N.SourceGenerators", "Antelcat.Shared.I18N.SourceGenerators\Antelcat.Shared.I18N.SourceGenerators.shproj", "{15D71DC2-F53D-42EC-85E4-4982F6E351A5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F86CB7CC-4C0C-40AA-ABF0-282D7B15B38E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{A9786647-4829-4617-98A5-704E2DDDCA35}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Avalonia", "Avalonia", "{8122301E-0585-46DC-B4E5-3B6F12F8E237}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.SourceGenerators", "SourceGenerators\Antelcat.I18N.SourceGenerators.csproj", "{612D6836-4C01-48AA-A3BD-726ADDE0F101}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.WPF", "WPF\WPF\Antelcat.I18N.WPF.csproj", "{3C5623F8-1E58-456E-A386-11B7FBA42FA0}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.WPF.Demo.Shared", "WPF\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.shproj", "{50BA267B-188A-46D3-B957-878790AF1E76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.WPF.Demo", "WPF\Demo\Antelcat.I18N.WPF.Demo.csproj", "{7ECC81C2-D016-43C3-82F7-CCBEC9E30A15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.WPF.Demo.Framework", "WPF\Demo.Framework\Antelcat.I18N.WPF.Demo.Framework.csproj", "{420430D4-4A39-4310-97B6-F9029575454B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Avalonia", "Avalonia\Avalonia\Antelcat.I18N.Avalonia.csproj", "{C0105DD2-CC54-47AB-9122-EEA1DC73E61E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Avalonia.Demo", "Avalonia\Demo\Antelcat.I18N.Avalonia.Demo.csproj", "{4BDD0948-3E41-4432-8EC2-395C3B694A3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,44 +47,63 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{87AE0560-B337-4958-97B4-7928C6C6962C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87AE0560-B337-4958-97B4-7928C6C6962C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87AE0560-B337-4958-97B4-7928C6C6962C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87AE0560-B337-4958-97B4-7928C6C6962C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51D7777A-1F56-4F09-8581-7F546B2F1817}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F3763B9-97B3-4FB6-89B5-B54600693577}.Release|Any CPU.Build.0 = Release|Any CPU
 		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{190293FC-3F2C-4FEE-8090-62A09713DD8D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B6E4D9A-09D3-4567-B89F-4B02EB6D3F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{612D6836-4C01-48AA-A3BD-726ADDE0F101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{612D6836-4C01-48AA-A3BD-726ADDE0F101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{612D6836-4C01-48AA-A3BD-726ADDE0F101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{612D6836-4C01-48AA-A3BD-726ADDE0F101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5623F8-1E58-456E-A386-11B7FBA42FA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5623F8-1E58-456E-A386-11B7FBA42FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5623F8-1E58-456E-A386-11B7FBA42FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5623F8-1E58-456E-A386-11B7FBA42FA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ECC81C2-D016-43C3-82F7-CCBEC9E30A15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ECC81C2-D016-43C3-82F7-CCBEC9E30A15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ECC81C2-D016-43C3-82F7-CCBEC9E30A15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ECC81C2-D016-43C3-82F7-CCBEC9E30A15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{420430D4-4A39-4310-97B6-F9029575454B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{420430D4-4A39-4310-97B6-F9029575454B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{420430D4-4A39-4310-97B6-F9029575454B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{420430D4-4A39-4310-97B6-F9029575454B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0105DD2-CC54-47AB-9122-EEA1DC73E61E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0105DD2-CC54-47AB-9122-EEA1DC73E61E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0105DD2-CC54-47AB-9122-EEA1DC73E61E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0105DD2-CC54-47AB-9122-EEA1DC73E61E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{190293FC-3F2C-4FEE-8090-62A09713DD8D} = {2835EE7C-9F76-45A2-9754-E86902623A81}
+		{28F904C6-3B6D-4140-90FF-62A6BD87B0C6} = {F86CB7CC-4C0C-40AA-ABF0-282D7B15B38E}
+		{15D71DC2-F53D-42EC-85E4-4982F6E351A5} = {F86CB7CC-4C0C-40AA-ABF0-282D7B15B38E}
+		{E03F942D-C1C1-4847-BA7D-5186A6CEAEE1} = {A9786647-4829-4617-98A5-704E2DDDCA35}
+		{8122301E-0585-46DC-B4E5-3B6F12F8E237} = {A9786647-4829-4617-98A5-704E2DDDCA35}
+		{3C5623F8-1E58-456E-A386-11B7FBA42FA0} = {E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}
+		{50BA267B-188A-46D3-B957-878790AF1E76} = {E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}
+		{7ECC81C2-D016-43C3-82F7-CCBEC9E30A15} = {E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}
+		{420430D4-4A39-4310-97B6-F9029575454B} = {E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}
+		{C0105DD2-CC54-47AB-9122-EEA1DC73E61E} = {8122301E-0585-46DC-B4E5-3B6F12F8E237}
+		{4BDD0948-3E41-4432-8EC2-395C3B694A3A} = {8122301E-0585-46DC-B4E5-3B6F12F8E237}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Antelcat.Shared.I18N.SourceGenerators\Antelcat.Shared.I18N.SourceGenerators.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
+		Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
 		..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.Shared\Feast.CodeAnalysis.Extensions.Shared.projitems*{190293fc-3f2c-4fee-8090-62a09713dd8d}*SharedItemsImports = 5
-		Antelcat.Shared.I18N\Antelcat.Shared.I18N.projitems*{28f904c6-3b6d-4140-90ff-62a6bd87b0c6}*SharedItemsImports = 13
-		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{3b6e4d9a-09d3-4567-b89f-4b02eb6d3f55}*SharedItemsImports = 5
-		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{50ba267b-188a-46d3-b957-878790af1e76}*SharedItemsImports = 13
-		Antelcat.Shared.I18N.SourceGenerators\Antelcat.Shared.I18N.SourceGenerators.projitems*{51d7777a-1f56-4f09-8581-7f546b2f1817}*SharedItemsImports = 5
-		Antelcat.Wpf.I18N.Demo.Shared\Antelcat.Wpf.I18N.Demo.Shared.projitems*{7f3763b9-97b3-4fb6-89b5-b54600693577}*SharedItemsImports = 5
-		Antelcat.Shared.I18N\Antelcat.Shared.I18N.projitems*{87ae0560-b337-4958-97b4-7928c6c6962c}*SharedItemsImports = 5
+		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{28f904c6-3b6d-4140-90ff-62a6bd87b0c6}*SharedItemsImports = 13
+		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{3c5623f8-1e58-456e-a386-11b7fba42fa0}*SharedItemsImports = 5
+		WPF\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.projitems*{420430d4-4a39-4310-97b6-f9029575454b}*SharedItemsImports = 5
+		WPF\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.projitems*{50ba267b-188a-46d3-b957-878790af1e76}*SharedItemsImports = 13
+		Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems*{612d6836-4c01-48aa-a3bd-726adde0f101}*SharedItemsImports = 5
+		WPF\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.projitems*{7ecc81c2-d016-43c3-82f7-ccbec9e30a15}*SharedItemsImports = 5
+		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{c0105dd2-cc54-47ab-9122-eea1dc73e61e}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

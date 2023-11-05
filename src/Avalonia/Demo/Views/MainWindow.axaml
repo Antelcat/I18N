@@ -1,0 +1,101 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Antelcat.I18N.Avalonia.Demo.ViewModels"
+        xmlns:ms="clr-namespace:Antelcat.I18N.Avalonia.Demo.Models"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Height="400" Width="800"
+        x:DataType="viewModels:ViewModel"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Antelcat.I18N.Avalonia.Demo.Views.MainWindow"
+        Title="Antelcat.Avalonia.I18N.Demo">
+
+    <!--We are using Compiled bindings. This is not mandatory but makes life easier. Read more about it here:-->
+    <!-- https://docs.avaloniaui.net/docs/next/basics/data/data-binding/compiled-bindings -->
+
+    <Design.DataContext>
+        <viewModels:ViewModel />
+    </Design.DataContext>
+
+    <Border>
+        <Grid
+            Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Border,AncestorLevel=1},Path=Height}">
+            <ScrollViewer
+                Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid,AncestorLevel=1},Path=Height}">
+                <StackPanel>
+                    <Menu Margin="12" Padding="0" Background="Transparent">
+                        <MenuItem Margin="0" Padding="0">
+                            <MenuItem.Header>
+                                <TextBlock FontSize="24">
+                                    <TextBlock.Text>
+                                        <I18N Key="{x:Static ms:LangKeys.Current_language_is}">
+                                                <LanguageBinding Key="{x:Static ms:LangKeys.Language}" />
+                                                <Binding Path="Culture.EnglishName" />
+                                        </I18N>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </MenuItem.Header>
+                        </MenuItem>
+                    </Menu>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <Grid>
+                                <StackPanel>
+                                    <Menu Background="Transparent">
+                                        <MenuItem>
+                                            <MenuItem.Header>
+                                                <TextBlock
+                                                    Text="{I18N {x:Static ms:LangKeys.Select_your_text_to_translate}}" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </Menu>
+                                    <ComboBox
+                                        Margin="12,0"
+                                        Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid,AncestorLevel=1},Path=Width}"
+                                        SelectedItem="{Binding SelectedKey}"
+                                        ItemsSource="{Binding AvailableKeys}" />
+                                    <Menu Background="Transparent">
+                                        <MenuItem>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="{I18N {x:Static ms:LangKeys.Translated_text}}" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </Menu>
+
+                                    <TextBox Margin="12,0" Text="{I18N {Binding SelectedKey}}" />
+
+                                </StackPanel>
+                            </Grid>
+                            <Grid Grid.Row="1" Margin="12,10">
+                                <StackPanel>
+                                    <TextBlock Text="{I18N {x:Static ms:LangKeys.Input_your_text_to_translate}}"></TextBlock>
+                                    <TextBox Margin="0,10" Text="{Binding InputText}"/>
+                                    <TextBlock Text="{I18N {x:Static ms:LangKeys.Translated_text}}" />
+                                    <TextBlock Text="{I18N {Binding InputText}}" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <Grid Grid.Column="1">
+                            <StackPanel>
+                                <TextBlock Margin="0,10" Text="{I18N {x:Static ms:LangKeys.Available_languages}}"></TextBlock>
+                                <ListBox ItemsSource="{Binding AvailableCultures}"
+                                         SelectedItem="{Binding Culture}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{I18N {Binding EnglishName}}"></TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>

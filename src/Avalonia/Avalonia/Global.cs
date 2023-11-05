@@ -1,0 +1,1 @@
+﻿global using Antelcat.I18N.WPF.Avalonia.Internals;

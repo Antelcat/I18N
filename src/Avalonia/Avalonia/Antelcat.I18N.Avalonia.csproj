@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>true</IsPackable>
+        <LangVersion>preview</LangVersion>
+
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <RootNamespace>Antelcat.I18N.Avalonia</RootNamespace>
+        <PackageId>Antelcat.I18N.Avalonia</PackageId>
+        <Title>Antelcat.I18N.Avalonia</Title>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>Reactive language support for Avalonia applications when using .resx translate file.</Description>
+        <Copyright>Copyright Antelcat. All rights reserved</Copyright>
+        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Avalonia.I18N</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Antelcat/Antelcat.Avalonia.I18N.git</RepositoryUrl>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Authors>Antelcat</Authors>
+        <RepositoryType>git</RepositoryType>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <PackageTags>dotnet;Avalonia;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
+        <Version>1.0.0</Version>
+
+        <DefineConstants>AVALONIA</DefineConstants>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>Icon.png</PackageIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </Content>
+        <None Include="..\..\..\Icon.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+            <Link>Icon.png</Link>
+        </None>
+    </ItemGroup>
+
+    <Import Project="..\..\Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems" Label="Shared" />
+
+</Project>
