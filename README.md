@@ -2,25 +2,31 @@
 
 <h1>
 
-Antelcat.Wpf.`{I18N}`
+Antelcat.`{I18N}`
 
 </h1>
 
-给WPF应用程序提供响应式的多语言支持。
+给.NET应用程序提供响应式的多语言支持。
 
 </div>
 
 <p align="center">
-    <img alt="dotnet-version" src="https://img.shields.io/badge/.NET-%3E%3D4.0-AE42F8.svg"/>
-    <img alt="csharp-version" src="https://img.shields.io/badge/C%23-latest-3BA93F.svg"/>
-    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.1.0-blue.svg"/>
+    <img alt="dotnet-version" src="https://img.shields.io/badge/WPF-%3E%3D4.0-2C896A.svg"/>
+<img alt="dotnet-version" src="https://img.shields.io/badge/Avalonia-%3E%3D11.0-AE42F8.svg"/>
+    <img alt="csharp-version" src="https://img.shields.io/badge/C%23-preview-3BA93F.svg"/>
+    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.0.0-blue.svg"/>
 </p>
 
 ---
 
 🇬🇧 [English](./README.en.md)
 
-## 示例
+## 🗔 受支持的平台
+
++ [WPF](https://github.com/dotnet/wpf)
++ [Avalonia](https://github.com/AvaloniaUI/Avalonia)
+
+## 📖 示例
 
 <div float="right">
     <img src="docs/demo.zh.png" width="45%"/>
@@ -31,10 +37,10 @@ Antelcat.Wpf.`{I18N}`
 
 ### 静态使用
 
-当你在项目中使用`.resx`文件作为语言文件时，你可以使用`Antelcat.Wpf.I18N.Attributes.ResourceKeysOfAttribute`来自动生成资源键：
+当你在项目中使用`.resx`文件作为语言文件时，你可以使用`Antelcat.I18N.Attributes.ResourceKeysOfAttribute`来自动生成资源键：
 
 ```csharp
-using Antelcat.Wpf.I18N.Attributes;
+using Antelcat.I18N.Attributes;
 
 namespace MyProject
 

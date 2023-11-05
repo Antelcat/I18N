@@ -2,25 +2,31 @@
 
 <h1>
 
-Antelcat.Wpf.`{I18N}`
+Antelcat.`{I18N}`
 
 </h1>
 
-Reactive language support for WPF applications.
+Reactive language support for .NET applications.
 
 </div>
 
 <p align="center">
-    <img alt="dotnet-version" src="https://img.shields.io/badge/.NET-%3E%3D4.0-AE42F8.svg"/>
-    <img alt="csharp-version" src="https://img.shields.io/badge/C%23-latest-3BA93F.svg"/>
-    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.1.0-blue.svg"/>
+    <img alt="dotnet-version" src="https://img.shields.io/badge/WPF-%3E%3D4.0-2C896A.svg"/>
+<img alt="dotnet-version" src="https://img.shields.io/badge/Avalonia-%3E%3D11.0-AE42F8.svg"/>
+    <img alt="csharp-version" src="https://img.shields.io/badge/C%23-preview-3BA93F.svg"/>
+    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.0.0-blue.svg"/>
 </p>
 
 ---
 
 🇨🇳 [中文版](./README.md)
 
-## Sample
+## 🗔 Supported Platforms
+
++ [WPF](https://github.com/dotnet/wpf)
++ [Avalonia](https://github.com/AvaloniaUI/Avalonia)
+
+## 📖 Sample
 
 <div float="right">
     <img src="docs/demo.zh.png" width="45%"/>
@@ -30,10 +36,10 @@ Reactive language support for WPF applications.
 
 ### Static using
 When using `.resx` language file in your project, you can 
-automatically generate resource keys by using `Antelcat.Wpf.I18N.Attributes.ResourceKeysOfAttribute`:
+automatically generate resource keys by using `Antelcat.I18N.Attributes.ResourceKeysOfAttribute`:
 
 ```csharp
-using Antelcat.Wpf.I18N.Attributes;
+using Antelcat.I18N.Attributes;
 
 namespace MyProject
 
