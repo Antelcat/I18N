@@ -9,24 +9,25 @@
       have exact matches in the other location. [...] Add lib or ref assemblies for the netstandard2.0 target framework."
       This happens because the package only includes an analyzer, and no binaries to reference at runtime at all.
     -->
-    <NoWarn>$(NoWarn);NU5128</NoWarn>
     <Authors>Antelcat</Authors>
-    <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
   </PropertyGroup>
 
   <!-- NuGet package info -->
   <PropertyGroup>
-    <Title>Antelcat.I18N.SourceGenerators</Title>
-    <Description>Source generators for Antelcat.I18N.</Description>
-    <PackageId>Antelcat.I18N.SourceGenerators</PackageId>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Antelcat/Antelcat.I18N</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>dotnet;net;netcore;netstandard;generator;roslyn;i18n;</PackageTags>
+    <Title>Antelcat.I18N.SourceGenerators</Title>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <DevelopmentDependency>true</DevelopmentDependency>
+    <PackageId>Antelcat.I18N.SourceGenerators</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright Antelcat. All rights reserved</Copyright>
+    <Description>Source generators for Antelcat.I18N.</Description>
+    <PackageTags>dotnet;net;netcore;netstandard;generator;roslyn;i18n;</PackageTags>
+    <PackageProjectUrl>https://github.com/Antelcat/Antelcat.I18N</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

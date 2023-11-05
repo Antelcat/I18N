@@ -6,48 +6,38 @@
             netcoreapp3.0-windows;
             net5.0-windows;
         </TargetFrameworks>
-
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <IsPackable>true</IsPackable>
         <LangVersion>preview</LangVersion>
 
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-        <IsRoslynComponent>true</IsRoslynComponent>
-        <RootNamespace>Antelcat.I18N.WPF</RootNamespace>
-        <PackageId>Antelcat.I18N.WPF</PackageId>
-        <Title>Antelcat.I18N.WPF</Title>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Description>Reactive language support for WPF applications when using .resx translate file.</Description>
-        <Copyright>Copyright Antelcat. All rights reserved</Copyright>
-        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N</PackageProjectUrl>
-        <PackageIcon>Icon.png</PackageIcon>
-        <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
-        <AssemblyVersion>2.0.0</AssemblyVersion>
-        <FileVersion>2.0.0</FileVersion>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Authors>Antelcat</Authors>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <RepositoryType>git</RepositoryType>
-        <PackageReleaseNotes>Reduce xaml declaration length; Support cs code translate.</PackageReleaseNotes>
-        <PackageTags>dotnet;WPF;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
         <Version>2.0.0</Version>
+        <FileVersion>2.0.0</FileVersion>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        
+        <Authors>Antelcat</Authors>
+        <Title>Antelcat.I18N.WPF</Title>
+        <PackageId>Antelcat.I18N.WPF</PackageId>
+        <RootNamespace>Antelcat.I18N.WPF</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <Copyright>Copyright Antelcat. All rights reserved</Copyright>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <PackageTags>dotnet;WPF;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
+        <Description>Reactive language support for WPF applications when using .resx translate file.</Description>
 
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N</PackageProjectUrl>
+        
+        <PackageIcon>Icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        
         <DefineConstants>WPF</DefineConstants>
     </PropertyGroup>
 
-    <ItemGroup Label="Package">
-        <None Include="..\..\..\Icon.png">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-            <Link>Icon.png</Link>
-        </None>
-        <!--No longer pack in-->
-        <!--<None Include="..\..\SourceGenerators\bin\$(Configuration)\netstandard2.0\Antelcat.Wpf.I18N.SourceGenerators.dll" 
-              PackagePath="analyzers\dotnet\cs" 
-              Pack="true" 
-              Visible="false"/>-->
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net45" Version="1.0.3">
@@ -62,6 +52,11 @@
             <Pack>True</Pack>
             <PackagePath></PackagePath>
         </Content>
+        <None Include="..\..\..\Icon.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+            <Link>Icon.png</Link>
+        </None>
     </ItemGroup>
 
     <Import Project="..\..\Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems" Label="Shared" />
