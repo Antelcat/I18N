@@ -47,6 +47,9 @@
             <PackagePath></PackagePath>
             <Link>Icon.png</Link>
         </None>
+        <None Include="..\..\Antelcat.I18N.Shared\I18NExtension.cs">
+            <Link>I18NExtension.cs</Link>
+        </None>
     </ItemGroup>
 
     <Import Project="..\..\Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems" Label="Shared" />
