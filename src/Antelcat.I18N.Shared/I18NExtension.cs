@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Diagnostics;
+using Antelcat.Shared.I18N;
+
 #if WPF
 using MicrosoftPleaseFixBindingCollection = System.Collections.ObjectModel.Collection<System.Windows.Data.BindingBase>;
 using System.Collections.Generic;
@@ -40,8 +42,8 @@ namespace Avalonia.Markup.Xaml.MarkupExtensions;
 public class I18NExtension : MarkupExtension, IAddChild
 {
     private static readonly IDictionary<string, object?> Target;
-    private static readonly ResourceChangedNotifier      Notifier;
-    private static event CultureChangedHandler?          CultureChanged;
+    private static readonly ResourceChangedNotifier Notifier;
+    private static event CultureChangedHandler? CultureChanged;
 
     private delegate void CultureChangedHandler(CultureInfo culture);
 
@@ -56,13 +58,13 @@ public class I18NExtension : MarkupExtension, IAddChild
     static I18NExtension()
     {
         var target = new ExpandoObject();
-        Target   = target;
+        Target = target;
         Notifier = new ResourceChangedNotifier(target);
 #if AVALONIA
         ExpandoObjectPropertyAccessorPlugin.Register(target); //Register accessor plugin for ExpandoObject
         var updateActions = new List<Action>();
 #endif
-        foreach (var type in Assembly.GetEntryAssembly()?.GetTypes() ?? Type.EmptyTypes)
+        foreach (var type in (I18NAssemblyProvider.Assembly ?? Assembly.GetEntryAssembly())?.GetTypes() ?? Type.EmptyTypes)
         {
             if (!type.IsSubclassOf(typeof(ResourceProviderBase))) continue;
 #if WPF
@@ -104,7 +106,6 @@ public class I18NExtension : MarkupExtension, IAddChild
 #endif
     );
 
-
     private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached
 #if AVALONIA
         <I18NExtension, DependencyObject, DependencyProperty>
@@ -125,7 +126,7 @@ public class I18NExtension : MarkupExtension, IAddChild
     private static DependencyProperty GetTargetProperty(DependencyObject element)
         => (DependencyProperty)element.GetValue(TargetPropertyProperty)!;
 
-    #endregion
+    #endregion Target
 
     public static string? Translate(string key, string? fallbackValue = null)
     {
@@ -176,7 +177,7 @@ public class I18NExtension : MarkupExtension, IAddChild
     private readonly DependencyObject proxy = new();
 
     /// <summary>
-    /// Resource key, accepts <see cref="string"/> or <see cref="Binding"/>.   
+    /// Resource key, accepts <see cref="string"/> or <see cref="Binding"/>.
     /// If Keys not null, Key will be the template of <see cref="string.Format(string,object[])"/>
     /// </summary>
     [DefaultValue(null)]
@@ -200,7 +201,8 @@ public class I18NExtension : MarkupExtension, IAddChild
 #elif AVALONIA
         Collection<IBinding>
 #endif
-        Keys { get; } = new();
+        Keys
+    { get; } = new();
 
     /// <summary>
     /// Same as <see cref="Binding"/>.<see cref="Binding.Converter"/>
@@ -227,8 +229,8 @@ public class I18NExtension : MarkupExtension, IAddChild
         {
             keyBinding = new Binding(key)
             {
-                Source        = Target,
-                Mode          = BindingMode.OneWay,
+                Source = Target,
+                Mode = BindingMode.OneWay,
                 FallbackValue = key,
 #if AVALONIA
                 Priority = BindingPriority.LocalValue
@@ -239,7 +241,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if WPF
                 keyBinding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
 #endif
-                keyBinding.Converter          = Converter;
+                keyBinding.Converter = Converter;
                 keyBinding.ConverterParameter = ConverterParameter;
                 return keyBinding;
             }
@@ -247,7 +249,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         var ret = new MultiBinding
         {
-            Mode               = BindingMode.OneWay,
+            Mode = BindingMode.OneWay,
             ConverterParameter = ConverterParameter,
 #if WPF
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
@@ -260,7 +262,7 @@ public class I18NExtension : MarkupExtension, IAddChild
         var source = new Binding(nameof(Notifier.Source))
         {
             Source = Notifier,
-            Mode   = BindingMode.OneWay
+            Mode = BindingMode.OneWay
         };
         var isBindingList = new List<bool>();
         ret.Bindings.Add(source);
@@ -275,14 +277,16 @@ public class I18NExtension : MarkupExtension, IAddChild
                         throw new ArgumentNullException($"Language key should be specified");
                     ret.Bindings.Add(new Binding(languageBinding.Key)
                     {
-                        Source        = Target,
-                        Mode          = BindingMode.OneWay,
+                        Source = Target,
+                        Mode = BindingMode.OneWay,
                         FallbackValue = languageBinding.Key
                     });
                     break;
+
                 case BindingBase propBinding:
                     ret.Bindings.Add(propBinding);
                     break;
+
                 default:
                     throw new ArgumentException(
                         $"{nameof(Keys)} only accept {typeof(LanguageBinding)} or {typeof(Binding)} current type is {bindingBase.GetType()}");
@@ -293,7 +297,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 
         ret.Converter = new MultiValueLangConverter(isBindingList.ToArray())
         {
-            Converter          = Converter,
+            Converter = Converter,
             ConverterParameter = ConverterParameter
         };
         return ret;
@@ -311,7 +315,7 @@ public class I18NExtension : MarkupExtension, IAddChild
 #if WPF
             return this;
 #elif AVALONIA
-        { 
+        {
             // Avalonia please fix TargetObject not match
             if (provideValueTarget.TargetObject is not I18NExtension) return this;
             var reflect = provideValueTarget.GetType().GetField("ParentsStack");
@@ -348,24 +352,23 @@ public class I18NExtension : MarkupExtension, IAddChild
             ;
     }
 
-
     private void I18NExtension_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
 #if WPF
         switch (sender)
         {
             case FrameworkElement element:
-            {
-                element.DataContextChanged -= I18NExtension_DataContextChanged;
-                ResetBinding(element);
-                break;
-            }
+                {
+                    element.DataContextChanged -= I18NExtension_DataContextChanged;
+                    ResetBinding(element);
+                    break;
+                }
             case FrameworkContentElement element:
-            {
-                element.DataContextChanged -= I18NExtension_DataContextChanged;
-                ResetBinding(element);
-                break;
-            }
+                {
+                    element.DataContextChanged -= I18NExtension_DataContextChanged;
+                    ResetBinding(element);
+                    break;
+                }
         }
 #elif AVALONIA
         if (sender is not StyledElement element) return;
@@ -383,6 +386,7 @@ public class I18NExtension : MarkupExtension, IAddChild
                 SetTargetProperty(element, targetProperty);
                 element.DataContextChanged += I18NExtension_DataContextChanged;
                 return;
+
             case FrameworkElement element:
                 SetTargetProperty(element, targetProperty);
                 element.DataContextChanged += I18NExtension_DataContextChanged;
@@ -408,7 +412,6 @@ public class I18NExtension : MarkupExtension, IAddChild
 #endif
     }
 
-
     public void AddChild(object value)
     {
         if (value is not Binding binding) return;
@@ -419,7 +422,6 @@ public class I18NExtension : MarkupExtension, IAddChild
     {
         Keys.Add(new LanguageBinding(key));
     }
-
 
     /// <summary>
     /// use <see cref="string.Format(string,object[])"/> to generate final text
@@ -432,8 +434,8 @@ public class I18NExtension : MarkupExtension, IAddChild
 #endif
             isBindingList) : IMultiValueConverter
     {
-        public IValueConverter? Converter          { get; set; }
-        public object?          ConverterParameter { get; set; }
+        public IValueConverter? Converter { get; set; }
+        public object? ConverterParameter { get; set; }
 
         public object? Convert(
 #if WPF
