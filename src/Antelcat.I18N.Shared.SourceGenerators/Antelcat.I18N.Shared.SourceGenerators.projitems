@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Generators\AttributeDetectBaseGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Generators\ModuleInitializerGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Generators\ResourceKeysGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Global.cs" />
   </ItemGroup>

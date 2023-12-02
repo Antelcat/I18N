@@ -3,10 +3,10 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using Antelcat.I18N.WPF.Demo.Models;
+using Antelcat.I18N.WPF.Library.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Antelcat.I18N.WPF.Demo.ViewModels;
+namespace Antelcat.I18N.WPF.Library.ViewModels;
 
 public partial class ViewModel : ObservableObject
 {
@@ -34,9 +34,9 @@ public partial class ViewModel : ObservableObject
         new("en")
     };
 
-    public IList<string> AvailableKeys { get; } =
+    public IEnumerable<string> AvailableKeys { get; } =
         typeof(LangKeys)
-            .GetFields(BindingFlags.Static | BindingFlags.Public)
+            .GetProperties(BindingFlags.Static | BindingFlags.Public)
             .Select(x => x.Name)
             .ToList();
     

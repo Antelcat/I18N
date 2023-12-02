@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Internal;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Antelcat.I18N.WPF.SourceGenerators.Generators;
@@ -15,7 +14,8 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
     private const string Attribute            = $"{Global.Namespace}.Attributes.ResourceKeysOfAttribute";
     private const string CultureInfo          = $"global::{nameof(System)}.{nameof(System.Globalization)}.{nameof(CultureInfo)}";
     private const string ResourceProviderBase = $"global::{Global.Namespace}.Abstractions.ResourceProviderBase";
-
+    private const string ModuleInitializer = $"global::System.Runtime.CompilerServices.ModuleInitializerAttribute";
+    
     private static readonly string[] Exceptions =
     {
         "resourceMan",
@@ -47,52 +47,57 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                         .WithLeadingTrivia(syntaxTriviaList)
                         .AddMembers(
                             ClassDeclaration(generateCtx.TargetSymbol.Name)
-                            .AddModifiers(Token(SyntaxKind.PartialKeyword))
-                            .AddMembers(
-                                names.Select(x =>
-                                        ParseMemberDeclaration(
-                                            $"""
-                                             /// <summary>
-                                             /// {x}
-                                             /// </summary>
-                                             public static string {x} = nameof({x});
-                                             """
-                                        )!)
-                                    .ToArray())
-                            .AddMembers(
-                                ClassDeclaration(className)
-                                    .AddModifiers(Token(SyntaxKind.PrivateKeyword))
-                                    .AddBaseListTypes(SimpleBaseType(ParseTypeName(ResourceProviderBase)))
-                                    .AddMembers(ParseMemberDeclaration(
-                                        $$"""
-                                          public override {{CultureInfo}}? Culture
-                                          {
-                                              get => {{targetFullName}}.Culture;
-                                              set
-                                              {
-                                                  if (value == null) return;
-                                                  if (Equals({{targetFullName}}.Culture?.EnglishName, value.EnglishName)) return;
-                                                  {{targetFullName}}.Culture = value;
-                                                  UpdateSource();
-                                                  OnChangeCompleted();
-                                              }
-                                          }
-                                          """
-                                        )!)
-                                    .AddMembers(ParseMemberDeclaration(
-                                        $$"""
-                                          private void UpdateSource()
-                                          {
-                                          {{string.Concat(names.Select(x => 
-                                              $"\tOnPropertyChanged(nameof({x}));\n"
-                                          ))}}
-                                          }
-                                          """
-                                        )!)
-                                    .AddMembers(names.Select(x =>
-                                            ParseMemberDeclaration($"public string {x} => {targetFullName}.{x};")!)
+                                .AddModifiers(Token(SyntaxKind.PartialKeyword))
+                                .AddMembers(
+                                    names.Select(x =>
+                                            ParseMemberDeclaration(
+                                                $"""
+                                                 /// <summary>
+                                                 /// {x}
+                                                 /// </summary>
+                                                 public static string {x} => nameof({x});
+                                                 """
+                                            )!)
                                         .ToArray())
-                            )
+                                .AddMembers(
+                                    ClassDeclaration(className)
+                                        .AddModifiers(SyntaxKind.InternalKeyword)
+                                        .AddBaseListTypes(ResourceProviderBase)
+                                        .AddMembers(
+                                            $$"""
+                                              public override {{CultureInfo}}? Culture
+                                              {
+                                                  get => {{targetFullName}}.Culture;
+                                                  set
+                                                  {
+                                                      if (value == null) return;
+                                                      if (Equals({{targetFullName}}.Culture?.EnglishName, value.EnglishName)) return;
+                                                      {{targetFullName}}.Culture = value;
+                                                      UpdateSource();
+                                                      OnChangeCompleted();
+                                                  }
+                                              }
+                                              """,
+                                            $$"""
+                                              private void UpdateSource()
+                                              {
+                                              {{string.Concat(names.Select(x =>
+                                                  $"\tOnPropertyChanged(nameof({x}));\n"
+                                              ))}}
+                                              }
+                                              """,
+                                            $$"""
+                                             [{{ModuleInitializer}}]
+                                             public static void Initialize()
+                                             {
+                                                 RegisterProvider(new {{className}}());
+                                             }
+                                             """
+                                        )
+                                        .AddMembers(names.Select(x =>
+                                                $"public string {x} => {targetFullName}.{x};")
+                                            .ToArray())
+                                )
                         )
                 ).NormalizeWhitespace();
           

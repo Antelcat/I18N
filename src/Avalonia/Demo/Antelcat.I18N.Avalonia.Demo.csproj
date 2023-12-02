@@ -12,6 +12,7 @@
         <Company>Antelcat</Company>
         <Product>Antelcat.Avalonia.I18N.Demo-1.0.0</Product>
         <ApplicationIcon>..\..\Icon.ico</ApplicationIcon>
+        <PublishAot>true</PublishAot>
     </PropertyGroup>
     <ItemGroup>
         <!--This helps with theme dll-s trimming.

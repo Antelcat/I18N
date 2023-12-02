@@ -34,7 +34,7 @@ public partial class ViewModel : ObservableObject
 
     public IList<string> AvailableKeys { get; } =
         typeof(LangKeys)
-            .GetFields(BindingFlags.Static | BindingFlags.Public)
+            .GetProperties(BindingFlags.Static | BindingFlags.Public)
             .Select(x => x.Name)
             .ToList();
     

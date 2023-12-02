@@ -1,24 +1,15 @@
 ﻿using System.ComponentModel;
 using System.Dynamic;
 using System.Globalization;
-using System.Reflection;
-using System.Runtime.Serialization;
 using System.Diagnostics;
 #if WPF
-using MicrosoftPleaseFixBindingCollection = System.Collections.ObjectModel.Collection<System.Windows.Data.BindingBase>;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Data;
 using System.Windows.Markup;
 #elif AVALONIA
-using System.Collections.ObjectModel;
+using DependencyObject = Avalonia.StyledElement;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Metadata;
-using Avalonia.Threading;
-using DependencyObject = Avalonia.AvaloniaObject;
-using DependencyProperty = Avalonia.AvaloniaProperty;
-using DependencyPropertyChangedEventArgs = System.EventArgs;
 #endif
 
 using Antelcat.I18N.Abstractions;
@@ -30,14 +21,8 @@ namespace System.Windows;
 namespace Avalonia.Markup.Xaml.MarkupExtensions;
 #endif
 
-#if WPF
-[MarkupExtensionReturnType(typeof(string))]
-[ContentProperty(nameof(Keys))]
-[Localizability(LocalizationCategory.None, Modifiability = Modifiability.Unmodifiable,
-    Readability = Readability.Unreadable)]
-#endif
 [DebuggerDisplay("Key = {Key}, Keys = {Keys}")]
-public class I18NExtension : MarkupExtension, IAddChild
+public partial class I18NExtension : MarkupExtension, IAddChild
 {
     private static readonly IDictionary<string, object?> Target;
     private static readonly ResourceChangedNotifier      Notifier;
@@ -53,80 +38,6 @@ public class I18NExtension : MarkupExtension, IAddChild
         set => CultureChanged?.Invoke(value);
     }
 
-    static I18NExtension()
-    {
-        var target = new ExpandoObject();
-        Target   = target;
-        Notifier = new ResourceChangedNotifier(target);
-#if AVALONIA
-        ExpandoObjectPropertyAccessorPlugin.Register(target); //Register accessor plugin for ExpandoObject
-        var updateActions = new List<Action>();
-#endif
-        foreach (var type in Assembly.GetEntryAssembly()?.GetTypes() ?? Type.EmptyTypes)
-        {
-            if (!type.IsSubclassOf(typeof(ResourceProviderBase))) continue;
-#if WPF
-            RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, false,
-                out _);
-#elif AVALONIA
-            if (RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, true,
-                    out var redo))
-            {
-                updateActions.Add(redo!);
-            }
-#endif
-        }
-#if AVALONIA
-        Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            foreach (var action in updateActions)
-            {
-                action();
-            }
-            Notifier.ForceUpdate();
-        });
-#endif
-    }
-
-    #region Target
-
-    private static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached
-#if AVALONIA
-        <I18NExtension, DependencyObject, object>
-#endif
-    (
-        nameof(Key)
-#if WPF
-        ,
-        typeof(object),
-        typeof(I18NExtension),
-        new PropertyMetadata(default)
-#endif
-    );
-
-
-    private static readonly DependencyProperty TargetPropertyProperty = DependencyProperty.RegisterAttached
-#if AVALONIA
-        <I18NExtension, DependencyObject, DependencyProperty>
-#endif
-    (
-        "TargetProperty"
-#if WPF
-        ,
-        typeof(DependencyProperty),
-        typeof(I18NExtension),
-        new PropertyMetadata(default(DependencyProperty))
-#endif
-    );
-
-    private static void SetTargetProperty(DependencyObject element, DependencyProperty value)
-        => element.SetValue(TargetPropertyProperty, value);
-
-    private static DependencyProperty GetTargetProperty(DependencyObject element)
-        => (DependencyProperty)element.GetValue(TargetPropertyProperty)!;
-
-    #endregion
-
     public static string? Translate(string key, string? fallbackValue = null)
     {
         return Target.TryGetValue(key, out var value)
@@ -134,29 +45,27 @@ public class I18NExtension : MarkupExtension, IAddChild
             : fallbackValue;
     }
 
-    private static bool RegisterLanguageSource(ResourceProviderBase? provider,
-        bool lazyInit,
-        out Action? lazyInitAction)
+    private static Action RegisterLanguageSource(ResourceProviderBase provider,
+        bool lazyInit)
     {
-        lazyInitAction = null;
-        if (provider is null) return false;
-
         CultureChanged += culture => provider.Culture = culture;
 
         var props = provider.GetType().GetProperties();
 
         provider.PropertyChanged += (o, e) => Update(o!, e.PropertyName!);
         Notifier.RegisterProvider(provider);
-        lazyInitAction = () =>
+
+        void LazyInitAction()
         {
             foreach (var prop in props) Update(provider, prop.Name);
-        };
-        if (!lazyInit)
-        {
-            lazyInitAction();
         }
 
-        return true;
+        if (!lazyInit)
+        {
+            LazyInitAction();
+        }
+
+        return LazyInitAction;
 
         void Update(object source, string propertyName)
         {
@@ -173,8 +82,6 @@ public class I18NExtension : MarkupExtension, IAddChild
     public I18NExtension(string key) => Key = key;
     public I18NExtension(BindingBase binding) => Key = binding;
 
-    private readonly DependencyObject proxy = new();
-
     /// <summary>
     /// Resource key, accepts <see cref="string"/> or <see cref="Binding"/>.   
     /// If Keys not null, Key will be the template of <see cref="string.Format(string,object[])"/>
@@ -185,22 +92,6 @@ public class I18NExtension : MarkupExtension, IAddChild
         get => proxy.GetValue(KeyProperty);
         set => proxy.SetValue(KeyProperty, value);
     }
-
-    /// <summary>
-    /// The args of <see cref="string.Format(string,object[])"/>, accepts <see cref="LanguageBinding"/> or <see cref="Binding"/>
-    /// </summary>
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-    [DefaultValue(null)]
-#if AVALONIA
-    [Content]
-#endif
-    public
-#if WPF
-        MicrosoftPleaseFixBindingCollection
-#elif AVALONIA
-        Collection<IBinding>
-#endif
-        Keys { get; } = new();
 
     /// <summary>
     /// Same as <see cref="Binding"/>.<see cref="Binding.Converter"/>
@@ -214,48 +105,9 @@ public class I18NExtension : MarkupExtension, IAddChild
     [DefaultValue(null)]
     public object? ConverterParameter { get; set; }
 
-    private
-#if WPF
-        BindingBase
-#elif AVALONIA
-        IBinding
-#endif
-        CreateBinding()
+    private MultiBinding MapMultiBinding(Binding? keyBinding)
     {
-        Binding? keyBinding = null;
-        if (Key is string key)
-        {
-            keyBinding = new Binding(key)
-            {
-                Source        = Target,
-                Mode          = BindingMode.OneWay,
-                FallbackValue = key,
-#if AVALONIA
-                Priority = BindingPriority.LocalValue
-#endif
-            };
-            if (Keys is not { Count: > 0 })
-            {
-#if WPF
-                keyBinding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
-#endif
-                keyBinding.Converter          = Converter;
-                keyBinding.ConverterParameter = ConverterParameter;
-                return keyBinding;
-            }
-        }
-
-        var ret = new MultiBinding
-        {
-            Mode               = BindingMode.OneWay,
-            ConverterParameter = ConverterParameter,
-#if WPF
-            UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
-#elif AVALONIA
-            Priority = BindingPriority.LocalValue,
-            TargetNullValue = string.Empty
-#endif
-        };
+        var ret = CreateMultiBinding();
 
         var source = new Binding(nameof(Notifier.Source))
         {
@@ -299,101 +151,16 @@ public class I18NExtension : MarkupExtension, IAddChild
         return ret;
     }
 
-    public override object ProvideValue(IServiceProvider serviceProvider)
+    private void CheckArgument()
     {
-        if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
-            return this;
-#if WPF
-        if (provideValueTarget.TargetObject.GetType().FullName ==
-            $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
-#endif
-        if (provideValueTarget.TargetObject is not DependencyObject targetObject)
-#if WPF
-            return this;
-#elif AVALONIA
-        { 
-            // Avalonia please fix TargetObject not match
-            if (provideValueTarget.TargetObject is not I18NExtension) return this;
-            var reflect = provideValueTarget.GetType().GetField("ParentsStack");
-            if (reflect is null) return this;
-            if (reflect.GetValue(provideValueTarget) is not IList<object> parentsStack) return this;
-            targetObject = (parentsStack.Last() as DependencyObject)!;
-        }
-#endif
-        if (provideValueTarget.TargetProperty is not DependencyProperty targetProperty) return this;
-
         if (Key is null && Keys.Count == 0)
             throw new ArgumentNullException($"{nameof(Key)} or {nameof(Keys)} cannot both be null");
-        if (Key is null && Keys is { Count: 1 })
-        {
-            Key = Keys[0];
-            Keys.Clear();
-        }
-
-        var bindingBase = CreateBinding();
-#if WPF
-        BindingOperations.SetBinding
-            (targetObject, targetProperty, bindingBase);
-#endif
-
-        if (bindingBase is MultiBinding)
-        {
-            SetTarget(targetObject, targetProperty);
-        }
-
-        return bindingBase
-#if WPF
-                .ProvideValue(serviceProvider)
-#endif
-            ;
+        if (Key is not null || Keys is not { Count: 1 }) return;
+        Key = Keys[0];
+        Keys.Clear();
     }
-
-
-    private void I18NExtension_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-#if WPF
-        switch (sender)
-        {
-            case FrameworkElement element:
-            {
-                element.DataContextChanged -= I18NExtension_DataContextChanged;
-                ResetBinding(element);
-                break;
-            }
-            case FrameworkContentElement element:
-            {
-                element.DataContextChanged -= I18NExtension_DataContextChanged;
-                ResetBinding(element);
-                break;
-            }
-        }
-#elif AVALONIA
-        if (sender is not StyledElement element) return;
-        element.DataContextChanged -= I18NExtension_DataContextChanged;
-        ResetBinding(element);
-#endif
-    }
-
-    private void SetTarget(DependencyObject targetObject, DependencyProperty targetProperty)
-    {
-#if WPF
-        switch (targetObject)
-        {
-            case FrameworkContentElement element:
-                SetTargetProperty(element, targetProperty);
-                element.DataContextChanged += I18NExtension_DataContextChanged;
-                return;
-            case FrameworkElement element:
-                SetTargetProperty(element, targetProperty);
-                element.DataContextChanged += I18NExtension_DataContextChanged;
-                return;
-        }
-#elif AVALONIA
-        if (targetObject is not StyledElement element) return;
-        SetTargetProperty(element, targetProperty);
-        element.DataContextChanged += I18NExtension_DataContextChanged;
-#endif
-    }
+    
+    public override object ProvideValue(IServiceProvider serviceProvider) => ProvideValueInternal(serviceProvider);
 
     private void ResetBinding(DependencyObject element)
     {
@@ -401,13 +168,8 @@ public class I18NExtension : MarkupExtension, IAddChild
         var targetProperty = GetTargetProperty(element);
         SetTargetProperty(element, null!);
         var binding = CreateBinding();
-#if WPF
-        BindingOperations.SetBinding(element, targetProperty, binding);
-#elif AVALONIA
-        element.Bind(targetProperty, binding);
-#endif
+        SetBinding(element, targetProperty, binding);
     }
-
 
     public void AddChild(object value)
     {
@@ -484,17 +246,14 @@ public class I18NExtension : MarkupExtension, IAddChild
                     : key;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
     }
 
     /// <summary>
     /// <see cref="ResourceChangedNotifier"/> is singleton notifier for
     /// multibinding in case of avoid extra property notifier
     /// </summary>
-    private class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
+    private partial class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
     {
         public ExpandoObject Source => source;
 
@@ -514,9 +273,5 @@ public class I18NExtension : MarkupExtension, IAddChild
         }
 
         private ResourceProviderBase? lastRegister;
-
-#if AVALONIA
-        public void ForceUpdate() => OnPropertyChanged(nameof(Source));
-#endif
     }
 }

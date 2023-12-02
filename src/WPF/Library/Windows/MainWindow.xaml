@@ -1,13 +1,13 @@
-﻿<win:MicrosoftPleaseFixAutogenWindow
-    x:Class="Antelcat.I18N.WPF.Demo.Windows.MainWindow"
+﻿<windows:MicrosoftPleaseFixAutogenWindow
+    x:Class="Antelcat.I18N.WPF.Library.Windows.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:m="clr-namespace:Antelcat.I18N.WPF.Demo.Models"
-    xmlns:win="clr-namespace:Antelcat.I18N.WPF.Demo.Windows"
-    xmlns:vm="clr-namespace:Antelcat.I18N.WPF.Demo.ViewModels"
+    xmlns:m="clr-namespace:Antelcat.I18N.WPF.Library.Models"
+    xmlns:vm="clr-namespace:Antelcat.I18N.WPF.Library.ViewModels"
+    xmlns:windows="clr-namespace:Antelcat.I18N.WPF.Library.Windows"
     mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ViewModel}"
     WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
@@ -118,4 +118,4 @@
         </ui:Card>
     </Border>
 
-</win:MicrosoftPleaseFixAutogenWindow>
+</windows:MicrosoftPleaseFixAutogenWindow>

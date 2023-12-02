@@ -19,37 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-    
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
-        <PackageReference Include="WPF-UI" Version="2.1.0"/>
+      <ProjectReference Include="..\Library\Antelcat.I18N.WPF.Library.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\SourceGenerators\Antelcat.I18N.SourceGenerators.csproj" 
-                          ReferenceOutputAssembly="false" 
-                          OutputItemType="Analyzer"/>
-        <ProjectReference Include="..\WPF\Antelcat.I18N.WPF.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="..\Shared.Demo\Properties\Resources.resx">
-            <Link>Properties\Resources.resx</Link>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-        <EmbeddedResource Include="..\Shared.Demo\Properties\Resources.zh.resx">
-            <Link>Properties\Resources.zh.resx</Link>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </EmbeddedResource>
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <Compile Include="..\Shared.Demo\Properties\Resources.Designer.cs">
-        <Link>Properties\Resources.Designer.cs</Link>
-      </Compile>
-    </ItemGroup>
-
-
-    <Import Project="..\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.projitems" Label="Shared"/>
 
 </Project>

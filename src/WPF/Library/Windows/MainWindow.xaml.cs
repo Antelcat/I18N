@@ -1,6 +1,6 @@
-﻿using Antelcat.I18N.WPF.Demo.ViewModels;
+﻿using Antelcat.I18N.WPF.Library.ViewModels;
 
-namespace Antelcat.I18N.WPF.Demo.Windows
+namespace Antelcat.I18N.WPF.Library.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -27,10 +27,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference OutputItemType="Analyzer" 
-                        ReferenceOutputAssembly="false" 
-                        Include="..\..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Extensions.SourceGenerators\Feast.CodeAnalysis.Extensions.SourceGenerators.csproj" />
+      <ProjectReference
+              OutputItemType="Analyzer"
+              ReferenceOutputAssembly="false"
+              Include="..\..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.SourceGenerators\Feast.CodeAnalysis.SourceGenerators.csproj" />
     </ItemGroup>
+
+ 
 
     <Import Project="..\Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems" Label="Shared" />
 
