@@ -112,7 +112,6 @@ Global
 		Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{28f904c6-3b6d-4140-90ff-62a6bd87b0c6}*SharedItemsImports = 13
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{3c5623f8-1e58-456e-a386-11b7fba42fa0}*SharedItemsImports = 5
-		WPF\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.projitems*{50ba267b-188a-46d3-b957-878790af1e76}*SharedItemsImports = 13
 		WPF\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.projitems*{5fb0464b-dd43-4c4f-8f03-c0f8ceeb520e}*SharedItemsImports = 5
 		Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems*{612d6836-4c01-48aa-a3bd-726adde0f101}*SharedItemsImports = 5
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{c0105dd2-cc54-47ab-9122-eea1dc73e61e}*SharedItemsImports = 5
