@@ -22,17 +22,17 @@ public partial class I18NExtension
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
 
-        lock (ResourceProviderBase.Providers)
+        lock (ResourceProvider.Providers)
         {
-            foreach (var provider in ResourceProviderBase.Providers)
+            foreach (var provider in ResourceProvider.Providers)
             {
                 RegisterLanguageSource(provider, false);
             }
 
-            ResourceProviderBase.Providers.CollectionChanged += (o, e) =>
+            ResourceProvider.Providers.CollectionChanged += (o, e) =>
             {
                 if(e.Action != NotifyCollectionChangedAction.Add)return;
-                foreach (var provider in e.NewItems.OfType<ResourceProviderBase>())
+                foreach (var provider in e.NewItems.OfType<ResourceProvider>())
                 {
                     RegisterLanguageSource(provider, false);
                 }

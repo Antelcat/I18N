@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 
 namespace Antelcat.I18N.Abstractions;
 
-public abstract class ResourceProviderBase : INotifyPropertyChanged
+public abstract class ResourceProvider : INotifyPropertyChanged
 {
-    internal static readonly ObservableCollection<ResourceProviderBase> Providers = new();
+    public static readonly ObservableCollection<ResourceProvider> Providers = new();
 
-    protected static void RegisterProvider(ResourceProviderBase provider)
+    protected static void RegisterProvider(ResourceProvider provider)
     {
         lock (Providers)
         {
@@ -24,9 +24,9 @@ public abstract class ResourceProviderBase : INotifyPropertyChanged
     public event StatementCompletedEventHandler? ChangeCompleted;
     
     protected void OnPropertyChanged(
-    #if NET45_OR_GREATER || NET || NETSTANDARD
+#if NET45_OR_GREATER || NET || NETSTANDARD
         [CallerMemberName] 
-    #endif
+#endif
         string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     

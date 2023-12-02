@@ -1,6 +1,10 @@
 ﻿using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using Antelcat.I18N.Abstractions;
+using Antelcat.I18N.Attributes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,10 +15,10 @@ namespace Antelcat.I18N.WPF.SourceGenerators.Generators;
 [Generator(LanguageNames.CSharp)]
 internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
 {
-    private const string Attribute            = $"{Global.Namespace}.Attributes.ResourceKeysOfAttribute";
-    private const string CultureInfo          = $"global::{nameof(System)}.{nameof(System.Globalization)}.{nameof(CultureInfo)}";
-    private const string ResourceProviderBase = $"global::{Global.Namespace}.Abstractions.ResourceProviderBase";
-    private const string ModuleInitializer = $"global::System.Runtime.CompilerServices.ModuleInitializerAttribute";
+    private static readonly string Attribute = $"{typeof(ResourceKeysOfAttribute).FullName}";
+    private static readonly string CultureInfo          = $"global::{typeof(CultureInfo).FullName}";
+    private static readonly string ResourceProvider = $"global::{typeof(ResourceProvider).FullName}";
+    private static readonly string ModuleInitializer    = $"global::{typeof(ModuleInitializerAttribute).FullName}";
     
     private static readonly string[] Exceptions =
     {
@@ -62,7 +66,7 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                 .AddMembers(
                                     ClassDeclaration(className)
                                         .AddModifiers(SyntaxKind.InternalKeyword)
-                                        .AddBaseListTypes(ResourceProviderBase)
+                                        .AddBaseListTypes(ResourceProvider)
                                         .AddMembers(
                                             $$"""
                                               public override {{CultureInfo}}? Culture

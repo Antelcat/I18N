@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Shared", "Antelcat.I18N.Shared\Antelcat.I18N.Shared.shproj", "{28F904C6-3B6D-4140-90FF-62A6BD87B0C6}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Shared.SourceGenerators", "Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.shproj", "{15D71DC2-F53D-42EC-85E4-4982F6E351A5}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Shared.SourceGenerators", "Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.shproj", "{15D71DC2-F53D-42EC-85E4-4982F6E351A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F86CB7CC-4C0C-40AA-ABF0-282D7B15B38E}"
 EndProject
@@ -37,13 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Avalonia", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Avalonia.Demo", "Avalonia\Demo\Antelcat.I18N.Avalonia.Demo.csproj", "{4BDD0948-3E41-4432-8EC2-395C3B694A3A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package", "Package", "{F001775B-BD74-4374-AB39-550051F4536A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.SourceGenerators.Package", "SourceGenerators.Package\Antelcat.I18N.SourceGenerators.Package.msbuildproj", "{84E016F9-3F0B-4843-A022-8AF716C3A32F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.SourceGenerators", "..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.SourceGenerators\Feast.CodeAnalysis.SourceGenerators.csproj", "{D02B1059-583A-42FD-8D7F-4BFBBBE439D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.WPF.Library", "WPF\Library\Antelcat.I18N.WPF.Library.csproj", "{5FB0464B-DD43-4C4F-8F03-C0F8CEEB520E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Abstractions", "Antelcat.I18N.Abstractions\Antelcat.I18N.Abstractions.csproj", "{2BA15A8E-6C3E-4B33-BFF4-D9255202D71D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Abstractions.Shared", "Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.shproj", "{F3F24657-983C-46FF-B928-ADD03557C562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,10 +75,6 @@ Global
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{84E016F9-3F0B-4843-A022-8AF716C3A32F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D02B1059-583A-42FD-8D7F-4BFBBBE439D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D02B1059-583A-42FD-8D7F-4BFBBBE439D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D02B1059-583A-42FD-8D7F-4BFBBBE439D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,6 +83,10 @@ Global
 		{5FB0464B-DD43-4C4F-8F03-C0F8CEEB520E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FB0464B-DD43-4C4F-8F03-C0F8CEEB520E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FB0464B-DD43-4C4F-8F03-C0F8CEEB520E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BA15A8E-6C3E-4B33-BFF4-D9255202D71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BA15A8E-6C3E-4B33-BFF4-D9255202D71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BA15A8E-6C3E-4B33-BFF4-D9255202D71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BA15A8E-6C3E-4B33-BFF4-D9255202D71D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,9 +101,9 @@ Global
 		{420430D4-4A39-4310-97B6-F9029575454B} = {E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}
 		{C0105DD2-CC54-47AB-9122-EEA1DC73E61E} = {8122301E-0585-46DC-B4E5-3B6F12F8E237}
 		{4BDD0948-3E41-4432-8EC2-395C3B694A3A} = {8122301E-0585-46DC-B4E5-3B6F12F8E237}
-		{84E016F9-3F0B-4843-A022-8AF716C3A32F} = {F001775B-BD74-4374-AB39-550051F4536A}
 		{D02B1059-583A-42FD-8D7F-4BFBBBE439D7} = {2835EE7C-9F76-45A2-9754-E86902623A81}
 		{5FB0464B-DD43-4C4F-8F03-C0F8CEEB520E} = {E03F942D-C1C1-4847-BA7D-5186A6CEAEE1}
+		{F3F24657-983C-46FF-B928-ADD03557C562} = {F86CB7CC-4C0C-40AA-ABF0-282D7B15B38E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}
@@ -111,9 +111,12 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{28f904c6-3b6d-4140-90ff-62a6bd87b0c6}*SharedItemsImports = 13
+		Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.projitems*{2ba15a8e-6c3e-4b33-bff4-d9255202d71d}*SharedItemsImports = 5
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{3c5623f8-1e58-456e-a386-11b7fba42fa0}*SharedItemsImports = 5
 		WPF\Shared.Demo\Antelcat.I18N.WPF.Demo.Shared.projitems*{5fb0464b-dd43-4c4f-8f03-c0f8ceeb520e}*SharedItemsImports = 5
-		Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems*{612d6836-4c01-48aa-a3bd-726adde0f101}*SharedItemsImports = 5
+		Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.projitems*{612d6836-4c01-48aa-a3bd-726adde0f101}*SharedItemsImports = 5
+		Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.projitems*{612d6836-4c01-48aa-a3bd-726adde0f101}*SharedItemsImports = 5
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{c0105dd2-cc54-47ab-9122-eea1dc73e61e}*SharedItemsImports = 5
+		Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.projitems*{f3f24657-983c-46ff-b928-add03557c562}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

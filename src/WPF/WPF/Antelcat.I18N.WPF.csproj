@@ -2,8 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>
-            net40;net45;
-            netcoreapp3.0-windows;
+            net40;
             net5.0-windows;
         </TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -12,9 +11,9 @@
         <IsPackable>true</IsPackable>
         <LangVersion>preview</LangVersion>
 
-        <Version>2.0.0</Version>
-        <FileVersion>2.0.0</FileVersion>
-        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <Version>1.0.0</Version>
+        <FileVersion>1.0.0</FileVersion>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
         
         <Authors>Antelcat</Authors>
         <Title>Antelcat.I18N.WPF</Title>
@@ -30,7 +29,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Wpf.I18N</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.I18N</PackageProjectUrl>
         
         <PackageIcon>Icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -47,17 +46,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\..\..\README.md">
+        <None Include="..\..\..\README.md" PackagePath="\" Pack="true" >
             <Link>README.md</Link>
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
-        </Content>
-        <None Include="..\..\..\Icon.png">
-            <Pack>True</Pack>
-            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\..\..\Icon.png" PackagePath="\" Pack="true" >
             <Link>Icon.png</Link>
         </None>
        
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Antelcat.I18N.Abstractions\Antelcat.I18N.Abstractions.csproj" />
     </ItemGroup>
 
     <Import Project="..\..\Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems" Label="Shared" />

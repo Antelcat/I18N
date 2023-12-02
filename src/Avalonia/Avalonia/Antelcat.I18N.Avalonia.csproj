@@ -24,8 +24,8 @@
 
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/Antelcat/Antelcat.Avalonia.I18N.git</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.Avalonia.I18N</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.I18N</PackageProjectUrl>
         
         <PackageIcon>Icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -48,6 +48,10 @@
             <Link>Icon.png</Link>
         </None>
        
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Antelcat.I18N.Abstractions\Antelcat.I18N.Abstractions.csproj" />
     </ItemGroup>
 
     <Import Project="..\..\Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems" Label="Shared" />

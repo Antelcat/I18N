@@ -3,13 +3,13 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>462B56DC-C976-4B5E-AF03-3EC9B81DBDF1</SharedGUID>
+    <SharedGUID>B90BCCD4-6914-4EBE-B729-C052A7CD9655</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Antelcat.Shared.I18N</Import_RootNamespace>
+    <Import_RootNamespace>Antelcat.I18N.Abstractions.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)I18NExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)LanguageBinding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Abstractions\ResourceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\ResourceKeysOfAttribute.cs" />
   </ItemGroup>
 </Project>

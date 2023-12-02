@@ -35,6 +35,10 @@
 
  
 
-    <Import Project="..\Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems" Label="Shared" />
+    <Import Project="..\Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.projitems" Label="Shared" />
+
+ 
+
+    <Import Project="..\Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.projitems" Label="Shared" />
 
 </Project>

@@ -45,7 +45,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             : fallbackValue;
     }
 
-    private static Action RegisterLanguageSource(ResourceProviderBase provider,
+    private static Action RegisterLanguageSource(ResourceProvider provider,
         bool lazyInit)
     {
         CultureChanged += culture => provider.Culture = culture;
@@ -262,7 +262,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public void RegisterProvider(ResourceProviderBase provider)
+        public void RegisterProvider(ResourceProvider provider)
         {
             lastRegister = provider;
             provider.ChangeCompleted += (_, _) =>
@@ -272,6 +272,6 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             };
         }
 
-        private ResourceProviderBase? lastRegister;
+        private ResourceProvider? lastRegister;
     }
 }
