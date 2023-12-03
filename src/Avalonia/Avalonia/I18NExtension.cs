@@ -2,8 +2,6 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Dynamic;
-using System.Reflection;
-using System.Runtime.Serialization;
 using Antelcat.I18N.Abstractions;
 using Avalonia.Data;
 using Avalonia.Metadata;

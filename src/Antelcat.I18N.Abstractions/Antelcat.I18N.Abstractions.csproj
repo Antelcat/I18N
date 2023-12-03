@@ -39,4 +39,9 @@
         <None Include="..\SourceGenerators\bin\$(Configuration)\netstandard2.0\Antelcat.I18N.SourceGenerators.dll" PackagePath="analyzers\dotnet\cs" Pack="true" />
        
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="Antelcat.I18N.WPF" />
+        <InternalsVisibleTo Include="Antelcat.I18N.Avalonia" />
+    </ItemGroup>
 </Project>

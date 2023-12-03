@@ -8,7 +8,7 @@ namespace Antelcat.I18N.Abstractions;
 
 public abstract class ResourceProvider : INotifyPropertyChanged
 {
-    public static readonly ObservableCollection<ResourceProvider> Providers = new();
+    internal static readonly ObservableCollection<ResourceProvider> Providers = new();
 
     protected static void RegisterProvider(ResourceProvider provider)
     {

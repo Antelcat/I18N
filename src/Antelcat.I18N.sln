@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__", "__", "{DAC60261-079A-
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Shared", "Antelcat.I18N.Shared\Antelcat.I18N.Shared.shproj", "{28F904C6-3B6D-4140-90FF-62A6BD87B0C6}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Shared.SourceGenerators", "Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.shproj", "{15D71DC2-F53D-42EC-85E4-4982F6E351A5}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.SourceGenerators.Shared", "Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.shproj", "{15D71DC2-F53D-42EC-85E4-4982F6E351A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F86CB7CC-4C0C-40AA-ABF0-282D7B15B38E}"
 EndProject
@@ -109,7 +109,7 @@ Global
 		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Antelcat.I18N.Shared.SourceGenerators\Antelcat.I18N.Shared.SourceGenerators.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
+		Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{28f904c6-3b6d-4140-90ff-62a6bd87b0c6}*SharedItemsImports = 13
 		Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.projitems*{2ba15a8e-6c3e-4b33-bff4-d9255202d71d}*SharedItemsImports = 5
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{3c5623f8-1e58-456e-a386-11b7fba42fa0}*SharedItemsImports = 5
