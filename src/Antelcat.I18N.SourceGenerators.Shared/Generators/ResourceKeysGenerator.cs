@@ -15,11 +15,11 @@ namespace Antelcat.I18N.WPF.SourceGenerators.Generators;
 [Generator(LanguageNames.CSharp)]
 internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
 {
-    private static readonly string Attribute = $"{typeof(ResourceKeysOfAttribute).FullName}";
-    private static readonly string CultureInfo          = $"global::{typeof(CultureInfo).FullName}";
-    private static readonly string ResourceProvider = $"global::{typeof(ResourceProvider).FullName}";
-    private static readonly string ModuleInitializer    = $"global::{typeof(ModuleInitializerAttribute).FullName}";
-    
+    private static readonly string Attribute         = $"{typeof(ResourceKeysOfAttribute).FullName}";
+    private static readonly string CultureInfo       = $"global::{typeof(CultureInfo).FullName}";
+    private static readonly string ResourceProvider  = $"global::{typeof(ResourceProvider).FullName}";
+    private static readonly string ModuleInitializer = $"global::{typeof(ModuleInitializerAttribute).FullName}";
+
     private static readonly string[] Exceptions =
     {
         "resourceMan",
@@ -91,12 +91,12 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                               }
                                               """,
                                             $$"""
-                                             [{{ModuleInitializer}}]
-                                             public static void Initialize()
-                                             {
-                                                 RegisterProvider(new {{className}}());
-                                             }
-                                             """
+                                              [{{ModuleInitializer}}]
+                                              public static void Initialize()
+                                              {
+                                                  RegisterProvider(new {{className}}());
+                                              }
+                                              """
                                         )
                                         .AddMembers(names.Select(x =>
                                                 $"public string {x} => {targetFullName}.{x};")
@@ -104,10 +104,10 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                 )
                         )
                 ).NormalizeWhitespace();
-          
+
             context.AddSource($"{generateCtx.TargetSymbol.GetFullyQualifiedName().Replace("global::", "")}.g.cs",
                 unit.GetText(Encoding.UTF8));
-           
+
         }
     }
 }
