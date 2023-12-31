@@ -13,8 +13,8 @@ Antelcat.`{I18N}`
 <p align="center">
     <img alt="dotnet-version" src="https://img.shields.io/badge/WPF-%3E%3D4.0-2C896A.svg"/>
 <img alt="dotnet-version" src="https://img.shields.io/badge/Avalonia-%3E%3D11.0-AE42F8.svg"/>
-    <img alt="csharp-version" src="https://img.shields.io/badge/C%23-preview-3BA93F.svg"/>
-    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.0.0-blue.svg"/>
+    <img alt="csharp-version" src="https://img.shields.io/badge/C%23->=9.0-3BA93F.svg"/>
+    <img alt="nuget" src="https://img.shields.io/badge/Nuget-v1.0.1-blue.svg"/>
 </p>
 
 ---
