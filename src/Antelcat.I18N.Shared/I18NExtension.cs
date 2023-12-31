@@ -213,38 +213,37 @@ public partial class I18NExtension : MarkupExtension, IAddChild
                     Count
 #endif
                 ;
-            var res = new object?[count - 2];
+            var args = new object?[count - 2];
             var template = isBindingList[0]
-                ? GetValue(source, values[1] as string)
-                : values[1] as string;
+                ? GetValue(source, values[1]?.ToString())
+                : values[1]?.ToString();
             if (string.IsNullOrEmpty(template) || count <= 2)
                 return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
 
             for (var i = 1; i < isBindingList.Count; i++)
             {
-                if (values[i + 1] == null)
+                var curr = values[i + 1];
+                if (curr == null)
                 {
-                    res[i - 1] = string.Empty;
+                    args[i - 1] = string.Empty;
                     continue;
                 }
 
-                res[i - 1] = isBindingList[i]
-                    ? GetValue(source, values[i + 1] as string)
-                    : values[i + 1] as string;
+                args[i - 1] = isBindingList[i]
+                    ? GetValue(source, curr.ToString())
+                    : curr.ToString();
             }
 
-            var val = string.Format(template!, res);
+            var val = string.Format(template!, args);
             return Converter?.Convert(val, targetType, ConverterParameter, culture) ?? val;
         }
 
-        private static string GetValue(object source, string? key)
-        {
-            return key == null
+        private static string GetValue(object source, string? key) =>
+            key == null
                 ? string.Empty
                 : ((IDictionary<string, object?>)source).TryGetValue(key, out var value)
                     ? value as string ?? key
                     : key;
-        }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
     }

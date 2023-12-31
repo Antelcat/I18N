@@ -7,16 +7,16 @@
         <IsPackable>true</IsPackable>
         <LangVersion>preview</LangVersion>
 
-        <Version>1.0.0</Version>
-        <FileVersion>1.0.0</FileVersion>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <Version>1.0.1</Version>
+        <FileVersion>1.0.1</FileVersion>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
         
         <Authors>Antelcat</Authors>
         <Title>Antelcat.I18N.Avalonia</Title>
         <PackageId>Antelcat.I18N.Avalonia</PackageId>
         <RootNamespace>Antelcat.I18N.Avalonia</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <PackageReleaseNotes>Fix string template using args of none string type</PackageReleaseNotes>
         <Copyright>Copyright Antelcat. All rights reserved</Copyright>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <PackageTags>dotnet;Avalonia;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>

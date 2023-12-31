@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <RootNamespace>Antelcat.I18N.WPF.Library</RootNamespace>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
 
