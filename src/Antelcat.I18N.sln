@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Antelcat.I18N.Abstractions"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Antelcat.I18N.Abstractions.Shared", "Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.shproj", "{F3F24657-983C-46FF-B928-ADD03557C562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Feast.CodeAnalysis.LiteralGenerator", "..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.LiteralGenerator\Feast.CodeAnalysis.LiteralGenerator.csproj", "{13AC62C7-D492-40B2-8231-B9A2545D7388}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Feast.CodeAnalysis.LiteralGenerator", "..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.LiteralGenerator\Feast.CodeAnalysis.LiteralGenerator.csproj", "{13AC62C7-D492-40B2-8231-B9A2545D7388}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +116,7 @@ Global
 		SolutionGuid = {73D6AEFA-1477-4119-9F85-0DA27E35BDB8}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.Shared\Feast.CodeAnalysis.Shared.projitems*{13ac62c7-d492-40b2-8231-b9a2545d7388}*SharedItemsImports = 5
 		Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.projitems*{15d71dc2-f53d-42ec-85e4-4982f6e351a5}*SharedItemsImports = 13
 		Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems*{28f904c6-3b6d-4140-90ff-62a6bd87b0c6}*SharedItemsImports = 13
 		Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.projitems*{2ba15a8e-6c3e-4b33-bff4-d9255202d71d}*SharedItemsImports = 5

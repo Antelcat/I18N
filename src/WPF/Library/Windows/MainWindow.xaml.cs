@@ -12,5 +12,6 @@ namespace Antelcat.I18N.WPF.Library.Windows
             InitializeComponent();
             DataContext = new ViewModel();
         }
+        
     }
 }

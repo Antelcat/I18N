@@ -17,14 +17,13 @@ internal class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IProp
 
     public static void Register(ExpandoObject target)
     {
-        if (Assembly.GetAssembly(typeof(IPropertyAccessorPlugin))
+        /*if (Assembly.GetAssembly(typeof(IPropertyAccessorPlugin))
                 .GetType("Avalonia.Data.Core.ExpressionObserver")
-                .GetField("PropertyAccessors", BindingFlags.Public | BindingFlags.Static)!
-                .GetValue(null) is IList<IPropertyAccessorPlugin> { } plugins)
-        {
-            plugins.Add(new ExpandoObjectPropertyAccessorPlugin(target));
-            ExpandoAccessor.Source = target;
-        }
+                .GetField("PropertyAccessors", BindingFlags.Public | BindingFlags.Static)?
+                .GetValue(null) is not IList<IPropertyAccessorPlugin> plugins) return;
+        plugins.Add(new ExpandoObjectPropertyAccessorPlugin(target));*/
+        BindingPlugins.PropertyAccessors.Add(new ExpandoObjectPropertyAccessorPlugin(target));
+        ExpandoAccessor.Source = target;
     }
 
     private class ExpandoAccessor : IPropertyAccessor

@@ -8,6 +8,7 @@ using Antelcat.I18N.Attributes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Internal;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Antelcat.I18N.WPF.SourceGenerators.Generators;

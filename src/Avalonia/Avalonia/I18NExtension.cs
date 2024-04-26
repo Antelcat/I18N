@@ -31,11 +31,8 @@ public partial class I18NExtension
         
         lock (ResourceProvider.Providers)
         {
-            foreach (var provider in ResourceProvider.Providers)
-            {
-                var action = RegisterLanguageSource(provider, true);
-                updateActions.Add(action);
-            }
+            updateActions.AddRange(
+                ResourceProvider.Providers.Select(provider => RegisterLanguageSource(provider, true)));
 
             ResourceProvider.Providers.CollectionChanged += (_, e) =>
             {
