@@ -11,6 +11,7 @@ public partial class ViewModel : ObservableObject
     public ViewModel()
     {
         selectedKey = AvailableKeys.FirstOrDefault();
+        InputText   = AvailableKeys.FirstOrDefault();
     }
     public CultureInfo Culture
     {

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using Antelcat.I18N.WPF.Library.Windows;
 
 namespace Antelcat.I18N.WPF.Demo

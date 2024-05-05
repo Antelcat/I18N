@@ -14,12 +14,20 @@ namespace System.Windows;
     Readability = Readability.Unreadable)]
 public partial class I18NExtension
 {
+    public I18NExtension()
+    {
+        
+    }
     static I18NExtension()
     {
         var target = new ExpandoObject();
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
-
+        SourceBinding = new(nameof(Notifier.Source))
+        {
+            Source = Notifier,
+            Mode   = BindingMode.OneWay,
+        };
         lock (ResourceProvider.Providers)
         {
             foreach (var provider in ResourceProvider.Providers)
@@ -30,7 +38,7 @@ public partial class I18NExtension
             ResourceProvider.Providers.CollectionChanged += (o, e) =>
             {
                 if(e.Action != NotifyCollectionChangedAction.Add)return;
-                foreach (var provider in e.NewItems.OfType<ResourceProvider>())
+                foreach (var provider in e.NewItems?.OfType<ResourceProvider>() ?? [])
                 {
                     RegisterLanguageSource(provider, false);
                 }
@@ -59,7 +67,7 @@ public partial class I18NExtension
         new PropertyMetadata(default(DependencyProperty))
     );
 
-    private object ProvideValueInternal(IServiceProvider serviceProvider)
+    public override partial object ProvideValue(IServiceProvider serviceProvider)
     {
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
             return this;
@@ -73,6 +81,7 @@ public partial class I18NExtension
         CheckArgument();
 
         var bindingBase = CreateBinding();
+        Binding = bindingBase;
 
         BindingOperations.SetBinding(targetObject, targetProperty, bindingBase);
 
@@ -97,7 +106,7 @@ public partial class I18NExtension
     /// </summary>
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     [DefaultValue(null)]
-    public MicrosoftPleaseFixBindingCollection Keys { get; } = new();
+    public MicrosoftPleaseFixBindingCollection Keys { get; } = [];
 
     private void I18NExtension_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
@@ -164,5 +173,13 @@ public partial class I18NExtension
         keyBinding.Converter           = Converter;
         keyBinding.ConverterParameter  = ConverterParameter;
         return keyBinding;
+    }
+
+    private static partial void RegisterCultureChanged(ResourceProvider provider)
+    {
+        CultureChanged += culture =>
+        {
+            provider.Culture = culture;
+        };
     }
 }

@@ -2,20 +2,29 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Dynamic;
-using Antelcat.I18N.Abstractions;
+using Antelcat.I18N.Avalonia.Internals;
 using Avalonia.Data;
 using Avalonia.Metadata;
 using Avalonia.Threading;
+using ResourceProvider = Antelcat.I18N.Abstractions.ResourceProvider;
 
 namespace Avalonia.Markup.Xaml.MarkupExtensions;
 
 public partial class I18NExtension
 {
+    public I18NExtension()
+    {
+    }
     static I18NExtension()
     {
         var target = new ExpandoObject();
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
+        SourceBinding = new(nameof(Notifier.Source))
+        {
+            Source = Notifier,
+            Mode   = BindingMode.OneWay,
+        };
         ExpandoObjectPropertyAccessorPlugin.Register(target); //Register accessor plugin for ExpandoObject
         var updateActions = new List<Action>();
         /*foreach (var type in Assembly.GetEntryAssembly()?.GetTypes() ?? Type.EmptyTypes)
@@ -32,7 +41,7 @@ public partial class I18NExtension
         lock (ResourceProvider.Providers)
         {
             updateActions.AddRange(
-                ResourceProvider.Providers.Select(provider => RegisterLanguageSource(provider, true)));
+                ResourceProvider.Providers.Select(provider => RegisterLanguageSource(provider, false)));
 
             ResourceProvider.Providers.CollectionChanged += (_, e) =>
             {
@@ -43,17 +52,16 @@ public partial class I18NExtension
                 }
             };
         }
-
-
-        Dispatcher.UIThread.InvokeAsync(() =>
+        
+        
+        /*Dispatcher.UIThread.InvokeAsync(() =>
         {
             foreach (var action in updateActions)
             {
                 action();
             }
-
             Notifier.ForceUpdate();
-        });
+        });*/
     }
 
     private readonly AvaloniaObject proxy = new();
@@ -81,9 +89,9 @@ public partial class I18NExtension
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     [DefaultValue(null)]
     [Content]
-    public Collection<IBinding> Keys { get; } = new();
+    public Collection<IBinding> Keys { get; } = [];
 
-    private object ProvideValueInternal(IServiceProvider serviceProvider)
+    public override partial object ProvideValue(IServiceProvider serviceProvider)
     {
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
             return this;
@@ -103,10 +111,7 @@ public partial class I18NExtension
 
         var bindingBase = CreateBinding();
 
-        if (bindingBase is MultiBinding)
-        {
-            SetTarget(targetObject, targetProperty);
-        }
+        if (bindingBase is MultiBinding) SetTarget(targetObject, targetProperty);
 
         return bindingBase;
     }
@@ -130,27 +135,23 @@ public partial class I18NExtension
         element.Bind(targetProperty, binding);
     }
 
-    private MultiBinding CreateMultiBinding()
-    {
-        return new MultiBinding
+    private MultiBinding CreateMultiBinding() =>
+        new()
         {
             Mode               = BindingMode.OneWay,
-            ConverterParameter = ConverterParameter,
             Priority           = BindingPriority.LocalValue,
-            TargetNullValue    = string.Empty
         };
-    }
-    
-      private IBinding CreateBinding()
+
+    private IBinding CreateBinding()
     {
         Binding? keyBinding = null;
         if (Key is not string key) return MapMultiBinding(keyBinding);
         keyBinding = new Binding(key)
         {
             Source        = Target,
-            Mode          = BindingMode.OneWay,
             FallbackValue = key,
-            Priority      = BindingPriority.LocalValue
+            Mode          = BindingMode.OneWay,
+            Priority      = BindingPriority.LocalValue,
         };
         if (Keys is { Count: > 0 }) return MapMultiBinding(keyBinding);
         keyBinding.Converter          = Converter;
@@ -158,9 +159,27 @@ public partial class I18NExtension
         return keyBinding;
 
     }
-    
 
-    private partial class ResourceChangedNotifier
+    private void Trigger()
+    {
+        foreach (var key in Target.Keys.ToArray())
+        {
+            var value = Target[key];
+            Target[key] = null;
+            Target[key] = value;
+        }
+    }
+
+    private static partial void RegisterCultureChanged(ResourceProvider provider)
+    {
+        CultureChanged += culture =>
+        {
+            provider.Culture = culture;
+            Notifier.ForceUpdate();
+        };
+    }
+    
+    internal partial class ResourceChangedNotifier
     {
         public void ForceUpdate() => OnPropertyChanged(nameof(Source));
     }

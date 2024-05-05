@@ -2,18 +2,15 @@
 using Avalonia.Data.Core.Plugins;
 using System.ComponentModel;
 using System.Dynamic;
-using System.Reflection;
 
-namespace Antelcat.I18N.WPF.Avalonia.Internals;
+namespace Antelcat.I18N.Avalonia.Internals;
 
 internal class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IPropertyAccessorPlugin
 {
     public bool Match(object obj, string propertyName) => obj == target;
 
-    public IPropertyAccessor Start(WeakReference<object?> reference, string propertyName)
-    {
-        return ExpandoAccessor.Create(propertyName);
-    }
+    public IPropertyAccessor Start(WeakReference<object?> reference, string propertyName) => 
+        ExpandoAccessor.Create(propertyName);
 
     public static void Register(ExpandoObject target)
     {
@@ -26,7 +23,7 @@ internal class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IProp
         ExpandoAccessor.Source = target;
     }
 
-    private class ExpandoAccessor : IPropertyAccessor
+    private class ExpandoAccessor(string propertyName) : IPropertyAccessor
     {
         private static readonly Dictionary<string, ExpandoAccessor> Accessors = new();
 
@@ -48,9 +45,8 @@ internal class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IProp
         }
 
         private static   ExpandoObject? source;
-        private readonly string         propertyName;
 
-        readonly List<Action<object?>> subscriptions = new();
+        private readonly List<Action<object?>> subscriptions = [];
 
         public static ExpandoAccessor Create(string propertyName)
         {
@@ -60,10 +56,7 @@ internal class ExpandoObjectPropertyAccessorPlugin(ExpandoObject target) : IProp
             return accessor;
         }
 
-        private ExpandoAccessor(string propertyName)
-        {
-            this.propertyName = propertyName;
-        }
+     
 
         public void Dispose()
         {

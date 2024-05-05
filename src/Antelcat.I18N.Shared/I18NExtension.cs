@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows.Markup;
 #elif AVALONIA
-using DependencyObject = Avalonia.StyledElement;
+using DependencyObject = Avalonia.AvaloniaObject;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Metadata;
@@ -27,7 +27,10 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     private static readonly IDictionary<string, object?> Target;
     private static readonly ResourceChangedNotifier      Notifier;
     private static event CultureChangedHandler?          CultureChanged;
+    private static readonly Binding                      SourceBinding;
 
+    private BindingBase? Binding { get; set; }
+    
     private delegate void CultureChangedHandler(CultureInfo culture);
 
     /// <summary>
@@ -45,20 +48,18 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             : fallbackValue;
     }
 
+    private static partial void RegisterCultureChanged(ResourceProvider provider);
+    
     private static Action RegisterLanguageSource(ResourceProvider provider,
         bool lazyInit)
     {
-        CultureChanged += culture => provider.Culture = culture;
+        
+        RegisterCultureChanged(provider);
 
         var props = provider.GetType().GetProperties();
 
         provider.PropertyChanged += (o, e) => Update(o!, e.PropertyName!);
         Notifier.RegisterProvider(provider);
-
-        void LazyInitAction()
-        {
-            foreach (var prop in props) Update(provider, prop.Name);
-        }
 
         if (!lazyInit)
         {
@@ -67,6 +68,11 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
         return LazyInitAction;
 
+        void LazyInitAction()
+        {
+            foreach (var prop in props) Update(provider, prop.Name);
+        }
+
         void Update(object source, string propertyName)
         {
             var val = Array.Find(props, x => x.Name.Equals(propertyName))?.GetValue(source, null);
@@ -74,13 +80,10 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             if (val != null) Target[propertyName] = val;
         }
     }
+    
 
-    public I18NExtension()
-    {
-    }
-
-    public I18NExtension(string key) => Key = key;
-    public I18NExtension(BindingBase binding) => Key = binding;
+    public I18NExtension(string key) : this() => Key = key;
+    public I18NExtension(BindingBase binding) : this() => Key = binding;
 
     /// <summary>
     /// Resource key, accepts <see cref="string"/> or <see cref="Binding"/>.   
@@ -109,11 +112,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     {
         var ret = CreateMultiBinding();
 
-        var source = new Binding(nameof(Notifier.Source))
-        {
-            Source = Notifier,
-            Mode   = BindingMode.OneWay
-        };
+        var source        = SourceBinding;
         var isBindingList = new List<bool>();
         ret.Bindings.Add(source);
         ret.Bindings.Add(keyBinding ?? (Key as BindingBase)!);
@@ -160,7 +159,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         Keys.Clear();
     }
     
-    public override object ProvideValue(IServiceProvider serviceProvider) => ProvideValueInternal(serviceProvider);
+    public override partial object ProvideValue(IServiceProvider serviceProvider);
 
     private void ResetBinding(DependencyObject element)
     {
@@ -168,6 +167,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         var targetProperty = GetTargetProperty(element);
         SetTargetProperty(element, null!);
         var binding = CreateBinding();
+        Binding = binding as BindingBase;
         SetBinding(element, targetProperty, binding);
     }
 
@@ -252,7 +252,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     /// <see cref="ResourceChangedNotifier"/> is singleton notifier for
     /// multibinding in case of avoid extra property notifier
     /// </summary>
-    private partial class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
+    internal partial class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
     {
         public ExpandoObject Source => source;
 
