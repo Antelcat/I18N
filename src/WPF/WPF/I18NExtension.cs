@@ -1,6 +1,5 @@
 ﻿using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Dynamic;
 using System.Windows.Data;
 using System.Windows.Markup;
 using Antelcat.I18N.Abstractions;
@@ -20,7 +19,7 @@ public partial class I18NExtension
     }
     static I18NExtension()
     {
-        var target = new ExpandoObject();
+        var target = new LanguageDictionary();
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
         SourceBinding = new(nameof(Notifier.Source))
@@ -81,7 +80,6 @@ public partial class I18NExtension
         CheckArgument();
 
         var bindingBase = CreateBinding();
-        Binding = bindingBase;
 
         BindingOperations.SetBinding(targetObject, targetProperty, bindingBase);
 
@@ -149,31 +147,26 @@ public partial class I18NExtension
 
     private MultiBinding CreateMultiBinding()
     {
-        return new MultiBinding
+        var ret = new MultiBinding
         {
             Mode                = BindingMode.OneWay,
             ConverterParameter  = ConverterParameter,
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
+            Bindings = { SourceBinding }
         };
+        return ret;
     }
 
-
-    private BindingBase CreateBinding()
+    private void ResetBinding(DependencyObject element)
     {
-        Binding? keyBinding = null;
-        if (Key is not string key) return MapMultiBinding(keyBinding);
-        keyBinding = new Binding(key)
-        {
-            Source        = Target,
-            Mode          = BindingMode.OneWay,
-            FallbackValue = key,
-        };
-        if (Keys is { Count: > 0 }) return MapMultiBinding(keyBinding);
-        keyBinding.UpdateSourceTrigger = UpdateSourceTrigger.Explicit;
-        keyBinding.Converter           = Converter;
-        keyBinding.ConverterParameter  = ConverterParameter;
-        return keyBinding;
+        if (Key is string && !Keys.Any(x => x is not LanguageBinding)) return;
+        var targetProperty = GetTargetProperty(element);
+        SetTargetProperty(element, null!);
+        var binding = CreateBinding();
+        SetBinding(element, targetProperty, binding);
     }
+    
+   
 
     private static partial void RegisterCultureChanged(ResourceProvider provider)
     {

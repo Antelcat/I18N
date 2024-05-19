@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,7 +21,8 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
     private static readonly string CultureInfo       = $"global::{typeof(CultureInfo).FullName}";
     private static readonly string ResourceProvider  = $"global::{typeof(ResourceProvider).FullName}";
     private static readonly string ModuleInitializer = $"global::{typeof(ModuleInitializerAttribute).FullName}";
-
+    private static readonly string IEnumerable       = $"global::System.Collections.Generic.IEnumerable<string>";
+    
     private static readonly string[] Exceptions =
     {
         "resourceMan",
@@ -69,6 +71,27 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                         .AddModifiers(SyntaxKind.InternalKeyword)
                                         .AddBaseListTypes(ResourceProvider)
                                         .AddMembers(
+                                            ParseMemberDeclaration(
+                                                $$"""
+                                                  public override string this[string key] {
+                                                      get {
+                                                          switch(key){
+                                                              {{string.Concat(names.Select(static x=>$"case nameof({x}): return this.{x}; \n"))}}
+                                                          }
+                                                          return key;
+                                                      }
+                                                  }
+                                                  """
+                                            )!)
+                                        .AddMembers(
+                                            ParseMemberDeclaration(
+                                                $$"""
+                                                  public override {{IEnumerable}} Keys(){
+                                                      {{string.Concat(names.Select(static x=>$"yield return nameof({x});\n"))}}
+                                                  }
+                                                  """
+                                            )!)
+                                        .AddMembers(
                                             $$"""
                                               public override {{CultureInfo}}? Culture
                                               {
@@ -86,9 +109,9 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                             $$"""
                                               private void UpdateSource()
                                               {
-                                              {{string.Concat(names.Select(x =>
-                                                  $"\tOnPropertyChanged(nameof({x}));\n"
-                                              ))}}
+                                                  foreach(var key in this.Keys()){
+                                                      OnPropertyChanged(key);
+                                                  }
                                               }
                                               """,
                                             $$"""

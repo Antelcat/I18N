@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.Dynamic;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.Globalization;
 using System.Diagnostics;
 #if WPF
@@ -24,13 +24,11 @@ namespace Avalonia.Markup.Xaml.MarkupExtensions;
 [DebuggerDisplay("Key = {Key}, Keys = {Keys}")]
 public partial class I18NExtension : MarkupExtension, IAddChild
 {
-    private static readonly IDictionary<string, object?> Target;
+    private static readonly IDictionary<string, string> Target;
     private static readonly ResourceChangedNotifier      Notifier;
     private static event CultureChangedHandler?          CultureChanged;
     private static readonly Binding                      SourceBinding;
 
-    private BindingBase? Binding { get; set; }
-    
     private delegate void CultureChangedHandler(CultureInfo culture);
 
     /// <summary>
@@ -50,31 +48,18 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
     private static partial void RegisterCultureChanged(ResourceProvider provider);
     
-    private static Action RegisterLanguageSource(ResourceProvider provider)
+    private static void RegisterLanguageSource(ResourceProvider provider)
     {
-        
         RegisterCultureChanged(provider);
 
-        var props = provider.GetType().GetProperties();
+        var keys = provider.Keys();
 
-        provider.PropertyChanged += (o, e) => Update(o!, e.PropertyName!);
+        provider.PropertyChanged += (o, e) => Update(e.PropertyName);
         Notifier.RegisterProvider(provider);
-            
-        LazyInitAction();
 
-        return LazyInitAction;
+        foreach (var key in keys) Update(key);
 
-        void LazyInitAction()
-        {
-            foreach (var prop in props) Update(provider, prop.Name);
-        }
-
-        void Update(object source, string propertyName)
-        {
-            var val = Array.Find(props, x => x.Name.Equals(propertyName))?.GetValue(source, null);
-
-            if (val != null) Target[propertyName] = val;
-        }
+        void Update(string key) => Target[key] = provider[key];
     }
     
 
@@ -104,13 +89,52 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     [DefaultValue(null)]
     public object? ConverterParameter { get; set; }
 
-    private MultiBinding MapMultiBinding(Binding? keyBinding)
+    private
+#if AVALONIA
+        IBinding
+#elif WPF
+        BindingBase
+#endif
+        CreateBinding() => Key is string key && Keys.Count == 0
+        ? CreateKeyBinding(key)
+        : MapMultiBinding();
+
+    private Binding CreateKeyBinding(string key)
+    {
+        return new Binding(nameof(Notifier.Source))
+        {
+            Source        = Notifier,
+            Mode          = BindingMode.OneWay,
+            FallbackValue = key,
+            Converter = new StaticKeyConverter(key)
+            {
+                Converter          = Converter,
+                ConverterParameter = ConverterParameter
+            },
+#if WPF
+            UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
+#endif
+        };
+    }
+    
+    private MultiBinding MapMultiBinding()
     {
         var ret = CreateMultiBinding();
         var isBindingList = new List<bool>();
-        ret.Bindings.Add(SourceBinding);
-        ret.Bindings.Add(keyBinding ?? (Key as BindingBase)!);
-        isBindingList.Add(keyBinding == null);
+        List<string>                       keys  = [];
+        List<MultiValueLangConverter.Mode> modes = [];
+        switch (Key)
+        {
+            case string key:
+                keys.Add(key);
+                modes.Add(MultiValueLangConverter.Mode.Key);
+                break;
+            case Binding binding:
+                ret.Bindings.Add(binding);
+                modes.Add(MultiValueLangConverter.Mode.Binding);
+                break;
+        }
+
         foreach (var bindingBase in Keys)
         {
             switch (bindingBase)
@@ -118,15 +142,12 @@ public partial class I18NExtension : MarkupExtension, IAddChild
                 case LanguageBinding languageBinding:
                     if (languageBinding.Key is null)
                         throw new ArgumentNullException($"Language key should be specified");
-                    ret.Bindings.Add(new Binding(languageBinding.Key)
-                    {
-                        Source        = Target,
-                        Mode          = BindingMode.OneWay,
-                        FallbackValue = languageBinding.Key
-                    });
+                    keys.Add(languageBinding.Key);
+                    modes.Add(MultiValueLangConverter.Mode.Key);
                     break;
                 case { } propBinding:
                     ret.Bindings.Add(propBinding);
+                    modes.Add(MultiValueLangConverter.Mode.Binding);
                     break;
                 default:
                     throw new ArgumentException(
@@ -136,8 +157,9 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             isBindingList.Add(bindingBase is not LanguageBinding);
         }
 
-        ret.Converter = new MultiValueLangConverter(isBindingList.ToArray())
+        ret.Converter = new MultiValueLangConverter(isBindingList.ToArray(), modes.ToArray())
         {
+            Keys               = keys.ToArray(),
             Converter          = Converter,
             ConverterParameter = ConverterParameter,
         };
@@ -155,16 +177,6 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     
     public override partial object ProvideValue(IServiceProvider serviceProvider);
 
-    private void ResetBinding(DependencyObject element)
-    {
-        if (Key is string && !Keys.Any(x => x is not LanguageBinding)) return;
-        var targetProperty = GetTargetProperty(element);
-        SetTargetProperty(element, null!);
-        var binding = CreateBinding();
-        Binding = binding as BindingBase;
-        SetBinding(element, targetProperty, binding);
-    }
-
     public void AddChild(object value)
     {
         if (value is not Binding binding) return;
@@ -176,6 +188,17 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         Keys.Add(new LanguageBinding(key));
     }
 
+    private class StaticKeyConverter(string key) : IValueConverter
+    {
+        public IValueConverter? Converter { get; set; }
+        
+        public object? ConverterParameter { get; set; }
+        
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => Converter?.Convert(Target[key], targetType, ConverterParameter, culture) ?? Target[key];
+
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+    }
+    
 
     /// <summary>
     /// use <see cref="string.Format(string,object[])"/> to generate final text
@@ -186,10 +209,49 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 #else
         IList<bool>
 #endif
-            isBindingList) : IMultiValueConverter
+            isBindingList,
+        MultiValueLangConverter.Mode[] modes) : IMultiValueConverter
     {
+        public enum Mode
+        {
+            Key,
+            Binding,
+            Plain
+        }
+
+        public string[]         Keys               { get; set; } = [];
         public IValueConverter? Converter          { get; set; }
         public object?          ConverterParameter { get; set; }
+
+        private object[] GetValues(IList<object?> bindingValues, out string template)
+        {
+            template = string.Empty;
+            var ret          = new object[bindingValues.Count + Keys.Length - 1];
+            var index        = 0;
+            var keyIndex     = 0;
+            var bindingIndex = 1; // first is trigger
+            foreach (var mode in modes)
+            {
+                string value = default!;
+                switch (mode)
+                {
+                    case Mode.Key:
+                        var key = Keys[keyIndex++];
+                        value = Target.TryGetValue(key, out var k) ? k?.ToString() ?? key : key;
+                        break;
+                    case Mode.Binding:
+                        var binding = (bindingValues[bindingIndex++] as string)!;
+                        value = Target.TryGetValue(binding, out var t) ? t?.ToString() ?? binding : binding;
+                        break;
+                }
+
+                if (index == 0) template = value;
+                else ret[index - 1]      = value;
+                index++;
+            }
+
+            return ret;
+        }
         
         public object? Convert(
 #if WPF
@@ -199,52 +261,10 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 #endif
                 values, Type targetType, object? parameter, CultureInfo culture)
         {
-            var source =
-#if WPF
-                    values[0]!
-#elif AVALONIA
-                    Target
-#endif
-                ;
-            
-            var count = values.
-#if WPF
-                    Length
-#elif AVALONIA
-                    Count
-#endif
-                ;
-            var args = new object?[count - 2];
-            var template = isBindingList[0]
-                ? GetValue(source, values[1]?.ToString())
-                : values[1]?.ToString();
-            if (string.IsNullOrEmpty(template) || count <= 2)
-                return Converter?.Convert(template, targetType, ConverterParameter, culture) ?? template;
-
-            for (var i = 1; i < isBindingList.Count; i++)
-            {
-                var curr = values[i + 1];
-                if (curr == null)
-                {
-                    args[i - 1] = string.Empty;
-                    continue;
-                }
-
-                args[i - 1] = isBindingList[i]
-                    ? GetValue(source, curr.ToString())
-                    : curr.ToString();
-            }
-
-            var val = string.Format(template!, args);
-            return Converter?.Convert(val, targetType, ConverterParameter, culture) ?? val;
+            var vs = GetValues(values,out var tem);
+            var v  = string.Format(tem, vs);
+            return Converter?.Convert(v, targetType, ConverterParameter, culture) ?? v;
         }
-
-        private static string GetValue(object source, string? key) =>
-            key == null
-                ? string.Empty
-                : ((IDictionary<string, object?>)source).TryGetValue(key, out var value)
-                    ? value as string ?? key
-                    : key;
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
     }
@@ -253,9 +273,9 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     /// <see cref="ResourceChangedNotifier"/> is singleton notifier for
     /// multibinding in case of avoid extra property notifier
     /// </summary>
-    public partial class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
+    internal partial class ResourceChangedNotifier(INotifyPropertyChanged source) : INotifyPropertyChanged
     {
-        public ExpandoObject Source => source;
+        public INotifyPropertyChanged Source => source;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -273,5 +293,70 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         }
 
         private ResourceProvider? lastRegister;
+    }
+
+    public class LanguageDictionary : IDictionary<string, string> , INotifyPropertyChanged
+    {
+        private readonly Dictionary<string,string> dict = [];
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => dict.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)dict).GetEnumerator();
+
+        public void Add(KeyValuePair<string, string> item)
+        {
+            dict.Add(item.Key, item.Value);
+            OnPropertyChanged(item.Key);
+        }
+
+        public void Clear() => dict.Clear();
+
+        public bool Contains(KeyValuePair<string, string> item) => dict.Contains(item);
+
+        public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex) { }
+
+        public bool Remove(KeyValuePair<string, string> item)
+        {
+            var value = dict.Remove(item.Key);
+            OnPropertyChanged(item.Key);
+            return value;
+        }
+
+        public int Count => dict.Count;
+
+        public bool IsReadOnly => ((ICollection<KeyValuePair<string, string>>)dict).IsReadOnly;
+
+        public bool ContainsKey(string key) => dict.ContainsKey(key);
+
+        public void Add(string key, string value)
+        {
+            dict.Add(key, value);
+            OnPropertyChanged(key);
+        }
+
+        public bool Remove(string key)
+        {
+            var value = dict.Remove(key);
+            OnPropertyChanged(key);
+            return value;
+        }
+
+        public bool TryGetValue(string key, out string value) => dict.TryGetValue(key, out value);
+
+        public string this[string key]
+        {
+            get => dict[key];
+            set
+            {
+                dict[key] = value;
+                OnPropertyChanged(key);
+            }
+        }
+
+        public ICollection<string> Keys => ((IDictionary<string, string>)dict).Keys;
+
+        public ICollection<string>                Values => ((IDictionary<string, string>)dict).Values;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

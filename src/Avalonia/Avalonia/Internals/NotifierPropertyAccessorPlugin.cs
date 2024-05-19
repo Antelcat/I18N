@@ -1,5 +1,4 @@
 ﻿using System.Dynamic;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 
 namespace Antelcat.I18N.Avalonia.Internals;

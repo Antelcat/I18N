@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
@@ -10,6 +11,10 @@ public abstract class ResourceProvider : INotifyPropertyChanged
 {
     internal static readonly ObservableCollection<ResourceProvider> Providers = new();
 
+    public abstract string this[string key] { get; }
+
+    public abstract IEnumerable<string> Keys();
+    
     protected static void RegisterProvider(ResourceProvider provider)
     {
         lock (Providers)

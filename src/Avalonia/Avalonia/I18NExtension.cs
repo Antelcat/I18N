@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Dynamic;
 using Antelcat.I18N.Avalonia.Internals;
 using Avalonia.Data;
 using Avalonia.Data.Core.Plugins;
@@ -16,7 +15,7 @@ public partial class I18NExtension
     
     static I18NExtension()
     {
-        var target = new ExpandoObject();
+        var target = new LanguageDictionary();
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
         SourceBinding = new(nameof(ResourceChangedNotifier.Source))
@@ -25,8 +24,6 @@ public partial class I18NExtension
             Mode   = BindingMode.OneWay,
         };
 
-        //Register accessor plugin for ExpandoObject
-        BindingPlugins.PropertyAccessors.Add(new ExpandoObjectPropertyAccessorPlugin(target));
         //Register accessor plugin for ExpandoObject
         BindingPlugins.PropertyAccessors.Insert(0, new NotifierPropertyAccessorPlugin(Notifier));
 
@@ -88,36 +85,14 @@ public partial class I18NExtension
         }
     }
 
-
-    private static void SetBinding(AvaloniaObject element, AvaloniaProperty targetProperty, IBinding binding)
-    {
-        element.Bind(targetProperty, binding);
-        Notifier.ForceUpdate();
-    }
-
     private static MultiBinding CreateMultiBinding() =>
         new()
         {
             Mode     = BindingMode.OneWay,
             Priority = BindingPriority.LocalValue,
+            Bindings = { SourceBinding }
         };
-
-    private IBinding CreateBinding()
-    {
-        Binding? keyBinding = null;
-        if (Key is not string key) return MapMultiBinding(keyBinding);
-        keyBinding = new Binding(key)
-        {
-            Source        = Target,
-            FallbackValue = key,
-            Mode          = BindingMode.OneWay,
-            Priority      = BindingPriority.LocalValue,
-        };
-        if (Keys is { Count: > 0 }) return MapMultiBinding(keyBinding);
-        keyBinding.Converter          = Converter;
-        keyBinding.ConverterParameter = ConverterParameter;
-        return keyBinding;
-    }
+ 
 
     private static partial void RegisterCultureChanged(ResourceProvider provider)
     {
