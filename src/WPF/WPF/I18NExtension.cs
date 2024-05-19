@@ -32,7 +32,7 @@ public partial class I18NExtension
         {
             foreach (var provider in ResourceProvider.Providers)
             {
-                RegisterLanguageSource(provider, false);
+                RegisterLanguageSource(provider);
             }
 
             ResourceProvider.Providers.CollectionChanged += (o, e) =>
@@ -40,7 +40,7 @@ public partial class I18NExtension
                 if(e.Action != NotifyCollectionChangedAction.Add)return;
                 foreach (var provider in e.NewItems?.OfType<ResourceProvider>() ?? [])
                 {
-                    RegisterLanguageSource(provider, false);
+                    RegisterLanguageSource(provider);
                 }
             };
         }

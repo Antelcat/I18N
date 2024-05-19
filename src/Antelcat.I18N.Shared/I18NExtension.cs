@@ -12,7 +12,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Metadata;
 #endif
 
-using Antelcat.I18N.Abstractions;
+using ResourceProvider = Antelcat.I18N.Abstractions.ResourceProvider;
 
 // ReSharper disable once CheckNamespace
 #if WPF
@@ -50,8 +50,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
     private static partial void RegisterCultureChanged(ResourceProvider provider);
     
-    private static Action RegisterLanguageSource(ResourceProvider provider,
-        bool lazyInit)
+    private static Action RegisterLanguageSource(ResourceProvider provider)
     {
         
         RegisterCultureChanged(provider);
@@ -60,11 +59,8 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
         provider.PropertyChanged += (o, e) => Update(o!, e.PropertyName!);
         Notifier.RegisterProvider(provider);
-
-        if (!lazyInit)
-        {
-            LazyInitAction();
-        }
+            
+        LazyInitAction();
 
         return LazyInitAction;
 
@@ -111,10 +107,8 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     private MultiBinding MapMultiBinding(Binding? keyBinding)
     {
         var ret = CreateMultiBinding();
-
-        var source        = SourceBinding;
         var isBindingList = new List<bool>();
-        ret.Bindings.Add(source);
+        ret.Bindings.Add(SourceBinding);
         ret.Bindings.Add(keyBinding ?? (Key as BindingBase)!);
         isBindingList.Add(keyBinding == null);
         foreach (var bindingBase in Keys)
@@ -131,7 +125,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
                         FallbackValue = languageBinding.Key
                     });
                     break;
-                case BindingBase propBinding:
+                case { } propBinding:
                     ret.Bindings.Add(propBinding);
                     break;
                 default:
@@ -145,7 +139,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         ret.Converter = new MultiValueLangConverter(isBindingList.ToArray())
         {
             Converter          = Converter,
-            ConverterParameter = ConverterParameter
+            ConverterParameter = ConverterParameter,
         };
         return ret;
     }
@@ -163,7 +157,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
     private void ResetBinding(DependencyObject element)
     {
-        if (Key is string && Keys.All(x => x is LanguageBinding)) return;
+        if (Key is string && !Keys.Any(x => x is not LanguageBinding)) return;
         var targetProperty = GetTargetProperty(element);
         SetTargetProperty(element, null!);
         var binding = CreateBinding();
@@ -196,7 +190,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     {
         public IValueConverter? Converter          { get; set; }
         public object?          ConverterParameter { get; set; }
-
+        
         public object? Convert(
 #if WPF
             object?[]
@@ -205,7 +199,14 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 #endif
                 values, Type targetType, object? parameter, CultureInfo culture)
         {
-            var source = values[0]!;
+            var source =
+#if WPF
+                    values[0]!
+#elif AVALONIA
+                    Target
+#endif
+                ;
+            
             var count = values.
 #if WPF
                     Length
@@ -252,7 +253,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     /// <see cref="ResourceChangedNotifier"/> is singleton notifier for
     /// multibinding in case of avoid extra property notifier
     /// </summary>
-    internal partial class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
+    public partial class ResourceChangedNotifier(ExpandoObject source) : INotifyPropertyChanged
     {
         public ExpandoObject Source => source;
 
@@ -260,7 +261,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
         private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
+        
         public void RegisterProvider(ResourceProvider provider)
         {
             lastRegister = provider;

@@ -4,68 +4,49 @@ using System.ComponentModel;
 using System.Dynamic;
 using Antelcat.I18N.Avalonia.Internals;
 using Avalonia.Data;
+using Avalonia.Data.Core.Plugins;
 using Avalonia.Metadata;
-using Avalonia.Threading;
 using ResourceProvider = Antelcat.I18N.Abstractions.ResourceProvider;
 
 namespace Avalonia.Markup.Xaml.MarkupExtensions;
 
 public partial class I18NExtension
 {
-    public I18NExtension()
-    {
-    }
+    public I18NExtension() { }
+    
     static I18NExtension()
     {
         var target = new ExpandoObject();
         Target   = target;
         Notifier = new ResourceChangedNotifier(target);
-        SourceBinding = new(nameof(Notifier.Source))
+        SourceBinding = new(nameof(ResourceChangedNotifier.Source))
         {
             Source = Notifier,
             Mode   = BindingMode.OneWay,
         };
-        ExpandoObjectPropertyAccessorPlugin.Register(target); //Register accessor plugin for ExpandoObject
-        var updateActions = new List<Action>();
-        /*foreach (var type in Assembly.GetEntryAssembly()?.GetTypes() ?? Type.EmptyTypes)
-        {
-            if (!type.IsSubclassOf(typeof(ResourceProviderBase))) continue;
 
-            if (RegisterLanguageSource(FormatterServices.GetUninitializedObject(type) as ResourceProviderBase, true,
-                    out var redo))
-            {
-                updateActions.Add(redo!);
-            }
-        }*/
-        
+        //Register accessor plugin for ExpandoObject
+        BindingPlugins.PropertyAccessors.Add(new ExpandoObjectPropertyAccessorPlugin(target));
+        //Register accessor plugin for ExpandoObject
+        BindingPlugins.PropertyAccessors.Insert(0, new NotifierPropertyAccessorPlugin(Notifier));
+
         lock (ResourceProvider.Providers)
         {
-            updateActions.AddRange(
-                ResourceProvider.Providers.Select(provider => RegisterLanguageSource(provider, false)));
+            foreach (var provider in ResourceProvider.Providers) RegisterLanguageSource(provider);
 
             ResourceProvider.Providers.CollectionChanged += (_, e) =>
             {
-                if(e.Action != NotifyCollectionChangedAction.Add)return;
+                if (e.Action != NotifyCollectionChangedAction.Add) return;
                 foreach (var provider in e.NewItems.OfType<ResourceProvider>())
                 {
-                    RegisterLanguageSource(provider, false);
+                    RegisterLanguageSource(provider);
                 }
             };
         }
-        
-        
-        /*Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            foreach (var action in updateActions)
-            {
-                action();
-            }
-            Notifier.ForceUpdate();
-        });*/
     }
 
     private readonly AvaloniaObject proxy = new();
-    
+
     #region Target
 
     private static readonly AvaloniaProperty KeyProperty = AvaloniaProperty.RegisterAttached
@@ -91,55 +72,34 @@ public partial class I18NExtension
     [Content]
     public Collection<IBinding> Keys { get; } = [];
 
+
     public override partial object ProvideValue(IServiceProvider serviceProvider)
     {
-        if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
+        if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget)
             return this;
-
-        if (provideValueTarget.TargetObject is not StyledElement targetObject) 
-        {
-            // Avalonia please fix TargetObject not match
-            if (provideValueTarget.TargetObject is not I18NExtension) return this;
-            var reflect = provideValueTarget.GetType().GetField("ParentsStack");
-            if (reflect is null) return this;
-            if (reflect.GetValue(provideValueTarget) is not IList<object> parentsStack) return this;
-            targetObject = (parentsStack.Last() as StyledElement)!;
-        }
-        if (provideValueTarget.TargetProperty is not AvaloniaProperty targetProperty) return this;
-
         CheckArgument();
-
-        var bindingBase = CreateBinding();
-
-        if (bindingBase is MultiBinding) SetTarget(targetObject, targetProperty);
-
-        return bindingBase;
+        try
+        {
+            return CreateBinding();
+        }
+        finally
+        {
+            Task.Delay(500).ContinueWith(_ => { Notifier.ForceUpdate(); });
+        }
     }
 
-    private void SetTarget(AvaloniaObject targetObject, AvaloniaProperty targetProperty)
-    {
-        if (targetObject is not StyledElement element) return;
-        SetTargetProperty(element, targetProperty);
-        element.DataContextChanged += I18NExtension_DataContextChanged;
-    }
-    
-    private void I18NExtension_DataContextChanged(object sender, EventArgs e)
-    {
-        if (sender is not StyledElement element) return;
-        element.DataContextChanged -= I18NExtension_DataContextChanged;
-        ResetBinding(element);
-    }
 
     private static void SetBinding(AvaloniaObject element, AvaloniaProperty targetProperty, IBinding binding)
     {
         element.Bind(targetProperty, binding);
+        Notifier.ForceUpdate();
     }
 
-    private MultiBinding CreateMultiBinding() =>
+    private static MultiBinding CreateMultiBinding() =>
         new()
         {
-            Mode               = BindingMode.OneWay,
-            Priority           = BindingPriority.LocalValue,
+            Mode     = BindingMode.OneWay,
+            Priority = BindingPriority.LocalValue,
         };
 
     private IBinding CreateBinding()
@@ -157,17 +117,6 @@ public partial class I18NExtension
         keyBinding.Converter          = Converter;
         keyBinding.ConverterParameter = ConverterParameter;
         return keyBinding;
-
-    }
-
-    private void Trigger()
-    {
-        foreach (var key in Target.Keys.ToArray())
-        {
-            var value = Target[key];
-            Target[key] = null;
-            Target[key] = value;
-        }
     }
 
     private static partial void RegisterCultureChanged(ResourceProvider provider)
@@ -178,8 +127,8 @@ public partial class I18NExtension
             Notifier.ForceUpdate();
         };
     }
-    
-    internal partial class ResourceChangedNotifier
+
+    partial class ResourceChangedNotifier
     {
         public void ForceUpdate() => OnPropertyChanged(nameof(Source));
     }

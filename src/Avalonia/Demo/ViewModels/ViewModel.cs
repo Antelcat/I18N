@@ -10,8 +10,8 @@ public partial class ViewModel : ObservableObject
 {
     public ViewModel()
     {
-        selectedKey = AvailableKeys.FirstOrDefault();
-        InputText   = AvailableKeys.FirstOrDefault();
+        selectedKey    =  AvailableKeys.FirstOrDefault();
+        InputText      =  AvailableKeys.FirstOrDefault();
     }
     public CultureInfo Culture
     {
@@ -21,11 +21,10 @@ public partial class ViewModel : ObservableObject
             if (culture.EnglishName.Equals(value.EnglishName)) return;
             culture               = value;
             I18NExtension.Culture = value;
-            OnPropertyChanged();
         }
     }
 
-    private CultureInfo culture = new("zh");
+    private static CultureInfo culture = new("zh");
 
     public IList<CultureInfo> AvailableCultures { get; } = new List<CultureInfo>
     {
