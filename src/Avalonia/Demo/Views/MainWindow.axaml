@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Antelcat.I18N.Avalonia.Demo.ViewModels"
         xmlns:ms="clr-namespace:Antelcat.I18N.Avalonia.Demo.Models"
+        xmlns:gb="clr-namespace:System.Globalization;assembly=System.Runtime"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Height="400" Width="800"
         x:DataType="viewModels:ViewModel"
@@ -31,7 +32,7 @@
                                     <TextBlock.Text>
                                         <I18N Key="{x:Static ms:LangKeys.Current_language_is}">
                                             <LanguageBinding Key="{x:Static ms:LangKeys.Language}" />
-                                            <Binding Path="Culture.EnglishName" />
+                                            <Binding Path="((gb:CultureInfo)Culture).EnglishName"/>
                                         </I18N>
                                     </TextBlock.Text>
                                 </TextBlock>

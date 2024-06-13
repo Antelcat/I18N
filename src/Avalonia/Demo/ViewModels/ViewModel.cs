@@ -33,9 +33,7 @@ public partial class ViewModel : ObservableObject
     };
 
     public IList<string> AvailableKeys { get; } =
-        typeof(LangKeys)
-            .GetProperties(BindingFlags.Static | BindingFlags.Public)
-            .Select(x => x.Name)
+        new LangKeys.__ResourcesProvider().Keys()
             .ToList();
     
     [ObservableProperty] private string? selectedKey;
