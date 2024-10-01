@@ -3,7 +3,6 @@ using Antelcat.I18N.Avalonia.Demo.Views;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 
