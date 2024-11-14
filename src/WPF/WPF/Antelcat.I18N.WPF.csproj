@@ -39,26 +39,21 @@
 
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net45" Version="1.0.3">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\..\..\README.md" PackagePath="\" Pack="true" >
+        <None Include="..\..\..\README.md" PackagePath="\" Pack="true">
             <Link>README.md</Link>
         </None>
-        <None Include="..\..\..\Icon.png" PackagePath="\" Pack="true" >
+        <None Include="..\..\..\Icon.png" PackagePath="\" Pack="true">
             <Link>Icon.png</Link>
         </None>
        
     </ItemGroup>
+
 
     <ItemGroup>
       <ProjectReference Include="..\..\Antelcat.I18N.Abstractions\Antelcat.I18N.Abstractions.csproj" />
     </ItemGroup>
 
     <Import Project="..\..\Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems" Label="Shared" />
+
 
 </Project>

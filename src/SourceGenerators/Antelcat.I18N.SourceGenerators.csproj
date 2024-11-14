@@ -19,10 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="PolySharp" Version="1.13.2">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <PackageReference Include="Feast.CodeAnalysis" Version="0.3.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1"/>
     </ItemGroup>
 
@@ -33,12 +30,7 @@
               Include="..\..\extern\CodeAnalysis.Extensions\src\Feast.CodeAnalysis.SourceGenerators\Feast.CodeAnalysis.SourceGenerators.csproj" />
     </ItemGroup>
 
- 
-
     <Import Project="..\Antelcat.I18N.SourceGenerators.Shared\Antelcat.I18N.SourceGenerators.Shared.projitems" Label="Shared" />
-
- 
-
     <Import Project="..\Antelcat.I18N.Abstractions.Shared\Antelcat.I18N.Abstractions.Shared.projitems" Label="Shared" />
 
 </Project>
