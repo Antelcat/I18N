@@ -12,16 +12,21 @@ public class NotifyInstanceAccessorPlugin<T>(T instance) : IPropertyAccessorPlug
 
     public bool Match(object obj, string propertyName) => ReferenceEquals(obj, instance);
 
-    public IPropertyAccessor? Start(WeakReference<object?> reference, string propertyName) =>
-        Accessors.GetOrAdd(propertyName, _ => new NotifyAccessor(
+    public IPropertyAccessor? Start(WeakReference<object?> reference, string propertyName)
+    {
+        var notifier = reference.TryGetTarget(out var target)
+            ? target is T t ? t : throw new InvalidCastException(nameof(reference))
+            : throw new NullReferenceException(nameof(reference));
+        return Accessors.GetOrAdd(propertyName, _ => new NotifyAccessor(
             propertyName,
             GetPropertyType(propertyName),
-            () => GetValue(instance, propertyName), 
+            () => GetValue(notifier, propertyName),
             OnPropertyChanged,
             OnSubscription)
         {
-            Instance = instance
+            Instance = notifier
         });
+    }
 
     protected virtual Type GetPropertyType(string propertyName) => typeof(object);
     protected virtual object? GetValue(T target, string propertyName) => null;
@@ -34,22 +39,20 @@ public class NotifyInstanceAccessorPlugin<T>(T instance) : IPropertyAccessorPlug
         string propertyName,
         Type propertyType,
         Func<object?> valueGetter,
-        Action<Action<object?>,object?> onPropertyChanged,
+        Action<Action<object?>, object?> onPropertyChanged,
         Action<Action<object?>, IPropertyAccessor> onSubscription) : IPropertyAccessor
     {
         public T? Instance
         {
-            get => instance;
+            get;
             set
             {
-                if (instance != null) instance.PropertyChanged -= OnPropertyChanged;
-                if (value    == null) return;
-                instance                 =  value;
-                instance.PropertyChanged += OnPropertyChanged;
+                if (field != null) field.PropertyChanged -= OnPropertyChanged;
+                if (value == null) return;
+                field                 =  value;
+                field.PropertyChanged += OnPropertyChanged;
             }
         }
-
-        private T? instance;
 
         private readonly HashSet<Action<object?>> subscriptions = [];
 
@@ -57,25 +60,45 @@ public class NotifyInstanceAccessorPlugin<T>(T instance) : IPropertyAccessorPlug
         {
             if (e.PropertyName != propertyName) return;
             var value = Value;
-            foreach (var subscription in subscriptions)
+            lock (subscriptions)
             {
-                onPropertyChanged(subscription, value);
+                foreach (var subscription in subscriptions)
+                {
+                    onPropertyChanged(subscription, value);
+                }
             }
         }
 
-        public void Dispose() => Accessors.TryRemove(propertyName, out _);
+        ~NotifyAccessor()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            subscriptions.Clear();
+            Accessors.TryRemove(propertyName, out _);
+        }
 
         public bool SetValue(object? value, BindingPriority priority) => throw new NotImplementedException();
 
         public void Subscribe(Action<object?> listener)
         {
-            subscriptions.Add(listener);
+            lock (subscriptions)
+            {
+                subscriptions.Add(listener);
+            }
+
             onSubscription(listener, this);
         }
 
         public void Unsubscribe()
         {
-            subscriptions.Clear();
+            lock (subscriptions)
+            {
+                subscriptions.Clear();
+            }
+
             Dispose();
         }
 

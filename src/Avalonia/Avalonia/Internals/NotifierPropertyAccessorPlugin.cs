@@ -11,7 +11,9 @@ internal class NotifierPropertyAccessorPlugin(I18NExtension.ResourceChangedNotif
 
     protected override Type GetPropertyType(string propertyName) => typeof(ExpandoObject);
 
+#pragma warning disable AVA2001
     protected override void OnPropertyChanged(Action<object?> subscription, object? value)
+#pragma warning restore AVA2001
     {
         subscription(null);
         subscription(value);

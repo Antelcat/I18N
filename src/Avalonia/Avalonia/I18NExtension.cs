@@ -48,17 +48,7 @@ public partial class I18NExtension
 
     private static readonly AvaloniaProperty KeyProperty = AvaloniaProperty.RegisterAttached
         <I18NExtension, AvaloniaObject, object>(nameof(Key));
-
-
-    private static readonly AvaloniaProperty TargetPropertyProperty = AvaloniaProperty.RegisterAttached
-        <I18NExtension, AvaloniaObject, AvaloniaProperty>("TargetProperty");
-
-    private static void SetTargetProperty(AvaloniaObject element, AvaloniaProperty value)
-        => element.SetValue(TargetPropertyProperty, value);
-
-    private static AvaloniaProperty GetTargetProperty(AvaloniaObject element)
-        => (AvaloniaProperty)element.GetValue(TargetPropertyProperty)!;
-
+    
     #endregion
 
     /// <summary>
@@ -107,4 +97,5 @@ public partial class I18NExtension
     {
         public void ForceUpdate() => OnPropertyChanged(nameof(Source));
     }
+
 }

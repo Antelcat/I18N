@@ -39,12 +39,10 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         set => CultureChanged?.Invoke(value);
     }
 
-    public static string? Translate(string key, string? fallbackValue = null)
-    {
-        return Target.TryGetValue(key, out var value)
-            ? value as string ?? fallbackValue
+    public static string? Translate(string key, string? fallbackValue = null) =>
+        Target.TryGetValue(key, out var value)
+            ? value ?? fallbackValue
             : fallbackValue;
-    }
 
     private static partial void RegisterCultureChanged(ResourceProvider provider);
     
@@ -99,9 +97,8 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         ? CreateKeyBinding(key)
         : MapMultiBinding();
 
-    private Binding CreateKeyBinding(string key)
-    {
-        return new Binding(nameof(Notifier.Source))
+    private Binding CreateKeyBinding(string key) =>
+        new(nameof(Notifier.Source))
         {
             Source        = Notifier,
             Mode          = BindingMode.OneWay,
@@ -115,8 +112,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
 #endif
         };
-    }
-    
+
     private MultiBinding MapMultiBinding()
     {
         var ret = CreateMultiBinding();
@@ -145,8 +141,8 @@ public partial class I18NExtension : MarkupExtension, IAddChild
                     keys.Add(languageBinding.Key);
                     modes.Add(MultiValueLangConverter.Mode.Key);
                     break;
-                case { } propBinding:
-                    ret.Bindings.Add(propBinding);
+                case not null:
+                    ret.Bindings.Add(bindingBase);
                     modes.Add(MultiValueLangConverter.Mode.Binding);
                     break;
                 default:
@@ -232,16 +228,16 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             var bindingIndex = 1; // first is trigger
             foreach (var mode in modes)
             {
-                string value = default!;
+                string value = null!;
                 switch (mode)
                 {
                     case Mode.Key:
                         var key = Keys[keyIndex++];
-                        value = Target.TryGetValue(key, out var k) ? k?.ToString() ?? key : key;
+                        value = Target.TryGetValue(key, out var k) ? k ?? key : key;
                         break;
                     case Mode.Binding:
                         var binding = (bindingValues[bindingIndex++] as string)!;
-                        value = Target.TryGetValue(binding, out var t) ? t?.ToString() ?? binding : binding;
+                        value = Target.TryGetValue(binding, out var t) ? t ?? binding : binding;
                         break;
                 }
 
@@ -284,15 +280,18 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         
         public void RegisterProvider(ResourceProvider provider)
         {
-            lastRegister = provider;
-            provider.ChangeCompleted += (_, _) =>
-            {
-                if (lastRegister != provider) return;
-                OnPropertyChanged(nameof(Source));
-            };
+            if (this.provider is not null) this.provider.ChangeCompleted -= ChangeCompleted;
+            this.provider            =  provider;
+            provider.ChangeCompleted += ChangeCompleted;
         }
 
-        private ResourceProvider? lastRegister;
+        private ResourceProvider? provider;
+
+        private void ChangeCompleted(object sender, EventArgs eventArgs)
+        {
+            if (provider != sender) return;
+            OnPropertyChanged(nameof(Source));
+        }
     }
 
     public class LanguageDictionary : IDictionary<string, string> , INotifyPropertyChanged

@@ -39,7 +39,7 @@
                             </MenuItem.Header>
                         </MenuItem>
                     </Menu>
-                    <Grid Grid.Row="1" ColumnDefinitions="*,200">
+                    <Grid ColumnDefinitions="*,200">
                         <StackPanel>
                             <Grid>
                                 <StackPanel>
@@ -68,7 +68,7 @@
 
                                 </StackPanel>
                             </Grid>
-                            <Grid Grid.Row="1" Margin="12,10">
+                            <Grid Margin="12,10">
                                 <StackPanel>
                                     <TextBlock Text="{I18N {x:Static ms:LangKeys.Input_your_text_to_translate}}" />
                                     <TextBox Margin="0,10" Text="{Binding InputText}" />
