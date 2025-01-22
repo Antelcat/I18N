@@ -24,8 +24,7 @@ public partial class I18NExtension
             Mode   = BindingMode.OneWay,
         };
 
-        //Register accessor plugin for ExpandoObject
-        BindingPlugins.PropertyAccessors.Insert(0, new NotifierPropertyAccessorPlugin(Notifier));
+        BindingPlugins.PropertyAccessors.Insert(0, NotifierPropertyAccessorPlugin.Instance(Notifier));
 
         lock (ResourceProvider.Providers)
         {
@@ -89,7 +88,6 @@ public partial class I18NExtension
         CultureChanged += culture =>
         {
             provider.Culture = culture;
-            Notifier.ForceUpdate();
         };
     }
 

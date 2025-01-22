@@ -25,9 +25,9 @@ namespace Avalonia.Markup.Xaml.MarkupExtensions;
 public partial class I18NExtension : MarkupExtension, IAddChild
 {
     private static readonly IDictionary<string, string> Target;
-    private static readonly ResourceChangedNotifier      Notifier;
-    private static event CultureChangedHandler?          CultureChanged;
-    private static readonly Binding                      SourceBinding;
+    private static readonly ResourceChangedNotifier     Notifier;
+    private static event CultureChangedHandler?         CultureChanged;
+    private static readonly Binding                     SourceBinding;
 
     private delegate void CultureChangedHandler(CultureInfo culture);
 
@@ -45,7 +45,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             : fallbackValue;
 
     private static partial void RegisterCultureChanged(ResourceProvider provider);
-    
+
     private static void RegisterLanguageSource(ResourceProvider provider)
     {
         RegisterCultureChanged(provider);
@@ -59,7 +59,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
         void Update(string key) => Target[key] = provider[key];
     }
-    
+
 
     public I18NExtension(string key) : this() => Key = key;
     public I18NExtension(BindingBase binding) : this() => Key = binding;
@@ -115,10 +115,10 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
     private MultiBinding MapMultiBinding()
     {
-        var ret = CreateMultiBinding();
-        var isBindingList = new List<bool>();
-        List<string>                       keys  = [];
-        List<MultiValueLangConverter.Mode> modes = [];
+        var                                ret           = CreateMultiBinding();
+        var                                isBindingList = new List<bool>();
+        List<string>                       keys          = [];
+        List<MultiValueLangConverter.Mode> modes         = [];
         switch (Key)
         {
             case string key:
@@ -170,7 +170,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         Key = Keys[0];
         Keys.Clear();
     }
-    
+
     public override partial object ProvideValue(IServiceProvider serviceProvider);
 
     public void AddChild(object value)
@@ -187,14 +187,16 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     private class StaticKeyConverter(string key) : IValueConverter
     {
         public IValueConverter? Converter { get; set; }
-        
-        public object? ConverterParameter { get; set; }
-        
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => Converter?.Convert(Target[key], targetType, ConverterParameter, culture) ?? Target[key];
 
-        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+        public object? ConverterParameter { get; set; }
+
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+            Converter?.Convert(Target[key], targetType, ConverterParameter, culture) ?? Target[key];
+
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+            throw new NotSupportedException();
     }
-    
+
 
     /// <summary>
     /// use <see cref="string.Format(string,object[])"/> to generate final text
@@ -248,7 +250,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
             return ret;
         }
-        
+
         public object? Convert(
 #if WPF
             object?[]
@@ -257,12 +259,22 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 #endif
                 values, Type targetType, object? parameter, CultureInfo culture)
         {
-            var vs = GetValues(values,out var tem);
-            var v  = string.Format(tem, vs);
+            var    vs = GetValues(values, out var tem);
+            string v;
+            try
+            {
+                v = string.Format(tem, vs);
+            }
+            catch
+            {
+                v = tem;
+            }
+
             return Converter?.Convert(v, targetType, ConverterParameter, culture) ?? v;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
+            throw new NotSupportedException();
     }
 
     /// <summary>
@@ -277,7 +289,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
         private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        
+
         public void RegisterProvider(ResourceProvider provider)
         {
             if (this.provider is not null) this.provider.ChangeCompleted -= ChangeCompleted;
@@ -294,10 +306,10 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         }
     }
 
-    public class LanguageDictionary : IDictionary<string, string> , INotifyPropertyChanged
+    public class LanguageDictionary : IDictionary<string, string>, INotifyPropertyChanged
     {
-        private readonly Dictionary<string,string> dict = [];
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => dict.GetEnumerator();
+        private readonly Dictionary<string, string>                dict = [];
+        public           IEnumerator<KeyValuePair<string, string>> GetEnumerator() => dict.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)dict).GetEnumerator();
 
@@ -311,7 +323,9 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
         public bool Contains(KeyValuePair<string, string> item) => dict.Contains(item);
 
-        public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex) { }
+        public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
+        {
+        }
 
         public bool Remove(KeyValuePair<string, string> item)
         {
@@ -356,6 +370,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         public ICollection<string>                Values => ((IDictionary<string, string>)dict).Values;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
