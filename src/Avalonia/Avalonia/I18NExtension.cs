@@ -24,7 +24,7 @@ public partial class I18NExtension
             Mode   = BindingMode.OneWay,
         };
 
-        BindingPlugins.PropertyAccessors.Insert(0, NotifierPropertyAccessorPlugin.Instance(Notifier));
+        BindingPlugins.PropertyAccessors.Insert(0, NotifierPropertyAccessorPlugin.Instance);
 
         lock (ResourceProvider.Providers)
         {

@@ -1,60 +1,52 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia.Data;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 
 namespace Antelcat.I18N.Avalonia.Internals;
 
-internal class NotifierPropertyAccessorPlugin(I18NExtension.ResourceChangedNotifier target)
+internal class NotifierPropertyAccessorPlugin
     : IPropertyAccessorPlugin
 {
-    private static IPropertyAccessorPlugin? instance;
-    
-    internal static IPropertyAccessorPlugin Instance(I18NExtension.ResourceChangedNotifier target)
+    [field: MaybeNull, AllowNull]
+    internal static IPropertyAccessorPlugin Instance
     {
-        if (instance is not null) return instance;
-        instance = new NotifierPropertyAccessorPlugin(target);
-        return instance;
-    }
-
-    private NotifyAccessor? accessor;
-    public bool Match(object obj, string propertyName) =>
-        propertyName is nameof(I18NExtension.ResourceChangedNotifier.Source) && ReferenceEquals(obj, target);
-
-    private object GetValue() => target.Source;
-
-    public IPropertyAccessor? Start(WeakReference<object?> reference, string propertyName)
-    {
-        return Create();
-        if (accessor is not null) return accessor;
-        lock (target)
+        get
         {
-            if (accessor is not null) return accessor;
-            accessor = Create();
+            if (field is not null) return field;
+            field = new NotifierPropertyAccessorPlugin();
+            return field;
         }
-
-        return accessor;
     }
 
-    private NotifyAccessor Create()
+    public bool Match(object obj, string propertyName) =>
+        propertyName is nameof(I18NExtension.ResourceChangedNotifier.Source) &&
+        obj is I18NExtension.ResourceChangedNotifier;
+
+
+    public IPropertyAccessor? Start(WeakReference<object?> reference, string propertyName) =>
+        reference.TryGetTarget(out var t)
+        && t is I18NExtension.ResourceChangedNotifier n
+            ? new NotifyAccessor(n)
+            : null;
+
+
+    private class NotifyAccessor : IPropertyAccessor
     {
-        var ret = new NotifyAccessor(GetValue);
-        target.PropertyChanged += ret.OnPropertyChanged;
-        return ret;
-    }
-
-
-    private class NotifyAccessor(Func<object?> valueGetter) : IPropertyAccessor
-    {
-
+        private readonly I18NExtension.ResourceChangedNotifier notifier;
+        public NotifyAccessor(I18NExtension.ResourceChangedNotifier notifier)
+        {
+            this.notifier                 =  notifier;
+            this.notifier.PropertyChanged += OnPropertyChanged;
+        }
         private event Action<object?>? Subscriptions;
 
-        internal void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (Subscriptions is null) return;
-            var value = Value;
             Subscriptions(null);
-            Subscriptions(value);
+            Subscriptions(Value);
         }
 
         ~NotifyAccessor() => Dispose();
@@ -67,11 +59,12 @@ internal class NotifierPropertyAccessorPlugin(I18NExtension.ResourceChangedNotif
 
         public void Unsubscribe()
         {
-            Subscriptions = null;
+            Subscriptions            =  null;
+            notifier.PropertyChanged -= OnPropertyChanged;
             Console.WriteLine("Unsub");
         }
 
         public Type?   PropertyType { get; } = typeof(INotifyPropertyChanged);
-        public object? Value        => valueGetter();
+        public object? Value        => notifier.Source;
     }
 }
