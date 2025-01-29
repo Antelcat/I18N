@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Abstractions\ResourceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\DisableGenerationForAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Attributes\ResourceKeysOfAttribute.cs" />
   </ItemGroup>
 </Project>
