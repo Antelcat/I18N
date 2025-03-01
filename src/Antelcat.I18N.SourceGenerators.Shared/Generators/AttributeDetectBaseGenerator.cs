@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Internal;
 
 namespace Antelcat.I18N.WPF.SourceGenerators.Generators;
 

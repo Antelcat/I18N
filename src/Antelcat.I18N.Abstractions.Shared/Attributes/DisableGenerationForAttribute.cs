@@ -7,4 +7,7 @@ namespace Antelcat.I18N.Attributes;
 /// </summary>
 /// <param name="attributeTypes"></param>
 [AttributeUsage(AttributeTargets.Assembly)]
-public class DisableGenerationForAttribute(params Type[] attributeTypes) : Attribute;
+public class DisableGenerationForAttribute(params Type[] attributeTypes) : Attribute
+{
+    internal Type[] AttributeTypes => attributeTypes;
+}

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,8 +8,8 @@ using Antelcat.I18N.Attributes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Internal;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using GeneratorAttributeSyntaxContext = Microsoft.CodeAnalysis.GeneratorAttributeSyntaxContext;
 
 namespace Antelcat.I18N.WPF.SourceGenerators.Generators;
 
@@ -21,16 +20,13 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
     private static readonly string CultureInfo       = $"global::{typeof(CultureInfo).FullName}";
     private static readonly string ResourceProvider  = $"global::{typeof(ResourceProvider).FullName}";
     private static readonly string ModuleInitializer = $"global::{typeof(ModuleInitializerAttribute).FullName}";
-    private static readonly string IEnumerable       = $"global::System.Collections.Generic.IEnumerable<string>";
+    private static readonly string IEnumerable       = $"global::{nameof(System)}.Collections.Generic.IEnumerable<string>";
     
     private static readonly string[] Exceptions =
-    {
-        "resourceMan",
-        "resourceCulture",
-        ".ctor",
+    [
         "ResourceManager",
         "Culture"
-    };
+    ];
 
     protected override string AttributeName => Attribute;
 
@@ -41,7 +37,11 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
         {
             var targetSymbol   = generateCtx.SemanticModel.GetSymbolInfo(type).Symbol as INamedTypeSymbol;
             var targetFullName = targetSymbol.GetFullyQualifiedName();
-            var names          = targetSymbol!.MemberNames.Except(Exceptions).ToList();
+            var names = targetSymbol!
+                .GetMembers()
+                .OfType<IPropertySymbol>()
+                .Select(x => x.Name)
+                .Except(Exceptions).ToList();
             var nameSpace      = generateCtx.TargetSymbol.ContainingNamespace.GetFullyQualifiedName();
             var className      = $"__{targetSymbol.Name}Provider";
             var syntaxTriviaList = TriviaList(

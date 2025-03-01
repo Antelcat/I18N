@@ -1,1 +1,3 @@
-global using Wpf.Ui;
+using System.Runtime.CompilerServices;
+using Antelcat.I18N.Attributes;
+
