@@ -7,9 +7,9 @@
         <IsPackable>true</IsPackable>
         <LangVersion>preview</LangVersion>
 
-        <Version>1.0.3</Version>
-        <FileVersion>1.0.3</FileVersion>
-        <AssemblyVersion>1.0.3</AssemblyVersion>
+        <Version>1.1.0</Version>
+        <FileVersion>1.1.0</FileVersion>
+        <AssemblyVersion>1.1.0</AssemblyVersion>
         
         <Authors>Antelcat</Authors>
         <Title>Antelcat.I18N.Avalonia</Title>

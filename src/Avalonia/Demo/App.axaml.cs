@@ -27,14 +27,6 @@ namespace Antelcat.I18N.Avalonia.Demo
                 {
                     DataContext = new ViewModel(),
                 };
-                int count = 10;
-                while (count-- > 0)
-                {
-                    new MainWindow
-                    {
-                        DataContext = new ViewModel()
-                    }.Show();
-                }
             }
 
             base.OnFrameworkInitializationCompleted();
