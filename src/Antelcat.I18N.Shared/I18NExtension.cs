@@ -353,11 +353,19 @@ public partial class I18NExtension : MarkupExtension, IAddChild
             return value;
         }
 
-        public bool TryGetValue(string key, out string value) => dict.TryGetValue(key, out value);
+        public bool TryGetValue(string key, out string value)
+        {
+            if (key is null)
+            {
+                value = null;
+                return false;
+            }
+            return dict.TryGetValue(key, out value);
+        }
 
         public string this[string key]
         {
-            get => dict[key];
+            get => dict.TryGetValue(key, out var value) ? value : key;
             set
             {
                 dict[key] = value;

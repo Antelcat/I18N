@@ -66,6 +66,11 @@
 
                                     <TextBox Margin="12,0" Text="{I18N {Binding SelectedKey}}" />
 
+                                    <ComboBox SelectedIndex="0">
+                                        <ComboBoxItem Content="{I18N {x:Static ms:LangKeys.Translated_text}}" />
+                                        <ComboBoxItem Content="{I18N ThemeOfDarkMode}" />
+                                        <ComboBoxItem Content="{I18N ThemeOfLightMode}" />
+                                    </ComboBox>
                                 </StackPanel>
                             </Grid>
                             <Grid Margin="12,10">

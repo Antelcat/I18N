@@ -1,10 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using Antelcat.I18N.Avalonia.Internals;
+using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Data.Core.Plugins;
+using Avalonia.Markup.Xaml.XamlIl.Runtime;
 using Avalonia.Metadata;
+using EventArgs = System.EventArgs;
 using ResourceProvider = Antelcat.I18N.Abstractions.ResourceProvider;
 
 namespace Avalonia.Markup.Xaml.MarkupExtensions;
@@ -41,7 +45,8 @@ public partial class I18NExtension
         }
     }
 
-    private readonly AvaloniaObject proxy = new();
+    private readonly        AvaloniaObject proxy   = new();
+    private static readonly List<Window>   windows = [];
 
     #region Target
 
@@ -63,6 +68,7 @@ public partial class I18NExtension
     {
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget)
             return this;
+        
         CheckArgument();
         try
         {
@@ -70,7 +76,25 @@ public partial class I18NExtension
         }
         finally
         {
-            Task.Delay(500).ContinueWith(_ => { Notifier.ForceUpdate(); });
+            if (serviceProvider.GetService(typeof(IAvaloniaXamlIlParentStackProvider
+                )) is IAvaloniaXamlIlParentStackProvider
+
+                {
+                    Parents: { } stack
+                })
+            {
+                if (stack.FirstOrDefault() is StyledElement control)
+                {
+                    void Initialized(object _, EventArgs __)
+                    {
+                        Notifier.ForceUpdate();
+                        control.Initialized -= Initialized;
+                    }
+
+                    control.Initialized += Initialized;
+                }
+            }
+
         }
     }
 
