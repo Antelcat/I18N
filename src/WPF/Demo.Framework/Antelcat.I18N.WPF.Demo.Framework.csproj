@@ -3,19 +3,14 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net462</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
         <AssemblyVersion>1.0.0</AssemblyVersion>
-        <LangVersion>preview</LangVersion>
         <FileVersion>1.0.0</FileVersion>
         <RootNamespace>Antelcat.I18N.WPF.Demo</RootNamespace>
         <ApplicationIcon>../../Icon.ico</ApplicationIcon>
-        <Company>Antelcat</Company>
         <Product>Antelcat.Wpf.I18N.Demo-1.0.0</Product>
         <AssemblyName>Antelcat.Wpf.I18N.Demo</AssemblyName>
         <PackageId>Antelcat.Wpf.I18N.Demo</PackageId>
-        <Authors>Antelcat</Authors>
     </PropertyGroup>
 
     <ItemGroup>

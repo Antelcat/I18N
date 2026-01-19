@@ -3,20 +3,24 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using Antelcat.I18N.Avalonia.Internals;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Data.Core.Plugins;
+using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.XamlIl.Runtime;
 using Avalonia.Metadata;
 using EventArgs = System.EventArgs;
 using ResourceProvider = Antelcat.I18N.Abstractions.ResourceProvider;
 
-namespace Avalonia.Markup.Xaml.MarkupExtensions;
+[assembly: XmlnsDefinition("https://github.com/avaloniaui", "Antelcat.I18N.Avalonia")]
+
+namespace Antelcat.I18N.Avalonia;
 
 public partial class I18NExtension
 {
     public I18NExtension() { }
-    
+
     static I18NExtension()
     {
         var target = new LanguageDictionary();
@@ -49,10 +53,8 @@ public partial class I18NExtension
     private static readonly List<Window>   windows = [];
 
     #region Target
-
     private static readonly AvaloniaProperty KeyProperty = AvaloniaProperty.RegisterAttached
         <I18NExtension, AvaloniaObject, object>(nameof(Key));
-    
     #endregion
 
     /// <summary>
@@ -68,7 +70,7 @@ public partial class I18NExtension
     {
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget)
             return this;
-        
+
         CheckArgument();
         try
         {
@@ -105,7 +107,7 @@ public partial class I18NExtension
             Priority = BindingPriority.LocalValue,
             Bindings = { SourceBinding }
         };
- 
+
 
     private static partial void RegisterCultureChanged(ResourceProvider provider)
     {

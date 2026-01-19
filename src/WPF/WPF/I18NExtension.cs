@@ -1,11 +1,14 @@
 ﻿using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using Antelcat.I18N.Abstractions;
 using MicrosoftPleaseFixBindingCollection = System.Collections.ObjectModel.Collection<System.Windows.Data.BindingBase>;
 
-namespace System.Windows;
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "Antelcat.I18N.WPF")]
+
+namespace Antelcat.I18N.WPF;
 
 [MarkupExtensionReturnType(typeof(string))]
 [ContentProperty(nameof(Keys))]
@@ -15,7 +18,7 @@ public partial class I18NExtension
 {
     public I18NExtension()
     {
-        
+
     }
     static I18NExtension()
     {
@@ -36,7 +39,7 @@ public partial class I18NExtension
 
             ResourceProvider.Providers.CollectionChanged += (o, e) =>
             {
-                if(e.Action != NotifyCollectionChangedAction.Add)return;
+                if (e.Action != NotifyCollectionChangedAction.Add) return;
                 foreach (var provider in e.NewItems?.OfType<ResourceProvider>() ?? [])
                 {
                     RegisterLanguageSource(provider);
@@ -46,15 +49,14 @@ public partial class I18NExtension
     }
 
     private readonly DependencyObject proxy = new();
-    
-    #region Target
 
+    #region Target
     private static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached
     (
         nameof(Key),
         typeof(object),
         typeof(I18NExtension),
-        new PropertyMetadata(default)
+        new PropertyMetadata()
     );
 
 
@@ -71,7 +73,7 @@ public partial class I18NExtension
         if (serviceProvider.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget provideValueTarget)
             return this;
         if (provideValueTarget.TargetObject.GetType().FullName ==
-            $"{nameof(System)}.{nameof(Windows)}.SharedDp") return this;
+            $"{nameof(System)}.Windows.SharedDp") return this;
         if (provideValueTarget.TargetObject is not DependencyObject targetObject)
             return this;
 
@@ -96,7 +98,6 @@ public partial class I18NExtension
 
     private static DependencyProperty GetTargetProperty(DependencyObject element)
         => (DependencyProperty)element.GetValue(TargetPropertyProperty)!;
-
     #endregion
 
     /// <summary>
@@ -152,7 +153,7 @@ public partial class I18NExtension
             Mode                = BindingMode.OneWay,
             ConverterParameter  = ConverterParameter,
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
-            Bindings = { SourceBinding }
+            Bindings            = { SourceBinding }
         };
         return ret;
     }
@@ -165,8 +166,8 @@ public partial class I18NExtension
         var binding = CreateBinding();
         SetBinding(element, targetProperty, binding);
     }
-    
-   
+
+
 
     private static partial void RegisterCultureChanged(ResourceProvider provider)
     {

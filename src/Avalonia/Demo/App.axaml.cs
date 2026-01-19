@@ -1,3 +1,4 @@
+using Antelcat.I18N.Avalonia.Demo.Models;
 using Antelcat.I18N.Avalonia.Demo.ViewModels;
 using Antelcat.I18N.Avalonia.Demo.Views;
 using Avalonia;
@@ -12,6 +13,7 @@ namespace Antelcat.I18N.Avalonia.Demo
     {
         public override void Initialize()
         {
+            LangKeys.__ResourcesProvider.Initialize();
             AvaloniaXamlLoader.Load(this);
             if (Design.IsDesignMode)
             {

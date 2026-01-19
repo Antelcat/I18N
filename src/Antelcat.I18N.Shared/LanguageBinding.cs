@@ -1,10 +1,10 @@
 using System.ComponentModel;
 #if WPF
 using System.Windows.Data;
-namespace System.Windows;
+namespace Antelcat.I18N.WPF;
 #elif AVALONIA
 using Avalonia.Data;
-namespace Avalonia.Markup.Xaml.MarkupExtensions;
+namespace Antelcat.I18N.Avalonia;
 #endif
 
 /// <summary>

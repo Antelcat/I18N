@@ -5,32 +5,24 @@
             net40;
             net5.0-windows;
         </TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <IsPackable>true</IsPackable>
-        <LangVersion>preview</LangVersion>
 
         <Version>1.1.0</Version>
         <FileVersion>1.1.0</FileVersion>
         <AssemblyVersion>1.1.0</AssemblyVersion>
         
-        <Authors>Antelcat</Authors>
         <Title>Antelcat.I18N.WPF</Title>
         <PackageId>Antelcat.I18N.WPF</PackageId>
         <RootNamespace>Antelcat.I18N.WPF</RootNamespace>
+        
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        
         <PackageReleaseNotes>Fix string template using args of none string type</PackageReleaseNotes>
-        <Copyright>Copyright Antelcat. All rights reserved</Copyright>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <PackageTags>dotnet;WPF;markup;extension;MVVM;i18n;language;binding;.NET;</PackageTags>
         <Description>Reactive language support for WPF applications when using .resx translate file.</Description>
 
-        <RepositoryType>git</RepositoryType>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.I18N</PackageProjectUrl>
-        
         <PackageIcon>Icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         

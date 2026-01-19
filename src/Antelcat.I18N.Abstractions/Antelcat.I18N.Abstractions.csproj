@@ -3,15 +3,11 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFrameworks>netstandard2.0;net40;</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <LangVersion>preview</LangVersion>
 
         <Version>1.1.0</Version>
         <FileVersion>1.1.0</FileVersion>
         <AssemblyVersion>1.1.0</AssemblyVersion>
 
-        <Authors>Antelcat</Authors>
         <PackageIcon>icon.png</PackageIcon>
         <Title>Antelcat.I18N.SourceGenerators</Title>
         <Product>Antelcat.I18N.SourceGenerators</Product>
@@ -22,11 +18,6 @@
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <PackageTags>dotnet;Avalonia;WPF;markup;extension;MVVM;i18n;language;binding;.NET;SourceGenerator;</PackageTags>
         <Description>Auto generate provider code for Antelcat.I18N</Description>
-
-        <RepositoryType>git</RepositoryType>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/Antelcat/Antelcat.I18N</PackageProjectUrl>
 
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>

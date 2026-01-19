@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows.Markup;
 #elif AVALONIA
+using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using DependencyObject = Avalonia.AvaloniaObject;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
@@ -14,11 +16,10 @@ using Avalonia.Metadata;
 
 using ResourceProvider = Antelcat.I18N.Abstractions.ResourceProvider;
 
-// ReSharper disable once CheckNamespace
 #if WPF
-namespace System.Windows;
+namespace Antelcat.I18N.WPF;
 #elif AVALONIA
-namespace Avalonia.Markup.Xaml.MarkupExtensions;
+namespace Antelcat.I18N.Avalonia;
 #endif
 
 [DebuggerDisplay("Key = {Key}, Keys = {Keys}")]

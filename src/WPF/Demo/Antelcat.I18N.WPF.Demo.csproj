@@ -2,15 +2,11 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net8.0-windows10.0.22621.0;net462</TargetFrameworks>
-        <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-        <Nullable>enable</Nullable>
+        <TargetFrameworks>net10.0-windows;net462</TargetFrameworks>
         <UseWPF>true</UseWPF>
         <AssemblyVersion>1.0.0</AssemblyVersion>
-        <LangVersion>preview</LangVersion>
         <FileVersion>1.0.0</FileVersion>
         <ApplicationIcon>../../Icon.ico</ApplicationIcon>
-        <Company>Antelcat</Company>
         <Product>Antelcat.I18N.WPF.Demo-1.0.0</Product>
         <RootNamespace>Antelcat.I18N.WPF.Demo</RootNamespace>
     </PropertyGroup>

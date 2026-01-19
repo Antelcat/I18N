@@ -2,11 +2,9 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFrameworks>net462;net7.0-windows</TargetFrameworks>
-        <Nullable>enable</Nullable>
+        <TargetFrameworks>net462;net10.0-windows</TargetFrameworks>
         <UseWPF>true</UseWPF>
         <RootNamespace>Antelcat.I18N.WPF.Library</RootNamespace>
-        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
 

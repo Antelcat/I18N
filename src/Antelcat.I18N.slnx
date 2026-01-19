@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/Platforms/" />
+  <Folder Name="/Platforms/Avalonia/">
+    <Project Path="Avalonia/Avalonia/Antelcat.I18N.Avalonia.csproj" />
+    <Project Path="Avalonia/Demo/Antelcat.I18N.Avalonia.Demo.csproj" />
+  </Folder>
+  <Folder Name="/Platforms/WPF/">
+    <Project Path="WPF/Demo.Framework/Antelcat.I18N.WPF.Demo.Framework.csproj" />
+    <Project Path="WPF/Demo/Antelcat.I18N.WPF.Demo.csproj" />
+    <Project Path="WPF/Library/Antelcat.I18N.WPF.Library.csproj" />
+    <Project Path="WPF/WPF/Antelcat.I18N.WPF.csproj" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="Antelcat.I18N.Abstractions.Shared/Antelcat.I18N.Abstractions.Shared.shproj" />
+    <Project Path="Antelcat.I18N.Shared/Antelcat.I18N.Shared.shproj" />
+    <Project Path="Antelcat.I18N.SourceGenerators.Shared/Antelcat.I18N.SourceGenerators.Shared.shproj" />
+  </Folder>
+  <Folder Name="/__/">
+    <File Path="../Icon.png" />
+    <File Path="../LICENSE" />
+    <File Path="../README.en.md" />
+    <File Path="../README.md" />
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="Antelcat.I18N.Abstractions/Antelcat.I18N.Abstractions.csproj" />
+  <Project Path="SourceGenerators/Antelcat.I18N.SourceGenerators.csproj" />
+</Solution>

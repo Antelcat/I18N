@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using Antelcat.I18N.Avalonia.Demo.Models;
 using Antelcat.I18N.Avalonia.Demo.ViewModels;
 using Avalonia.Controls;
 using Avalonia.Threading;

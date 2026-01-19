@@ -115,7 +115,7 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                               }
                                               """,
                                             $$"""
-                                              [{{ModuleInitializer}}]
+                                              
                                               public static void Initialize()
                                               {
                                                   RegisterProvider(new {{className}}());

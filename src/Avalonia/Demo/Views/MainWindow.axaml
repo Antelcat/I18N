@@ -7,6 +7,7 @@
         xmlns:gb="clr-namespace:System.Globalization;assembly=System.Runtime"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Height="400" Width="800"
+        x:CompileBindings="True"
         x:DataType="viewModels:ViewModel"
         WindowStartupLocation="CenterScreen"
         x:Class="Antelcat.I18N.Avalonia.Demo.Views.MainWindow"
@@ -66,7 +67,7 @@
 
                                     <TextBox Margin="12,0" Text="{I18N {Binding SelectedKey}}" />
 
-                                    <ComboBox SelectedIndex="0">
+                                    <ComboBox SelectedIndex="0" Margin="12,0">
                                         <ComboBoxItem Content="{I18N {x:Static ms:LangKeys.Translated_text}}" />
                                         <ComboBoxItem Content="{I18N ThemeOfDarkMode}" />
                                         <ComboBoxItem Content="{I18N ThemeOfLightMode}" />

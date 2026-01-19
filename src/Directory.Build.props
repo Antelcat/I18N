@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+    
+    <Authors>Antelcat</Authors>
+    <Company>Antelcat</Company>
+    <Copyright>Copyright Antelcat. All rights reserved</Copyright>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Antelcat/Antelcat.I18N.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Antelcat/Antelcat.I18N</PackageProjectUrl>
+  </PropertyGroup>
+  
+</Project>

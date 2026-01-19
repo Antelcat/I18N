@@ -17,12 +17,12 @@ public class ModuleInitializerGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var provider = context.SyntaxProvider.CreateSyntaxProvider(
-            (c,t)=>c is ClassDeclarationSyntax,
+            (c, t) => c is ClassDeclarationSyntax,
             (c, t) =>
             {
                 var symbol = c.SemanticModel.GetDeclaredSymbol(c.Node);
                 if (symbol is not INamedTypeSymbol type) return null;
-                if (type.TypeKind    != TypeKind.Class) return null;
+                if (type.TypeKind != TypeKind.Class) return null;
                 while (type.BaseType != null) type = type.BaseType;
                 return type;
             });
@@ -47,13 +47,13 @@ public class ModuleInitializerGenerator : IIncrementalGenerator
                         """)
                 }
             };
-            
-            
-            
+
+
+
             var obj = objs.Left.FirstOrDefault(x => x != null);
             if (obj is null) return;
             var version = obj.ContainingAssembly.Identity.Version;
-            if (version.CompareTo(new Version(3, 5))    < 0
+            if (version.CompareTo(new Version(3, 5)) < 0
                 || version.CompareTo(new Version(5, 0)) >= 0) return;
 
             if (objs.Right.Any())
@@ -65,7 +65,7 @@ public class ModuleInitializerGenerator : IIncrementalGenerator
                 if (disGen is not null)
                 {
                     foreach (var typeName in from TypedConstant constant in disGen.Value.Values
-                        select (constant.Value as INamedTypeSymbol).GetFullyQualifiedName())
+                                             select (constant.Value as INamedTypeSymbol).GetFullyQualifiedName())
                     {
                         generates.Remove(typeName);
                     }
