@@ -46,9 +46,7 @@ namespace MyProject
 
 //Auto generated class should be partial
 [ResourceKeysOf(typeof(My.Resource.Designer.Type))]
-public partial class LangKeys 
-{
-}
+public partial class LangKeys;
 ```
 
 + 在 `Avalonia` 平台使用2.0.0以上版本时需要在 `App.axaml` 中调用

@@ -45,9 +45,7 @@ namespace MyProject
 
 //Auto generated class should be partial
 [ResourceKeysOf(typeof(My.Resource.Designer.Type))]
-public partial class LangKeys 
-{
-}
+public partial class LangKeys;
 ```
 
 Then in your `.xaml` file you can use `x:Static` to provide resource key to your control
