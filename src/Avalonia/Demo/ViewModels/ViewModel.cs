@@ -33,7 +33,7 @@ public partial class ViewModel : ObservableObject
     };
 
     public IList<string> AvailableKeys { get; } =
-        new LangKeys.__ResourcesProvider().Keys()
+        new LangKeys.ResourcesProvider().Keys()
             .ToList();
 
     [ObservableProperty]

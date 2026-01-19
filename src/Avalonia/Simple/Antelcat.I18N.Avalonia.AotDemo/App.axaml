@@ -1,0 +1,8 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             RequestedThemeVariant="Light"
+             x:CompileBindings="True"
+             x:Class="Antelcat.I18N.Avalonia.AotDemo.App">
+    <Application.Styles>
+    </Application.Styles>
+</Application>

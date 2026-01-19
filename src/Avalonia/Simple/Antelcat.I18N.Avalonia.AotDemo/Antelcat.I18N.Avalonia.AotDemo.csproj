@@ -1,41 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <TrimMode>copyused</TrimMode>
+    <TrimMode>link</TrimMode>
     <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
-    <Product>Antelcat.Avalonia.I18N.Demo-1.0.0</Product>
-    <ApplicationIcon>..\..\Icon.ico</ApplicationIcon>
     <PublishAot>true</PublishAot>
     <PublishTrimmed>true</PublishTrimmed>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
-
+  
   <PropertyGroup>
     <AvaloniaVersion>11.3.9</AvaloniaVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <TrimmableAssembly Include="Avalonia.Themes.Fluent"/>
-    <TrimmableAssembly Include="Avalonia.Themes.Default"/>
-  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)"/>
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)"/>
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
-    <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)"/>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
-    <PackageReference Include="FluentAvaloniaUI" Version="2.0.4"/>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false"
-                      Include="..\..\SourceGenerators\Antelcat.I18N.SourceGenerators.csproj"/>
-    <ProjectReference Include="..\Avalonia\Antelcat.I18N.Avalonia.csproj"/>
-  </ItemGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -50,9 +34,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="..\..\Icon.ico">
-      <Link>Icon.ico</Link>
-    </None>
+    <ProjectReference OutputItemType="Analyzer" ReferenceOutputAssembly="false" Include="..\..\..\SourceGenerators\Antelcat.I18N.SourceGenerators.csproj" />
+    <ProjectReference Include="..\..\Avalonia\Antelcat.I18N.Avalonia.csproj" />
   </ItemGroup>
+
+
 </Project>

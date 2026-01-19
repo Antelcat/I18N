@@ -3,6 +3,7 @@
   <Folder Name="/Platforms/Avalonia/">
     <Project Path="Avalonia/Avalonia/Antelcat.I18N.Avalonia.csproj" />
     <Project Path="Avalonia/Demo/Antelcat.I18N.Avalonia.Demo.csproj" />
+    <Project Path="Avalonia/Simple/Antelcat.I18N.Avalonia.AotDemo/Antelcat.I18N.Avalonia.AotDemo.csproj" />
   </Folder>
   <Folder Name="/Platforms/WPF/">
     <Project Path="WPF/Demo.Framework/Antelcat.I18N.WPF.Demo.Framework.csproj" />

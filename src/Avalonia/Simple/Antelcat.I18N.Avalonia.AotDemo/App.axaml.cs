@@ -1,13 +1,11 @@
-using Antelcat.I18N.Avalonia.Demo.Models;
-using Antelcat.I18N.Avalonia.Demo.ViewModels;
-using Antelcat.I18N.Avalonia.Demo.Views;
+using Antelcat.I18N.Avalonia.AotDemo.Models;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 
-namespace Antelcat.I18N.Avalonia.Demo
+namespace Antelcat.I18N.Avalonia.AotDemo
 {
     public partial class App : Application
     {
@@ -25,10 +23,7 @@ namespace Antelcat.I18N.Avalonia.Demo
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new ViewModel(),
-                };
+                desktop.MainWindow = new MainWindow();
             }
 
             base.OnFrameworkInitializationCompleted();
