@@ -14,7 +14,7 @@
                           OutputItemType="Analyzer"/>
         <ProjectReference Include="..\WPF\Antelcat.I18N.WPF.csproj" />
 
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="WPF-UI" Version="2.1.0"/>
     </ItemGroup>
 

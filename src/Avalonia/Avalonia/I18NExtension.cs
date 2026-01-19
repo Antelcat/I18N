@@ -50,7 +50,6 @@ public partial class I18NExtension
     }
 
     private readonly        AvaloniaObject proxy   = new();
-    private static readonly List<Window>   windows = [];
 
     #region Target
     private static readonly AvaloniaProperty KeyProperty = AvaloniaProperty.RegisterAttached

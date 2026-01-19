@@ -10,7 +10,7 @@ public partial class ViewModel : ObservableObject
 {
     public ViewModel()
     {
-        selectedKey    =  AvailableKeys.FirstOrDefault();
+        SelectedKey =  AvailableKeys.FirstOrDefault();
         InputText      =  AvailableKeys.FirstOrDefault();
     }
     public CultureInfo Culture
@@ -35,8 +35,10 @@ public partial class ViewModel : ObservableObject
     public IList<string> AvailableKeys { get; } =
         new LangKeys.__ResourcesProvider().Keys()
             .ToList();
-    
-    [ObservableProperty] private string? selectedKey;
-    
-    [ObservableProperty] private string? inputText;
+
+    [ObservableProperty]
+    public partial string? SelectedKey { get; set; }
+
+    [ObservableProperty]
+    public partial string? InputText { get; set; }
 }

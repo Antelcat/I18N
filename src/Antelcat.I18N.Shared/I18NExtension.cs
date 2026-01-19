@@ -126,7 +126,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
                 keys.Add(key);
                 modes.Add(MultiValueLangConverter.Mode.Key);
                 break;
-            case Binding binding:
+            case BindingBase binding:
                 ret.Bindings.Add(binding);
                 modes.Add(MultiValueLangConverter.Mode.Binding);
                 break;

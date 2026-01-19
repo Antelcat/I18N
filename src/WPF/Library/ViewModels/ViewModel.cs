@@ -12,22 +12,21 @@ public partial class ViewModel : ObservableObject
 {
     public ViewModel()
     {
-        selectedKey = AvailableKeys.FirstOrDefault();
+        SelectedKey = AvailableKeys.FirstOrDefault();
         InputText   = AvailableKeys.FirstOrDefault();
     }
+
     public CultureInfo Culture
     {
-        get => culture;
+        get;
         set
         {
-            if (culture.EnglishName.Equals(value.EnglishName)) return;
-            culture               = value;
+            if (field.EnglishName.Equals(value.EnglishName)) return;
+            field                 = value;
             I18NExtension.Culture = value;
             OnPropertyChanged();
         }
-    }
-
-    private CultureInfo culture = new("zh");
+    } = new("zh");
 
     public IList<CultureInfo> AvailableCultures { get; } = new List<CultureInfo>
     {
@@ -40,8 +39,10 @@ public partial class ViewModel : ObservableObject
             .GetProperties(BindingFlags.Static | BindingFlags.Public)
             .Select(x => x.Name)
             .ToList();
-    
-    [ObservableProperty] private string? selectedKey;
-    
-    [ObservableProperty] private string? inputText;
+
+    [ObservableProperty]
+    public partial string? SelectedKey { get; set; }
+
+    [ObservableProperty]
+    public partial string? InputText { get; set; }
 }
