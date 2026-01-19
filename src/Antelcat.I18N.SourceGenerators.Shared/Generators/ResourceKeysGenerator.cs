@@ -115,12 +115,15 @@ internal class ResourceKeysGenerator : AttributeDetectBaseGenerator
                                               }
                                               """,
                                             $$"""
-                                              
+                                              [{{ModuleInitializer}}]
                                               public static void Initialize()
                                               {
+                                                  if(_initialized) return;
+                                                  _initialized = true;
                                                   RegisterProvider(new {{className}}());
                                               }
-                                              """
+                                              """,
+                                            "private static bool _initialized;"
                                         )
                                         .AddMembers(names.Select(x =>
                                                 $"public string {x} => {targetFullName}.{x};")

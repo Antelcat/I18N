@@ -51,6 +51,14 @@ public partial class LangKeys
 }
 ```
 
++ 在 `Avalonia` 平台使用2.0.0以上版本时需要在 `App.axaml` 中调用
+
+    ```csharp
+    LangKeys.Your_Provider.Initialize();
+    ```
+    `WPF` 平台可以忽略这一步骤
+
+
 然后在你的`.xaml`文件中使用`x:Static`来为你的控件提供资源键
 
 如果你已经在你的`.resx`文件中有

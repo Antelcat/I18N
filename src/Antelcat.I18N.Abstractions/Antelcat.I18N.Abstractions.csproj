@@ -4,10 +4,6 @@
         <OutputType>Library</OutputType>
         <TargetFrameworks>netstandard2.0;net40;</TargetFrameworks>
 
-        <Version>1.1.0</Version>
-        <FileVersion>1.1.0</FileVersion>
-        <AssemblyVersion>1.1.0</AssemblyVersion>
-
         <PackageIcon>icon.png</PackageIcon>
         <Title>Antelcat.I18N.SourceGenerators</Title>
         <Product>Antelcat.I18N.SourceGenerators</Product>

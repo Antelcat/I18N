@@ -7,10 +7,6 @@
         </TargetFrameworks>
         <UseWPF>true</UseWPF>
         <IsPackable>true</IsPackable>
-
-        <Version>1.1.0</Version>
-        <FileVersion>1.1.0</FileVersion>
-        <AssemblyVersion>1.1.0</AssemblyVersion>
         
         <Title>Antelcat.I18N.WPF</Title>
         <PackageId>Antelcat.I18N.WPF</PackageId>
@@ -46,6 +42,4 @@
     </ItemGroup>
 
     <Import Project="..\..\Antelcat.I18N.Shared\Antelcat.I18N.Shared.projitems" Label="Shared" />
-
-
 </Project>

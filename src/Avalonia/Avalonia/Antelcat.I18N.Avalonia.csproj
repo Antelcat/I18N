@@ -3,10 +3,6 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <IsPackable>true</IsPackable>
-
-        <Version>1.1.2</Version>
-        <FileVersion>1.1.2</FileVersion>
-        <AssemblyVersion>1.1.2</AssemblyVersion>
         
         <Title>Antelcat.I18N.Avalonia</Title>
         <PackageId>Antelcat.I18N.Avalonia</PackageId>

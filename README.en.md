@@ -52,6 +52,14 @@ public partial class LangKeys
 
 Then in your `.xaml` file you can use `x:Static` to provide resource key to your control
 
++ on `Avalonia` platform and using greater than the version of 2.0.0, you should call in `App.axaml`
+
+    ```csharp
+    LangKeys.Your_Provider.Initialize();
+    ```
+  `WPF` can ignore this procedure
+
+
 if you already have 
 ```xml
 <data name="Language" xml:space="preserve">
