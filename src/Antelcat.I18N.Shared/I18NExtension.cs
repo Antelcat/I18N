@@ -64,6 +64,9 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
     public I18NExtension(string key) : this() => Key = key;
     public I18NExtension(BindingBase binding) : this() => Key = binding;
+#if AVALONIA
+    public I18NExtension(CompiledBinding binding) : this() => Key = binding;
+#endif
 
     /// <summary>
     /// Resource key, accepts <see cref="string"/> or <see cref="Binding"/>.   
@@ -88,13 +91,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     [DefaultValue(null)]
     public object? ConverterParameter { get; set; }
 
-    private
-#if AVALONIA
-        IBinding
-#elif WPF
-        BindingBase
-#endif
-        CreateBinding() => Key is string key && Keys.Count == 0
+    private BindingBase CreateBinding() => Key is string key && Keys.Count == 0
         ? CreateKeyBinding(key)
         : MapMultiBinding();
 
