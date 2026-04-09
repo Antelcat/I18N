@@ -65,32 +65,7 @@ public partial class I18NExtension
             return this;
 
         CheckArgument();
-        try
-        {
-            return CreateBinding();
-        }
-        finally
-        {
-            if (serviceProvider.GetService(typeof(IAvaloniaXamlIlParentStackProvider
-                )) is IAvaloniaXamlIlParentStackProvider
-
-                {
-                    Parents: { } stack
-                })
-            {
-                if (stack.FirstOrDefault() is StyledElement control)
-                {
-                    void Initialized(object _, EventArgs __)
-                    {
-                        Notifier.ForceUpdate();
-                        control.Initialized -= Initialized;
-                    }
-
-                    control.Initialized += Initialized;
-                }
-            }
-
-        }
+        return CreateBinding();
     }
 
     private static MultiBinding CreateMultiBinding() =>

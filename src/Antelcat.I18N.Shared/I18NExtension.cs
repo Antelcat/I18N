@@ -95,7 +95,7 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     private BindingBase CreateKeyBinding(string key) =>
 #if AVALONIA
         CompiledBinding.Create(
-            (ResourceChangedNotifier x) => x,
+            (ResourceChangedNotifier x) => x.Source,
             converter: new StaticKeyConverter(key)
             {
                 Converter = Converter,
