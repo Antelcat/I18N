@@ -64,9 +64,6 @@ public partial class I18NExtension : MarkupExtension, IAddChild
 
     public I18NExtension(string key) : this() => Key = key;
     public I18NExtension(BindingBase binding) : this() => Key = binding;
-#if AVALONIA
-    public I18NExtension(CompiledBinding binding) : this() => Key = binding;
-#endif
 
     /// <summary>
     /// Resource key, accepts <see cref="string"/> or <see cref="Binding"/>.   
