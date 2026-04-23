@@ -88,18 +88,26 @@ public partial class I18NExtension : MarkupExtension, IAddChild
     [DefaultValue(null)]
     public object? ConverterParameter { get; set; }
 
-    private
-#if AVALONIA
-        IBinding
-#elif WPF
-        BindingBase
-#endif
-        CreateBinding() => Key is string key && Keys.Count == 0
+    private BindingBase CreateBinding() => Key is string key && Keys.Count == 0
         ? CreateKeyBinding(key)
         : MapMultiBinding();
 
-    private Binding CreateKeyBinding(string key) =>
-        new(nameof(Notifier.Source))
+    private BindingBase CreateKeyBinding(string key) =>
+#if AVALONIA
+        CompiledBinding.Create(
+            (ResourceChangedNotifier x) => x.Source,
+            converter: new StaticKeyConverter(key)
+            {
+                Converter = Converter,
+                ConverterParameter = ConverterParameter
+            },
+            converterParameter: ConverterParameter,
+            fallbackValue: key,
+            mode: BindingMode.OneWay,
+            source: Notifier
+        );
+#elif WPF
+        new Binding(nameof(Notifier.Source))
         {
             Source        = Notifier,
             Mode          = BindingMode.OneWay,
@@ -109,10 +117,9 @@ public partial class I18NExtension : MarkupExtension, IAddChild
                 Converter          = Converter,
                 ConverterParameter = ConverterParameter
             },
-#if WPF
             UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
-#endif
         };
+#endif
 
     private MultiBinding MapMultiBinding()
     {

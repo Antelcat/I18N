@@ -1,12 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
-using Antelcat.I18N.Avalonia.Internals;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Data;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.XamlIl.Runtime;
 using Avalonia.Metadata;
@@ -31,8 +27,6 @@ public partial class I18NExtension
             Source = Notifier,
             Mode   = BindingMode.OneWay,
         };
-
-        BindingPlugins.PropertyAccessors.Insert(0, NotifierPropertyAccessorPlugin.Instance);
 
         lock (ResourceProvider.Providers)
         {
@@ -62,7 +56,7 @@ public partial class I18NExtension
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     [DefaultValue(null)]
     [Content]
-    public Collection<IBinding> Keys { get; } = [];
+    public Collection<BindingBase> Keys { get; } = [];
 
 
     public override partial object ProvideValue(IServiceProvider serviceProvider)
@@ -71,32 +65,7 @@ public partial class I18NExtension
             return this;
 
         CheckArgument();
-        try
-        {
-            return CreateBinding();
-        }
-        finally
-        {
-            if (serviceProvider.GetService(typeof(IAvaloniaXamlIlParentStackProvider
-                )) is IAvaloniaXamlIlParentStackProvider
-
-                {
-                    Parents: { } stack
-                })
-            {
-                if (stack.FirstOrDefault() is StyledElement control)
-                {
-                    void Initialized(object _, EventArgs __)
-                    {
-                        Notifier.ForceUpdate();
-                        control.Initialized -= Initialized;
-                    }
-
-                    control.Initialized += Initialized;
-                }
-            }
-
-        }
+        return CreateBinding();
     }
 
     private static MultiBinding CreateMultiBinding() =>

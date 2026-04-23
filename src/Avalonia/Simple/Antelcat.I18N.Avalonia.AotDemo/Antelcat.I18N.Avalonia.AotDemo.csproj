@@ -11,7 +11,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <AvaloniaVersion>11.3.9</AvaloniaVersion>
+    <AvaloniaVersion>12.0.0</AvaloniaVersion>
   </PropertyGroup>
   
   <ItemGroup>
