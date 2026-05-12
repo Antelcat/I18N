@@ -40,7 +40,10 @@ public partial class I18NExtension : MarkupExtension, IAddChild
         set => CultureChanged?.Invoke(value);
     }
 
-    public static string? Translate(string key, string? fallbackValue = null) =>
+    public static string? Translate(string key) =>
+        Target.TryGetValue(key, out var value) ? value : null;
+
+    public static string Translate(string key, string fallbackValue) =>
         Target.TryGetValue(key, out var value)
             ? value ?? fallbackValue
             : fallbackValue;
